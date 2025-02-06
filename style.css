@@ -1,0 +1,29 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Mulish:ital,wght@0,200..1000;1,200..1000&display=swap');
+
+* {
+    padding: 0;
+    margin: 0;
+}
+
+.cabecalho {
+
+}
+
+.cabecalho__titulo {
+    font-family: "Mulish", serif;
+    font-size: 36;
+}
+
+.cabecalho__contato {
+    display: flex;
+}
+
+.contato__imagem {
+    width: 5%;
+}
+
+.contato__telefone {
+    font-family: 'Montserrat', serif;
+    font-weight: 500;
+}
+
