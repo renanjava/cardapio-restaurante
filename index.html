@@ -4,19 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Restaurante da Juliana</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="styles/style.css">
 </head>
 <body>
-    <header class="cabecalho">
-        <h1 class="cabecalho__titulo">
-            Restaurante da Juliana
-        </h1>
-        <div class="cabecalho__contato">
-            <img class="contato__imagem" src="assets/whatsapp.png" alt="Ícone do WhatsApp">
-            <p class="contato__telefone">(44) 988129535</p>
+    <header>
+        <div class="cabecalho">
+            <h1 class="cabecalho__titulo">Restaurante da Juliana</h1>
+            <div class="cabecalho__informacoes">
+                <ul class="informacoes__lista">
+                    <li class="lista__grupo">
+                        <img class="lista__imagem" src="assets/whatsapp.png" alt="Ícone do WhatsApp"
+                            aria-label="WhatsApp">
+                        <p class="lista__texto">(44) 988129535</p>
+                    </li>
+                    <li class="lista__grupo">
+                        <img class="lista__imagem" src="assets/localizacao.png" alt="Ícone da Localização"
+                            aria-label="Localização">
+                        <p class="lista__texto">Elpídio Monteiro, 21</p>
+                    </li>
+                </ul>
+            </div>
         </div>
     </header>
-    <main></main>
+
+    <main class="conteudo">
+        <nav>
+            <a href="#">Lanches</a>
+            <a href="#">Combos</a>
+        </nav>
+    </main>
     <footer></footer>
 </body>
 </html>
