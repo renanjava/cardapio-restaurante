@@ -76,3 +76,25 @@ body {
 .conteudo {
     height: 300px;
 }
+
+.opcoes__menu {
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+    padding: 10px 0 0 0;
+}
+
+.menu__opcao {
+    text-decoration: none;
+}
+
+.opcao__texto {
+    font-size: 24px;
+    font-family: 'Montserrat', serif;
+    font-weight: 500;
+    color: #F6F6F6;
+}
+
+.opcao__texto:hover {
+    border-bottom: solid 3px orange;
+}
