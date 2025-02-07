@@ -16,10 +16,8 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.5em;
+    gap: 0.9em;
     padding: 20px;
-    border-bottom-left-radius: 15px;
-    border-bottom-right-radius: 15px;
 }
 
 .cabecalho__titulo {
@@ -29,15 +27,28 @@ body {
 
 .cabecalho__informacoes {
     display: flex;
+    flex-direction: column;
     justify-content: center;
+    text-align: center;
     gap: 20px;
 }
 
-.informacoes__lista {
+.informacoes__contato__localizacao {
     display: flex;
     list-style-type: none;
     padding: 0;
     gap: 3em;
+}
+
+.informacoes__atendimento .cabecalho__descricao[text="Segunda à sábado"]{
+    text-align: start;
+}
+
+.informacoes__atendimento {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    gap: 0.3em;
 }
 
 .lista__grupo {
@@ -51,9 +62,15 @@ body {
     height: 20px;
 }
 
-.lista__texto {
+.cabecalho__texto {
     font-family: 'Montserrat', serif;
     font-weight: 500;
+}
+
+.cabecalho__descricao {
+    font-family: 'Montserrat', serif;
+    font-weight: 400;
+    font-size: 14px;
 }
 
 .conteudo {
