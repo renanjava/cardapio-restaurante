@@ -9,8 +9,8 @@ body {
     background-color: #102126;
 }
 
-.cabecalho {
-    background-image: url("../assets/funky-lines.png");
+.cabecalho__container {
+    background-image: url("../assets/background-header.png");
     background-color: rgba(0, 0, 0, 0.5);
     color: #F6F6F6;
     display: flex;
@@ -20,12 +20,12 @@ body {
     padding: 20px;
 }
 
-.cabecalho__titulo {
+.cabecalho__titulo-principal {
     font-family: "Mulish", serif;
     font-size: 36px;
 }
 
-.cabecalho__informacoes {
+.cabecalho__informacoes-contato {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -33,31 +33,31 @@ body {
     gap: 20px;
 }
 
-.informacoes__contato__localizacao {
+.cabecalho__lista-contato {
     display: flex;
     list-style-type: none;
     padding: 0;
     gap: 3em;
 }
 
-.informacoes__atendimento .cabecalho__descricao[text="Segunda à sábado"]{
+.cabecalho__horarios-atendimento .cabecalho__descricao-horario[text="Segunda à sábado"] {
     text-align: start;
 }
 
-.informacoes__atendimento {
+.cabecalho__horarios-atendimento {
     display: flex;
     flex-direction: column;
     text-align: center;
     gap: 0.3em;
 }
 
-.lista__grupo {
+.lista-contato__item {
     display: flex;
     align-items: center;
     gap: 10px;
 }
 
-.lista__imagem {
+.cabecalho__icone {
     width: 20px;
     height: 20px;
 }
