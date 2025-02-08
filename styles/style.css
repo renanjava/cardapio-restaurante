@@ -88,14 +88,15 @@ body {
     font-size: 24px;
     font-family: 'Montserrat', serif;
     font-weight: 500;
-    color: #F6F6F6;
+    color: #818D9F;
 }
 
 .opcao__texto:hover {
-    border-bottom: solid 3px orange;
+    color: #F6F6F6;
 }
 
 .active {
+    color: #F6F6F6;
     border-bottom: solid 3px orange;
 }
 
