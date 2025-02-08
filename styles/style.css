@@ -95,6 +95,10 @@ body {
     border-bottom: solid 3px orange;
 }
 
+.active {
+    border-bottom: solid 3px orange;
+}
+
 .lista__produtos {
     width: 70%;
     display: flex;
@@ -113,4 +117,34 @@ body {
 
 .imagem__produto {
     padding: 2em 0 1em 0;
+}
+
+.informacoes__produto {
+    display: flex;
+    flex-direction: column;
+    text-align: start;
+    margin: 0 0 0.5em 0;
+    padding: 0 0 0 2em;
+    gap: 7px;
+}
+
+.titulo__produto {
+    font-family: "Mulish", serif;
+    font-weight: 700;
+    color: #F1F1F1;
+    font-size: 20px;
+}
+
+.descricao__produto {
+    font-family: "Mulish", serif;
+    font-weight: 200;
+    color: #DCDCDC;
+    font-size: 14px;
+}
+
+.valor__produto {
+    font-family: "Mulish", serif;
+    font-weight: 700;
+    color: #FF9A00;
+    font-size: 14px;
 }
