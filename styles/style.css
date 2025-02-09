@@ -101,12 +101,13 @@ body {
 }
 
 .lista__produtos {
-    width: 70%;
+    width: 65%;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     text-align: center;
     margin: 0 auto;
+    flex-wrap: wrap;
 }
 
 .item__produto {
@@ -114,6 +115,7 @@ body {
     width: 216px;
     list-style-type: none;
     border-radius: 20px;
+    margin-bottom: 70px;
 }
 
 .imagem__produto {
@@ -147,5 +149,15 @@ body {
     font-family: "Mulish", serif;
     font-weight: 700;
     color: #FF9A00;
+    font-size: 14px;
+}
+
+.rodape {
+    background-color: #0c1a1e;
+    text-align: center;
+    margin: 5em 3em;
+}
+
+.rodape__texto {
     font-size: 14px;
 }
