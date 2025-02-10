@@ -5,14 +5,26 @@
     margin: 0;
 }
 
+:root {
+    --cor-primaria: #102126;
+    --cor-secundaria: #474F5A;
+    --cor-terciaria: #FF9A00;
+
+    --cor-textos-primario: #F6F6F6;
+    --cor-textos-secundario: #818D9F;
+
+    --fonte-primaria: 'Montserrat', serif;
+    --fonte-secundaria:  "Mulish", serif;
+}
+
 body {
-    background-color: #102126;
+    background-color: var(--cor-primaria);
 }
 
 .cabecalho__container {
     background-image: url("../assets/background-header.png");
     background-color: rgba(0, 0, 0, 0.5);
-    color: #F6F6F6;
+    color: var(--cor-textos-primario);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -21,7 +33,7 @@ body {
 }
 
 .cabecalho__titulo-principal {
-    font-family: "Mulish", serif;
+    font-family: var(--fonte-secundaria);
     font-size: 36px;
 }
 
@@ -63,12 +75,12 @@ body {
 }
 
 .cabecalho__texto {
-    font-family: 'Montserrat', serif;
+    font-family: var(--fonte-primaria);
     font-weight: 500;
 }
 
 .cabecalho__descricao {
-    font-family: 'Montserrat', serif;
+    font-family: var(--fonte-primaria);
     font-weight: 400;
     font-size: 14px;
 }
@@ -85,19 +97,19 @@ body {
 }
 
 .opcao__texto {
-    font-size: 24px;
-    font-family: 'Montserrat', serif;
+    font-size: 22px;
+    font-family: var(--fonte-primaria);
     font-weight: 500;
-    color: #818D9F;
+    color: var(--cor-textos-secundario);
 }
 
 .opcao__texto:hover {
-    color: #F6F6F6;
+    color: var(--cor-textos-primario);
 }
 
 .active {
-    color: #F6F6F6;
-    border-bottom: solid 3px orange;
+    color: var(--cor-textos-primario);
+    border-bottom: solid 3px var(--cor-terciaria);
 }
 
 .lista__produtos {
@@ -110,7 +122,7 @@ body {
 }
 
 .item__produto {
-    background-color: #474F5A;
+    background-color: var(--cor-secundaria);
     width: 216px;
     list-style-type: none;
     border-radius: 20px;
@@ -131,33 +143,33 @@ body {
 }
 
 .titulo__produto {
-    font-family: "Mulish", serif;
+    font-family: var(--fonte-secundaria);
     font-weight: 700;
-    color: #F1F1F1;
+    color: var(--cor-textos-primario);
     font-size: 20px;
 }
 
 .descricao__produto {
-    font-family: "Mulish", serif;
+    font-family: var(--fonte-secundaria);
     font-weight: 200;
     color: #DCDCDC;
     font-size: 14px;
 }
 
 .valor__produto {
-    font-family: "Mulish", serif;
+    font-family: var(--fonte-secundaria);
     font-weight: 700;
-    color: #FF9A00;
+    color: var(--cor-terciaria);
     font-size: 14px;
 }
 
 .rodape {
-    background-color: #0c1a1e;
+    background-color: var(--cor-secundaria);
     text-align: center;
-    padding: 4em 0;
+    padding: 2em 0;
 }
 
 .rodape__texto {
     font-size: 14px;
-    color: #F6F6F6;
+    color: var(--cor-textos-primario);
 }
