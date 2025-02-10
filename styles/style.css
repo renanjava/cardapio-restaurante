@@ -154,9 +154,10 @@ body {
 .rodape {
     background-color: #0c1a1e;
     text-align: center;
-    margin: 5em 3em;
+    padding: 4em 0;
 }
 
 .rodape__texto {
     font-size: 14px;
+    color: #F6F6F6;
 }
