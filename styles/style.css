@@ -19,12 +19,13 @@
 
 body {
     background-color: var(--cor-primaria);
+    color: var(--cor-textos-primario);
+    font-family: var(--fonte-primaria);
 }
 
 .cabecalho__container {
     background-image: url("../assets/background-header.png");
     background-color: rgba(0, 0, 0, 0.5);
-    color: var(--cor-textos-primario);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -52,17 +53,6 @@ body {
     gap: 3em;
 }
 
-.cabecalho__horarios-atendimento .cabecalho__descricao-horario[text="Segunda à sábado"] {
-    text-align: start;
-}
-
-.cabecalho__horarios-atendimento {
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-    gap: 0.3em;
-}
-
 .lista-contato__item {
     display: flex;
     align-items: center;
@@ -75,12 +65,10 @@ body {
 }
 
 .cabecalho__texto {
-    font-family: var(--fonte-primaria);
     font-weight: 500;
 }
 
 .cabecalho__descricao {
-    font-family: var(--fonte-primaria);
     font-weight: 400;
     font-size: 14px;
 }
@@ -98,7 +86,6 @@ body {
 
 .opcao__texto {
     font-size: 22px;
-    font-family: var(--fonte-primaria);
     font-weight: 500;
     color: var(--cor-textos-secundario);
 }
@@ -108,7 +95,6 @@ body {
 }
 
 .active {
-    color: var(--cor-textos-primario);
     border-bottom: solid 3px var(--cor-terciaria);
 }
 
@@ -145,7 +131,6 @@ body {
 .titulo__produto {
     font-family: var(--fonte-secundaria);
     font-weight: 700;
-    color: var(--cor-textos-primario);
     font-size: 20px;
 }
 
@@ -168,7 +153,6 @@ body {
     display: grid;
     grid-template-columns: 50% 50%;
     align-items: center;
-    color: var(--cor-textos-primario);
 }
 
 .secundario__imagem {
@@ -191,7 +175,7 @@ body {
     color: var(--cor-textos-secundario);
 }
 
-.rodape {
+.rodape__container {
     background-color: var(--cor-secundaria);
     text-align: center;
     padding: 2em 0;
@@ -199,5 +183,4 @@ body {
 
 .rodape__texto {
     font-size: 14px;
-    color: var(--cor-textos-primario);
 }
