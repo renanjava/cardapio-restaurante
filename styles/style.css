@@ -95,6 +95,7 @@ body {
 }
 
 .active {
+    color: var(--cor-textos-primario);
     border-bottom: solid 3px var(--cor-terciaria);
 }
 
@@ -153,13 +154,14 @@ body {
     display: grid;
     grid-template-columns: 50% 50%;
     align-items: center;
+    margin: 0 10em;
 }
 
 .secundario__imagem {
     width: 80%;
 }
 
-.secundario__titulo{
+.secundario__titulo {
     font-weight: 700;
     font-size: 48px;
     color: var(--branco-principal);
