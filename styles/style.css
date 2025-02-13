@@ -30,7 +30,7 @@ body {
     flex-direction: column;
     align-items: center;
     gap: 0.9em;
-    padding: 20px;
+    padding: 1.25em;
 }
 
 .cabecalho__titulo-principal {
@@ -43,20 +43,18 @@ body {
     flex-direction: column;
     justify-content: center;
     text-align: center;
-    gap: 20px;
 }
 
 .cabecalho__lista-contato {
     display: flex;
     list-style-type: none;
-    padding: 0;
     gap: 3em;
 }
 
 .lista-contato__item {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 0.6em;
 }
 
 .cabecalho__icone {
@@ -76,7 +74,7 @@ body {
 .opcoes__menu {
     display: flex;
     justify-content: center;
-    gap: 50px;
+    gap: 3.125em;
     padding: 1em 0 2em 0;
 }
 
@@ -110,9 +108,9 @@ body {
 
 .item__produto {
     background-color: var(--cor-secundaria);
-    width: 216px;
+    width: 13.5em;
     list-style-type: none;
-    border-radius: 20px;
+    border-radius: 1.25em;
     margin: 0 15px 70px 15px;
 }
 
@@ -124,9 +122,9 @@ body {
     display: flex;
     flex-direction: column;
     text-align: start;
-    margin: 0 0 0.5em 0;
-    padding: 0 0 0 2em;
-    gap: 7px;
+    margin-bottom: 0.5em;
+    padding-left: 2em;
+    gap: 0.4em;
 }
 
 .titulo__produto {
