@@ -15,6 +15,35 @@
 
     --fonte-primaria: 'Montserrat', serif;
     --fonte-secundaria:  "Mulish", serif;
+
+    --font-size-xl: 2.75rem;
+    --font-size-l: 2rem;
+    --font-size-m: 1.25rem;
+    --font-size-base: 1rem;
+    --font-size-s: 0.75rem;
+
+    --padding-2xs: 0.5rem;
+    --padding-xs: 0.875rem;
+    --padding-s: 1rem;
+    --padding-m: 1.5rem;
+    --padding-l: 2rem;
+    --padding-xl: 3rem;
+    --padding-2xl: 4rem;
+
+    --margin-2xs: 0.5rem;
+    --margin-xs: 0.875rem;
+    --margin-s: 1rem;
+    --margin-m: 1.5rem;
+    --margin-l: 2rem;
+    --margin-xl: 3rem;
+    --margin-2xl: 4.3rem;
+
+    --gap-xs: 0.5rem;
+    --gap-s: 1rem;
+    --gap-m: 1.5rem;
+    --gap-l: 2rem;
+    --gap-xl: 3rem;
+    --gap-2xl: 4rem;
 }
 
 body {
@@ -29,13 +58,13 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.9rem;
-    padding: 1.25rem;
+    gap: var(--gap-s);
+    padding: var(--padding-m);
 }
 
 .cabecalho__titulo-principal {
     font-family: var(--fonte-secundaria);
-    font-size: 36px;
+    font-size: var(--font-size-l);
 }
 
 .cabecalho__informacoes-contato {
@@ -48,34 +77,29 @@ body {
 .cabecalho__lista-contato {
     display: flex;
     list-style-type: none;
-    gap: 3rem;
+    gap: var(--gap-xl);
 }
 
 .lista-contato__item {
     display: flex;
     align-items: center;
-    gap: 0.6rem;
+    gap: var(--gap-xs);
 }
 
 .cabecalho__icone {
-    width: 20px;
-    height: 20px;
+    width: 3vh;
+    height: 3vh;
 }
 
 .cabecalho__texto {
     font-weight: 500;
 }
 
-.cabecalho__descricao {
-    font-weight: 400;
-    font-size: 14px;
-}
-
 .opcoes__menu {
     display: flex;
     justify-content: center;
-    gap: 3.125rem;
-    padding: 1rem 0 2rem 0;
+    gap: var(--gap-xl);
+    padding: var(--padding-s) 0 var(--padding-l) 0;
 }
 
 .menu__opcao {
@@ -83,7 +107,7 @@ body {
 }
 
 .opcao__texto {
-    font-size: 22px;
+    font-size: var(--font-size-m);
     font-weight: 500;
     color: var(--cor-textos-secundario);
 }
@@ -94,7 +118,7 @@ body {
 
 .active {
     color: var(--cor-textos-primario);
-    border-bottom: solid 3px var(--cor-terciaria);
+    border-bottom: solid 0.15rem var(--cor-terciaria);
 }
 
 .lista__produtos {
@@ -111,40 +135,41 @@ body {
     width: 13.5rem;
     list-style-type: none;
     border-radius: 1.25rem;
-    margin: 0 15px 70px 15px;
+    margin: 0 var(--margin-xs);
+    margin-bottom: var(--margin-xl);
 }
 
 .imagem__produto {
-    padding: 2rem 0 1rem 0;
+    padding: var(--padding-l) 0 var(--padding-s) 0;
 }
 
 .informacoes__produto {
     display: flex;
     flex-direction: column;
     text-align: start;
-    margin-bottom: 0.5rem;
-    padding-left: 2rem;
-    gap: 0.4rem;
+    margin-bottom: var(--margin-2xs);
+    padding-left: var(--padding-l);
+    gap: var(--gap-xs);
 }
 
 .titulo__produto {
     font-family: var(--fonte-secundaria);
     font-weight: 700;
-    font-size: 20px;
+    font-size: var(--font-size-m);
 }
 
 .descricao__produto {
     font-family: var(--fonte-secundaria);
     font-weight: 200;
     color: #DCDCDC;
-    font-size: 14px;
+    font-size: var(--font-size-s);
 }
 
 .valor__produto {
     font-family: var(--fonte-secundaria);
     font-weight: 700;
     color: var(--cor-terciaria);
-    font-size: 14px;
+    font-size: var(--font-size-b);
 }
 
 .container__secundario {
@@ -161,7 +186,7 @@ body {
 
 .secundario__titulo {
     font-weight: 700;
-    font-size: 48px;
+    font-size: var(--font-size-xl);
     color: var(--branco-principal);
     margin-bottom: 0.1rem;
 }
@@ -171,16 +196,16 @@ body {
 }
 
 .secundario__aviso {
-    font-size: 12px;
+    font-size: var(--font-size-s);
     color: var(--cor-textos-secundario);
 }
 
 .rodape__container {
     background-color: var(--cor-secundaria);
     text-align: center;
-    padding: 2rem 0;
+    padding: var(--padding-l) 0;
 }
 
 .rodape__texto {
-    font-size: 14px;
+    font-size: var(--font-size-s);
 }
