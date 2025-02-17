@@ -122,12 +122,18 @@ body {
     border-bottom: solid 0.15rem var(--cor-terciaria);
 }
 
-.lista__produtos {
+.container__lista {
+    display: flex;
+    margin: 0 auto;
+    justify-content: center;
     width: 65%;
+}
+
+.lista__produtos {
     display: flex;
     flex-direction: row;
     text-align: center;
-    margin: 0 auto;
+    justify-content: center;
     flex-wrap: wrap;
 }
 
@@ -211,63 +217,20 @@ body {
     font-size: var(--font-size-s);
 }
 
-@media (max-width: 1024px) {
-
-    .opcao__texto {
-        font-size: var(--font-size-base);
-    }
-
-    .lista__produtos {
-        width: 70%;
-        display: flex;
-        flex-direction: row;
-        text-align: center;
-        margin: 0 auto;
-        flex-wrap: wrap;
-    }
-
-    .item__produto {
-        width: 12.5rem;
-        margin: 0 var(--margin-xs);
-        margin-bottom: var(--margin-xl);
-    }
-
-    .imagem__produto {
-        padding: var(--padding-l) 0 var(--padding-s) 0;
-    }
-
-    #delivery {
-        flex-direction: column-reverse;
-    }
-
-    .container__secundario {
-        display: flex;
-        flex-direction: column;
-        margin: 0;
-        height: 70vh;
-    }
-
-    .secundario__imagem {
-        width: 40%;
-    }
-
-    .secundario__titulo {
-        font-size: var(--font-size-l);
-    }
-
-    .secundario__aviso {
-        font-size: var(--font-size-xs);
-    }
-}
-
 @media (max-width: 768px) {
 
+    .opcao__texto {
+        font-size: var(--font-size-b);
+    }
+
+    .container__lista {
+        width: 90%;
+    }
+
     .lista__produtos {
-        width: 80%;
         display: flex;
         flex-direction: row;
         text-align: center;
-        margin: 0 auto;
         flex-wrap: wrap;
     }
 
@@ -318,8 +281,11 @@ body {
         font-size: var(--font-size-s);
     }
 
+    .container__lista {
+        width: 100%;
+    }
+
     .lista__produtos {
-        width: 90%;
         display: flex;
         flex-direction: row;
         text-align: center;
@@ -343,7 +309,7 @@ body {
     }
 
     .titulo__produto {
-        font-size: var(--font-size-base);
+        font-size: var(--font-size-s);
     }
 
     .descricao__produto {
