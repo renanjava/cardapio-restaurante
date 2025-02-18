@@ -190,7 +190,7 @@ body {
 #atendimento {
     display: flex;
     justify-content: space-around;
-    margin-left: 0;
+    margin-left: 10rem;
 }
 
 .secundario__imagem {
@@ -222,6 +222,18 @@ body {
 
 .rodape__texto {
     font-size: var(--font-size-s);
+}
+
+@media (max-width: 1024px) {
+
+    #delivery {
+        margin-left: var(--margin-2xl);
+    }
+
+    #atendimento {
+        margin: 0;
+        gap: var(--gap-xl)
+    }
 }
 
 @media (max-width: 768px) {
