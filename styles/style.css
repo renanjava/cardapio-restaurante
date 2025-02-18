@@ -307,6 +307,7 @@ body {
     #delivery {
         display: flex;
         flex-direction: column-reverse;
+        margin: 0;
     }
 
     .secundario__imagem {
@@ -315,16 +316,15 @@ body {
     }
 
     .secundario__titulo {
-        font-size: var(--font-size-l);
+        font-size: var(--font-size-b);
     }
 
     .secundario__texto {
-        color: var(--cinza-secundaria)
+        font-size: var(--font-size-xs);
     }
 
     .secundario__aviso {
-        font-size: var(--font-size-s);
-        color: var(--cor-textos-secundario);
+        font-size: 0.5rem;
     }
 }
 
@@ -388,14 +388,14 @@ body {
     .container__section {
         display: flex;
         flex-direction: column;
-    }
-
-    .container__secundario {
-        height: 50vh;
+        text-align: center;
+        gap: var(--gap-2xl);
+        margin-bottom: var(--margin-2xl);
     }
 
     .secundario__imagem {
-        width: 70%;
+        height: 280px;
+        width: 280px;
     }
 
     .secundario__titulo {
