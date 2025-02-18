@@ -187,6 +187,12 @@ body {
     margin: 0 10rem;
 }
 
+#atendimento {
+    display: flex;
+    justify-content: space-around;
+    margin-left: 0;
+}
+
 .secundario__imagem {
     height: 480px;
     width: 480px;
@@ -277,10 +283,6 @@ body {
     .secundario__imagem {
         width: 140px;
         height: 140px;
-    }
-
-    .secundario__descricao {
-        margin: 10px 0;
     }
 
     .secundario__titulo {
