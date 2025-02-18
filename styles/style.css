@@ -184,13 +184,13 @@ body {
     display: grid;
     grid-template-columns: 50% 50%;
     align-items: center;
-    margin: 0 10rem;
+    margin: 0 var(--margin-2xl);
 }
 
-#atendimento {
+#atendimento, #delivery {
     display: flex;
     justify-content: space-around;
-    margin-left: 10rem;
+    gap: var(--gap-m);
 }
 
 .secundario__imagem {
@@ -206,7 +206,7 @@ body {
 }
 
 .secundario__texto {
-    color: var(--cinza-secundaria)
+    color: var(--cinza-secundaria);
 }
 
 .secundario__aviso {
@@ -226,13 +226,30 @@ body {
 
 @media (max-width: 1024px) {
 
-    #delivery {
-        margin-left: var(--margin-2xl);
+    .secundario__imagem {
+        height: 420px;
+        width: 420px;
+    }
+
+    .secundario__titulo {
+        font-size: var(--font-size-m);
+    }
+
+    .secundario__texto {
+        font-size: var(--font-size-s);
+    }
+
+    .secundario__aviso {
+        font-size: var(--font-size-xs);
     }
 
     #atendimento {
         margin: 0;
         gap: var(--gap-xl)
+    }
+
+    #delivery {
+        margin-left: var(--margin-2xl);
     }
 }
 
