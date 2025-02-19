@@ -2,37 +2,37 @@
     {
         "titulo": "X-Burguer",
         "descricao": "Pão, hamburguer e queijo",
-        "valor": 16.00,
+        "valor": 16,
         "urlImagem": "assets/x-burguer.png"
     },
     {
         "titulo": "X-Salada",
         "descricao": "Pão, hamburguer, queijo, alface e tomate",
-        "valor": 18.00,
+        "valor": 18,
         "urlImagem": "assets/x-salada.png"
     },
     {
         "titulo": "X-Bacon",
         "descricao": "Pão, hamburguer, queijo, alface, tomate e bacon",
-        "valor": 20.00,
+        "valor": 20,
         "urlImagem": "assets/x-bacon.png"
     },
     {
         "titulo": "X-Calabresa",
         "descricao": "Pão, hamburguer, queijo, alface, tomate e calabresa",
-        "valor": 20.00,
+        "valor": 20,
         "urlImagem": "assets/x-calabresa.png"
     },
     {
         "titulo": "X-Egg",
         "descricao": "Pão, hamburguer, queijo, alface, tomate e ovo",
-        "valor": 20.00,
+        "valor": 20,
         "urlImagem": "assets/x-egg.png"
     },
     {
         "titulo": "X-Tudo",
         "descricao": "Pão, hamburguer, queijo, alface, tomate, ovo, bacon e calabresa",
-        "valor": 25.00,
+        "valor": 25,
         "urlImagem": "assets/x-tudo.png"
     }
 ]
