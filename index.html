@@ -6,7 +6,7 @@
     <title>Restaurante da Juliana</title>
     <link rel="stylesheet" href="styles/normalize.css">
     <link rel="stylesheet" href="styles/style.css">
-
+    <script src="index.js"></script>
 </head>
 <body>
     <header>
@@ -97,7 +97,7 @@
                     <p class="secundario__texto"><strong>Lanches</strong> - Segunda à sábado, das 10:30 até 18:00</p>
                     <p class="secundario__aviso">*Observação: na quinta-feira os lanches encerram às 14:00
                         horas*</p>
-                    <!-- button para chamar no whatsapp -->
+                    <button class="secundario__botao" onclick="enviarMensagemWhatsApp()">Chamar no WhatsApp</button>
                 </div>
             </section>
             <section class="container__secundario" id="delivery">
@@ -108,7 +108,7 @@
                     <p class="secundario__aviso">*Observação: Sábado há taxa de entrega das marmitas,
                         <strong>R$ 2,00</strong>*
                     </p>
-                    <!-- button para chamar no whatsapp -->
+                    <button class="secundario__botao" onclick="enviarMensagemWhatsApp()">Chamar no WhatsApp</button>
                 </div>
                 <img class="secundario__imagem" src="assets/delivery.png" alt="Ícone de delivery">
             </section>

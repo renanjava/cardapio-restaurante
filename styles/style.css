@@ -214,6 +214,15 @@ body {
     color: var(--cor-textos-secundario);
 }
 
+.secundario__botao {
+    background-color: #25D366;
+    color: black;
+    border-radius: 10px;
+    border-color: transparent;
+    margin: var(--margin-s) 20%;
+    padding: var(--padding-2xs);
+}
+
 .rodape__container {
     background-color: var(--cor-secundaria);
     text-align: center;
@@ -254,6 +263,12 @@ body {
 
     #delivery {
         margin-left: var(--margin-2xl);
+    }
+
+    .secundario__botao {
+        font-size: var(--font-size-s);
+        padding: 0.3rem;
+        margin: var(--margin-2xs);
     }
 }
 
