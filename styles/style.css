@@ -94,6 +94,8 @@ body {
 
 .cabecalho__texto {
     font-weight: 500;
+    color: var(--branco-principal);
+    background-color: transparent;
 }
 
 .opcoes__menu {
@@ -217,6 +219,7 @@ body {
 .secundario__botao {
     background-color: #25D366;
     color: black;
+    cursor: pointer;
     border-radius: 10px;
     border-color: transparent;
     margin: var(--margin-s) 20%;
@@ -358,6 +361,10 @@ body {
 
     .secundario__aviso {
         font-size: 0.5rem;
+    }
+
+    .rodape__texto {
+        font-size: var(--font-size-xs);
     }
 }
 
