@@ -302,8 +302,12 @@ body {
 
     .imagem__produto {
         width: 113px;
-        height: 200px;
+        height: 190px;
         padding: var(--padding-l) 0 var(--padding-s) 0;
+    }
+
+    .informacoes__produto {
+        padding-left: var(--padding-m);
     }
 
     .titulo__produto {
@@ -408,13 +412,13 @@ body {
     }
 
     .imagem__produto {
-        width: 73px;
-        height: 120px;
+        width: 85px;
+        height: 135px;
         padding: var(--padding-m) 0 var(--padding-2xs) 0;
     }
 
     .informacoes__produto {
-        padding-left: var(--padding-m);
+        padding-left: var(--padding-s);
     }
 
     .titulo__produto {
