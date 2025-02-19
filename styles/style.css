@@ -150,6 +150,8 @@ body {
 
 .imagem__produto {
     padding: var(--padding-l) 0 var(--padding-s) 0;
+    width: 153px;
+    height: 230px;
 }
 
 .informacoes__produto {
@@ -299,7 +301,8 @@ body {
     }
 
     .imagem__produto {
-        width: 75%;
+        width: 113px;
+        height: 200px;
         padding: var(--padding-l) 0 var(--padding-s) 0;
     }
 
@@ -405,7 +408,8 @@ body {
     }
 
     .imagem__produto {
-        width: 70%;
+        width: 73px;
+        height: 120px;
         padding: var(--padding-m) 0 var(--padding-2xs) 0;
     }
 
