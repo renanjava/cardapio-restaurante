@@ -3,36 +3,36 @@
         "titulo": "Combo X-Burguer",
         "descricao": "Pão, hamburguer, queijo, batata e refrigerante",
         "valor": 26,
-        "urlImagem": "assets/combo-x-burguer.png"
+        "urlImagem": "assets/data/combos/combo-x-burguer.png"
     },
     {
         "titulo": "Combo X-Salada",
         "descricao": "Pão, hamburguer, queijo, alface, tomate, batata e refrigerante",
         "valor": 28,
-        "urlImagem": "assets/combo-x-salada.png"
+        "urlImagem": "assets/data/combos/combo-x-salada.png"
     },
     {
         "titulo": "Combo X-Bacon",
         "descricao": "Pão, hamburguer, queijo, alface, tomate, bacon, batata e refrigerante",
         "valor": 30,
-        "urlImagem": "assets/combo-x-bacon.png"
+        "urlImagem": "assets/data/combos/combo-x-bacon.png"
     },
     {
         "titulo": "Combo X-Calabresa",
         "descricao": "Pão, hamburguer, queijo, alface, tomate, calabresa, batata e refrigerante",
         "valor": 30,
-        "urlImagem": "assets/combo-x-calabresa.png"
+        "urlImagem": "assets/data/combos/combo-x-calabresa.png"
     },
     {
         "titulo": "Combo X-Egg",
         "descricao": "Pão, hamburguer, queijo, alface, tomate, ovo, batata e refrigerante",
         "valor": 30,
-        "urlImagem": "assets/combo-x-egg.png"
+        "urlImagem": "assets/data/combos/combo-x-egg.png"
     },
     {
         "titulo": "Combo X-Tudo",
         "descricao": "Pão, hamburguer, queijo, alface, tomate, ovo, bacon, calabresa, batata e refrigerante",
         "valor": 35,
-        "urlImagem": "assets/combo-x-tudo.png"
+        "urlImagem": "assets/data/combos/combo-x-tudo.png"
     }
 ]
