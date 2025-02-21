@@ -107,6 +107,9 @@ body {
 
 .menu__opcao {
     text-decoration: none;
+    background-color: var(--cor-primaria);
+    color: var(--cor-textos-primario);
+    border-color: transparent;
 }
 
 .opcao__texto {

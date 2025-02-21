@@ -1,5 +1,4 @@
-tipoProduto = "lanches"
-carregarListaProdutos(tipoProduto)
+carregarListaProdutos("lanches")
 
 function carregarListaProdutos(tipoProduto) {
     fetch(`data/${tipoProduto}.json`)
@@ -39,11 +38,34 @@ function carregarListaProdutos(tipoProduto) {
         )
 }   
 
+function atualizarListaProdutos(tipoProduto) {
+    alterarBotaoCategoriaAtivado(tipoProduto)
+    removerElementosListaProdutos()
+    carregarListaProdutos(tipoProduto)
+}
+
+function removerElementosListaProdutos() {
+    listaProdutos = document.querySelector(".lista__produtos").innerHTML = ""
+}
+
+function alterarBotaoCategoriaAtivado(tipoProduto) {
+    const botaoCategoria = document.getElementById(tipoProduto);
+    botaoCategoria.disabled = true;
+    botaoCategoria.classList.add('active');
+
+    const botoesMenu = [...document.getElementsByClassName('menu__opcao')].filter(el => el.tagName === "BUTTON")
+    let outroBotao = [...botoesMenu].find(botao => botao.id !== tipoProduto);
+    if (outroBotao) {
+        outroBotao.disabled = false;
+        outroBotao.classList.remove('active');
+    }
+}
+
 function enviarMensagemWhatsApp() {
-    const numeroTelefone = "5544988129535";
-    const mensagem = "Oi, gostaria de fazer um pedido";
+    const numeroTelefone = "5544988129535"
+    const mensagem = "Oi, gostaria de fazer um pedido"
     const mensagemAdaptada = encodeURIComponent(mensagem)
 
-    const url = `https://wa.me/${numeroTelefone}?text=${mensagemAdaptada}`;
-    window.open(url, '_blank');
+    const url = `https://wa.me/${numeroTelefone}?text=${mensagemAdaptada}`
+    window.open(url, '_blank')
 }
