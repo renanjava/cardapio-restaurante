@@ -32,6 +32,15 @@ function carregarListaProdutos(tipoProduto) {
             informacoesProduto.appendChild(valorProduto)
             item.appendChild(imagem)
             item.appendChild(informacoesProduto)
+
+            if (tipoProduto == 'marmitas') {
+                const botaoAutoAtendimento = document.createElement('button')
+                botaoAutoAtendimento.classList.add('secundario__botao')
+                botaoAutoAtendimento.textContent = `Fazer Pedido`
+                botaoAutoAtendimento.addEventListener('click', () => carregarPagina('fazer-pedido', elemento.titulo))
+                item.appendChild(botaoAutoAtendimento)
+            }
+
             listaProdutos = document.querySelector(".lista__produtos")
             listaProdutos.appendChild(item)
         })
@@ -67,4 +76,12 @@ function enviarMensagemWhatsApp() {
 
     const url = `https://wa.me/${numeroTelefone}?text=${mensagemAdaptada}`
     window.open(url, '_blank')
+}
+
+function carregarPagina(nomePagina, tituloPagina) {
+    redirecionarPagina(nomePagina)
+}
+
+function redirecionarPagina(nomePagina) {
+    window.location.href = `${nomePagina}.html`
 }
