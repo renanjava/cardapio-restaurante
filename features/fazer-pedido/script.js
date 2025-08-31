@@ -73,3 +73,7 @@ function getCardapioDia(dia) {
             forcarUmCheckboxSelecionado(dia)
         })
 }
+
+function adicionarAoCarrinho() {
+    alert("Pedido adicionado ao carrinho! (Funcionalidade em desenvolvimento)");
+}

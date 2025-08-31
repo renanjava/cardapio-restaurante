@@ -96,3 +96,48 @@ input[type="checkbox"]:checked::after {
 nav {
     align-self: flex-start;
 }
+
+.aviso__container {
+    background: #fffbe6;
+    color: #333;
+    border-radius: 8px;
+    padding: 1em;
+    margin-bottom: 1em;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    font-size: 1rem;
+}
+
+.aviso__container i {
+    color: #FF9A00;
+    margin-right: 8px;
+}
+
+.container__carrinho {
+    display: flex;
+    justify-content: center;
+    margin-top: 2em;
+}
+
+.btn-carrinho {
+    background-color: #25D366;
+    color: #fff;
+    font-size: 1.2rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    padding: 0.8em 2em;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+    transition: background 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+}
+
+.btn-carrinho:hover {
+    background-color: #1c3842;
+    color: #fff;
+}

@@ -27,16 +27,37 @@
                 Voltar
             </button>
         </nav>
+        <div class="aviso__container">
+            <div class="aviso__horario">
+                <i class="fa-solid fa-clock"></i>
+                <span>Auto-atendimento disponível apenas das <strong>10:30</strong> às <strong>13:30</strong></span>
+            </div>
+            <div class="aviso__teste">
+                <i class="fa-solid fa-flask"></i>
+                <span>Funcionalidade em <strong>fase de testes</strong></span>
+            </div>
+            <div class="aviso__selecionavel">
+                <i class="fa-solid fa-check-square"></i>
+                <span>Selecione os itens do cardápio e mistura que deseja ou não deseja.</span>
+            </div>
+        </div>
         <h3 id="produtoPedido"></h3>
         <img class="conteudo__principal-imagem" src="../../assets/data/marmitas/marmita_base.png"
             alt="ícone do produto">
-        <h4>Cardápio do dia</h4>
+        <h4>Cardápio</h4>
         <div class="conteudo__principal-section" id="cardapioDiv">
 
         </div>
         <h4>Mistura</h4>
         <div class="conteudo__principal-section" id="misturaDiv">
 
+        </div>
+
+        <div class="container__carrinho">
+            <button class="btn-carrinho" onclick="adicionarAoCarrinho()">
+                <i class="fa-solid fa-cart-plus"></i>
+                Adicionar ao carrinho
+            </button>
         </div>
     </main>
 
