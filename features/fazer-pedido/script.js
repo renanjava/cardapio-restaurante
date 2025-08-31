@@ -1,7 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
     setarTituloProduto()
-    forcarUmCheckboxSelecionado()
 })
+
+getCardapioDia("segunda")
 
 function redirecionarPagina(nomePagina) {
     window.location.href = `${nomePagina}.html`
@@ -29,4 +30,39 @@ function forcarUmCheckboxSelecionado() {
             }
         });
     });
+}
+
+function getCardapioDia(dia) {
+    fetch(`../../data/cardapio-dia.json`)
+        .then(response => response.json())
+        .then(data => {
+            const divCardapio = document.getElementById('cardapioDiv')
+            const cardapioDia = data[dia]
+            cardapioDia.opcaoCardapio.forEach((opcao) => {
+                const label = document.createElement('label')
+                label.textContent = opcao.name
+
+                const input = document.createElement('input')
+                input.type = 'checkbox'
+                input.name = 'opcaoCardapio'
+                input.checked = true
+
+                label.appendChild(input)
+                divCardapio.appendChild(label)
+            })
+
+            const divMistura = document.getElementById('misturaDiv')
+            cardapioDia.opcaoMistura.forEach((opcao) => {
+                const label = document.createElement('label')
+                label.textContent = opcao.name
+
+                const input = document.createElement('input')
+                input.type = 'checkbox'
+                input.name = 'opcaoMistura'
+
+                label.appendChild(input)
+                divMistura.appendChild(label)
+            })
+            forcarUmCheckboxSelecionado()
+        })
 }
