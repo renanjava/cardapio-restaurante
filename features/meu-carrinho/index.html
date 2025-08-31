@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurante da Juliana</title>
+    <link rel="stylesheet" href="../../styles/normalize.css">
+    <link rel="stylesheet" href="../../styles/style.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+        integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="script.js"></script>
+</head>
+
+<body>
+    <header>
+        <div class="cabecalho__container">
+            <h1 class="cabecalho__titulo-principal">Restaurante da Juliana</h1>
+        </div>
+    </header>
+
+    <main class="carrinho__main">
+        <nav class="carrinho__nav">
+            <button class="btn-voltar" onclick="window.location.href='../../index.html'">
+                <i class="fa-solid fa-arrow-left"></i> Voltar
+            </button>
+        </nav>
+        <section class="carrinho__conteudo">
+            <h2 class="carrinho__titulo">Meu Carrinho</h2>
+            <div id="carrinhoLista" class="carrinho__lista">
+
+            </div>
+            <button class="btn-pagar" onclick="pagarCarrinho()">
+                <i class="fa-solid fa-credit-card"></i> Pagar
+            </button>
+        </section>
+    </main>
+    <footer class="rodape__container">
+        <p class="rodape__texto">Desenvolvido por Renan Geraldini Leão.</p>
+    </footer>
+    <script src="script.js"></script>
+</body>
+
+</html>

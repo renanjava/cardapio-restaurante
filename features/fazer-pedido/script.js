@@ -76,4 +76,6 @@ function getCardapioDia(dia) {
 
 function adicionarAoCarrinho() {
     alert("Pedido adicionado ao carrinho! (Funcionalidade em desenvolvimento)");
+    window.location.href = `../meu-carrinho/index.html`
+
 }
