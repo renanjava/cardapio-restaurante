@@ -37,7 +37,7 @@ function carregarListaProdutos(tipoProduto) {
                 const botaoAutoAtendimento = document.createElement('button')
                 botaoAutoAtendimento.classList.add('secundario__botao')
                 botaoAutoAtendimento.textContent = `Fazer Pedido`
-                botaoAutoAtendimento.addEventListener('click', () => carregarPagina('fazer-pedido', elemento.titulo))
+                botaoAutoAtendimento.addEventListener('click', () => redirecionarPagina('features/fazer-pedido/index', elemento.titulo))
                 item.appendChild(botaoAutoAtendimento)
             }
 
@@ -78,10 +78,6 @@ function enviarMensagemWhatsApp() {
     window.open(url, '_blank')
 }
 
-function carregarPagina(nomePagina, tituloPagina) {
-    redirecionarPagina(nomePagina)
-}
-
-function redirecionarPagina(nomePagina) {
-    window.location.href = `${nomePagina}.html`
+function redirecionarPagina(nomePagina, tituloPagina) {
+    window.location.href = `${nomePagina}.html?titulo=${encodeURIComponent(tituloPagina)}`
 }

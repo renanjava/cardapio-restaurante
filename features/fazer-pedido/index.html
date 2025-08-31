@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ptbr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurante da Juliana</title>
+    <link rel="stylesheet" href="../../styles/normalize.css">
+    <link rel="stylesheet" href="../../styles/style.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+        integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="script.js"></script>
+</head>
+
+<body>
+    <header>
+        <div class="cabecalho__container">
+            <h1 class="cabecalho__titulo-principal">Restaurante da Juliana</h1>
+            <button class="secundario__botao" onclick="redirecionarPagina('../../index')">Voltar</button>
+    </header>
+
+    <main>
+        <h3 id="produtoPedido"></h3>
+        <img src="../../assets/data/marmitas/marmita_base.png" alt="ícone do produto">
+        <h4>Cardápio do dia</h4>
+        <div>
+            <label>
+                <input type="checkbox" name="opcaoCardapio" checked>
+                Arroz
+            </label>
+            <label>
+                <input type="checkbox" name="opcaoCardapio" checked>
+                Feijão
+            </label>
+            <label>
+                <input type="checkbox" name="opcaoCardapio" checked>
+                Abobrinha
+            </label>
+            <label>
+                <input type="checkbox" name="opcaoCardapio" checked>
+                Farofa
+            </label>
+            <label>
+                <input type="checkbox" name="opcaoCardapio" checked>
+                Beterraba
+            </label>
+            <label>
+                <input type="checkbox" name="opcaoCardapio" checked>
+                Cenoura
+            </label>
+            <label>
+                <input type="checkbox" name="opcaoCardapio" checked>
+                Batata
+            </label>
+        </div>
+        <h4>Mistura</h4>
+        <div>
+            <label>
+                <input type="checkbox" name="opcaoMistura">
+                Bife de boi
+            </label>
+            <label>
+                <input type="checkbox" name="opcaoMistura">
+                Carne de panela
+            </label>
+            <label>
+                <input type="checkbox" name="opcaoMistura">
+                Bistequinha de porco
+            </label>
+            <label>
+                <input type="checkbox" name="opcaoMistura">
+                Frango grelhado
+            </label>
+            <label>
+                <input type="checkbox" name="opcaoMistura">
+                Frango a milanesa
+            </label>
+            <label>
+                <input type="checkbox" name="opcaoMistura">
+                Bisteca de boi
+            </label>
+        </div>
+    </main>
+
+</body>
+
+</html>
