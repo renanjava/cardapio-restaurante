@@ -14,7 +14,7 @@
     --cor-textos-secundario: #818D9F;
 
     --fonte-primaria: 'Montserrat', serif;
-    --fonte-secundaria:  "Mulish", serif;
+    --fonte-secundaria: "Mulish", serif;
 
     --font-size-xl: 2.75rem;
     --font-size-l: 2rem;
@@ -96,6 +96,25 @@ body {
     font-weight: 500;
     color: var(--branco-principal);
     background-color: transparent;
+}
+
+.icon-carrinho {
+    position: fixed;
+    top: 30px;
+    right: 30px;
+    font-size: 2.2rem;
+    color: var(--cor-terciaria);
+    background: var(--cor-primaria);
+    border-radius: 50%;
+    padding: 0.4em;
+    z-index: 200;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.10);
+    transition: background 0.2s, color 0.2s;
+}
+
+.icon-carrinho:hover {
+    background: var(--cor-terciaria);
+    color: var(--cor-primaria);
 }
 
 .opcoes__menu {
@@ -218,7 +237,8 @@ body {
     margin: 0 var(--margin-2xl);
 }
 
-#atendimento, #delivery {
+#atendimento,
+#delivery {
     display: flex;
     justify-content: space-around;
     gap: var(--gap-m);

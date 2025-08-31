@@ -20,7 +20,25 @@ const pedidos = [
 function renderCarrinho() {
     const lista = document.getElementById('carrinhoLista');
     lista.innerHTML = '';
+    let total = 0;
+    let totalQtd = 0;
+    if (pedidos.length === 0) {
+        lista.innerHTML = `
+            <div class="carrinho__vazio">
+                <p>Seu carrinho está vazio.</p>
+                <button class="btn-fazer-pedido" onclick="window.location.href='../../index.html#marmitas'">
+                    <i class="fa-solid fa-utensils"></i> Fazer um pedido de marmita
+                </button>
+            </div>
+        `;
+        document.querySelector('#carrinhoTotal').remove()
+        document.querySelector('.btn-pagar').remove()
+        return;
+    }
     pedidos.forEach((pedido, idx) => {
+        total += pedido.preco * pedido.qtd;
+        totalQtd += pedido.qtd;
+
         const card = document.createElement('div');
         card.className = 'carrinho__card';
 
@@ -83,11 +101,16 @@ function renderCarrinho() {
 
         lista.appendChild(card);
     });
+
+    const totalDiv = document.getElementById('carrinhoTotal');
+    totalDiv.textContent = `Total (${totalQtd} itens): R$ ${total},00`;
 }
 
 function alterarQtd(idx, delta) {
     pedidos[idx].qtd += delta;
-    if (pedidos[idx].qtd < 1) pedidos[idx].qtd = 1;
+    if (pedidos[idx].qtd < 1) {
+        pedidos[idx].qtd = 1;
+    }
     renderCarrinho();
 }
 

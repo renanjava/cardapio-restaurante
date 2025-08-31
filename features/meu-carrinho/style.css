@@ -175,6 +175,20 @@ body {
     color: #000;
 }
 
+.carrinho__total {
+    width: 100%;
+    background: #000;
+    color: var(--cor-terciaria);
+    font-size: var(--font-size-m);
+    font-family: var(--fonte-secundaria);
+    font-weight: 700;
+    border-radius: 8px;
+    padding: var(--padding-s);
+    margin-bottom: var(--margin-m);
+    text-align: right;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
 .btn-qtd {
     background: var(--cor-terciaria);
     color: var(--cor-primaria);
@@ -250,6 +264,35 @@ body {
     border: 1px solid var(--cor-terciaria);
 }
 
+.carrinho__vazio {
+    background: var(--cor-secundaria);
+    color: var(--cor-textos-primario);
+    border-radius: 12px;
+    padding: var(--padding-l);
+    text-align: center;
+    font-size: var(--font-size-m);
+    margin-bottom: var(--margin-l);
+}
+
+.btn-fazer-pedido {
+    background: var(--cor-terciaria);
+    color: var(--cor-primaria);
+    font-size: var(--font-size-base);
+    font-weight: 700;
+    border: none;
+    border-radius: 8px;
+    padding: var(--padding-xs) var(--padding-l);
+    cursor: pointer;
+    margin-top: var(--margin-m);
+    transition: background 0.2s, color 0.2s;
+}
+
+.btn-fazer-pedido:hover {
+    background: var(--cor-primaria);
+    color: var(--cor-terciaria);
+    border: 1px solid var(--cor-terciaria);
+}
+
 .rodape__container {
     background: var(--cor-secundaria);
     color: var(--cor-textos-primario);
@@ -261,7 +304,6 @@ body {
     border-top-right-radius: 12px;
 }
 
-/* Responsivo */
 @media (max-width: 700px) {
     .carrinho__conteudo {
         padding: var(--padding-xs);
