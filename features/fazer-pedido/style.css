@@ -1,3 +1,9 @@
+.pedido__nav {
+    display: flex;
+    align-items: center;
+    padding: 1.5em 2em 0.5em 2em;
+}
+
 .conteudo__principal {
     display: flex;
     flex-direction: column;
