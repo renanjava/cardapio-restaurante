@@ -1,8 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
     setarTituloProduto()
+    getCardapioDia("sabado")
 })
 
-getCardapioDia("segunda")
 
 function redirecionarPagina(nomePagina) {
     window.location.href = `${nomePagina}.html`
@@ -18,9 +18,15 @@ function setarTituloProduto() {
     }
 }
 
-function forcarUmCheckboxSelecionado() {
+function forcarUmCheckboxSelecionado(dia) {
     const checkboxes = document.querySelectorAll('input[type="checkbox"][name="opcaoMistura"]');
 
+    /*if (dia == "sabado") {
+        const todosCheckboxes = document.querySelectorAll('input[type="checkbox"][name="opcaoCardapio"]');
+        const feijoes = Array.from(todosCheckboxes).filter(input => {
+            return input.parentElement.textContent.includes("Feijão");
+        })
+    }*/
     checkboxes.forEach(cb => {
         cb.addEventListener('change', () => {
             if (cb.checked) {
@@ -45,8 +51,9 @@ function getCardapioDia(dia) {
                 const input = document.createElement('input')
                 input.type = 'checkbox'
                 input.name = 'opcaoCardapio'
+                //if (!(dia == 'sabado' && opcao.name.includes("Feijão"))) {
                 input.checked = true
-
+                //}
                 label.appendChild(input)
                 divCardapio.appendChild(label)
             })
@@ -63,6 +70,6 @@ function getCardapioDia(dia) {
                 label.appendChild(input)
                 divMistura.appendChild(label)
             })
-            forcarUmCheckboxSelecionado()
+            forcarUmCheckboxSelecionado(dia)
         })
 }

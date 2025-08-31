@@ -11,21 +11,33 @@
 }
 
 .conteudo__principal-section {
-    display: flex;
-    flex-direction: column;
-    background-color: #474F5A;
-    justify-content: space-around;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 1em;
+    background-color: #454a51;
     padding: 1em 2em;
-    border-radius: 2%;
+    border-radius: 8px;
     margin-bottom: 1em;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
 }
 
 label {
-    width: 100%;
     display: flex;
+    align-items: center;
     justify-content: space-between;
-    gap: 10em;
+    padding: 0.5em 1em;
+    background: #1c3842;
+    border-radius: 6px;
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.2s ease-in-out;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    word-break: break-word;
+}
+
+label:hover {
+    background: #454a51;
 }
 
 input[type="checkbox"] {
@@ -34,15 +46,22 @@ input[type="checkbox"] {
     -moz-appearance: none;
     width: 20px;
     height: 20px;
-    border: 2px solid #333;
+    border: 2px solid #454a51;
     border-radius: 4px;
-    display: inline-block;
-    position: relative;
+    vertical-align: middle;
     cursor: pointer;
+    position: relative;
+    margin-right: 8px;
+    transition: all 0.2s;
+    flex-shrink: 0;
+}
+
+input[type="checkbox"]:hover {
+    border-color: #4caf50;
 }
 
 input[type="checkbox"]:checked {
-    background-color: #4caf50;
+    background: #4caf50;
     border-color: #4caf50;
 }
 
@@ -53,4 +72,27 @@ input[type="checkbox"]:checked::after {
     position: absolute;
     top: 0;
     left: 4px;
+}
+
+.btn-voltar {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #474F5A;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 14px;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+.btn-voltar:hover {
+    background-color: #333;
+}
+
+nav {
+    align-self: flex-start;
 }
