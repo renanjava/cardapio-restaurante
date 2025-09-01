@@ -44,7 +44,7 @@ function carregarListaProdutos(tipoProduto) {
             if (tipoProduto == 'marmitas') {
                 const botaoAutoAtendimento = document.createElement('button')
                 botaoAutoAtendimento.classList.add('secundario__botao')
-                botaoAutoAtendimento.textContent = `Fazer Pedido`
+                botaoAutoAtendimento.textContent = 'Realizar Auto Atendimento'
                 botaoAutoAtendimento.addEventListener('click', () => redirecionarPagina('features/fazer-pedido/index', elemento.titulo))
                 item.appendChild(botaoAutoAtendimento)
             }
