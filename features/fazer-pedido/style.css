@@ -1,46 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Mulish:ital,wght@0,200..1000;1,200..1000&display=swap');
-
-:root {
-    --cor-primaria: #102126;
-    --cor-secundaria: #474F5A;
-    --cor-terciaria: #FF9A00;
-
-    --cor-textos-primario: #F6F6F6;
-    --cor-textos-secundario: #818D9F;
-
-    --fonte-primaria: 'Montserrat', serif;
-    --fonte-secundaria: "Mulish", serif;
-
-    --font-size-xl: 2.75rem;
-    --font-size-l: 2rem;
-    --font-size-m: 1.25rem;
-    --font-size-base: 1rem;
-    --font-size-s: 0.75rem;
-    --font-size-xs: 0.6rem;
-
-    --padding-2xs: 0.5rem;
-    --padding-xs: 0.875rem;
-    --padding-s: 1rem;
-    --padding-m: 1.5rem;
-    --padding-l: 2rem;
-    --padding-xl: 3rem;
-    --padding-2xl: 4rem;
-
-    --margin-2xs: 0.5rem;
-    --margin-xs: 0.875rem;
-    --margin-s: 1rem;
-    --margin-m: 1.5rem;
-    --margin-l: 2rem;
-    --margin-xl: 3rem;
-    --margin-2xl: 4.3rem;
-
-    --gap-xs: 0.5rem;
-    --gap-s: 1rem;
-    --gap-m: 1.5rem;
-    --gap-l: 2rem;
-    --gap-xl: 3rem;
-    --gap-2xl: 4rem;
-}
+@import url('../../styles/variables.css');
 
 body,
 h1,
