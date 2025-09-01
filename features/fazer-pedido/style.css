@@ -221,7 +221,7 @@ body {
     font-weight: 700;
     padding: 1em 2em;
     border-radius: 12px;
-    box-shadow: 0 8px 32px rgba(79, 111, 143, 0.15);
+    box-shadow: 0 8px 32px #000;
     z-index: 9999;
     opacity: 0;
     pointer-events: none;

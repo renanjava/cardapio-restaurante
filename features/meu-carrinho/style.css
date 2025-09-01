@@ -135,7 +135,7 @@ body {
 
 .carrinho__total {
     width: 100%;
-    background: #FFF;
+    background: var(--cor-secundaria);
     color: var(--cor-terciaria);
     font-size: var(--font-size-m);
     font-family: var(--fonte-secundaria);
