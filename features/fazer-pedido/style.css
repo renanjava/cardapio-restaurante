@@ -209,6 +209,31 @@ body {
     border: 1px solid var(--cor-terciaria);
 }
 
+.aviso-carne {
+    position: fixed;
+    left: 50%;
+    top: 60%;
+    transform: translate(-50%, 100px);
+    background: #fff;
+    color: var(--cor-terciaria);
+    font-family: var(--fonte-secundaria);
+    font-size: 1.1rem;
+    font-weight: 700;
+    padding: 1em 2em;
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(79, 111, 143, 0.15);
+    z-index: 9999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s, transform 0.5s;
+}
+
+.aviso-carne.show {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+    top: 50%;
+}
+
 @media (max-width: 900px) {
     .pedido__conteudo {
         gap: var(--gap-m);

@@ -19,7 +19,7 @@ function setarTituloProduto() {
 }
 
 function forcarUmCheckboxSelecionado(dia) {
-    const checkboxes = document.querySelectorAll('input[type="checkbox"][name="opcaoMistura"]');
+    const checkboxes = document.querySelectorAll('input[type="checkbox"][name="opcaoCarne"]');
 
     /*if (dia == "sabado") {
         const todosCheckboxes = document.querySelectorAll('input[type="checkbox"][name="opcaoCardapio"]');
@@ -51,6 +51,7 @@ function getCardapioDia(dia) {
                 const input = document.createElement('input')
                 input.type = 'checkbox'
                 input.name = 'opcaoCardapio'
+                input.id = opcao.name
                 //if (!(dia == 'sabado' && opcao.name.includes("Feijão"))) {
                 input.checked = true
                 //}
@@ -58,24 +59,52 @@ function getCardapioDia(dia) {
                 divCardapio.appendChild(label)
             })
 
-            const divMistura = document.getElementById('misturaDiv')
-            cardapioDia.opcaoMistura.forEach((opcao) => {
+            const divCarne = document.getElementById('carneDiv')
+            cardapioDia.opcaoCarne.forEach((opcao) => {
                 const label = document.createElement('label')
                 label.textContent = opcao.name
 
                 const input = document.createElement('input')
                 input.type = 'checkbox'
-                input.name = 'opcaoMistura'
+                input.id = opcao.name
+                input.name = 'opcaoCarne'
 
                 label.appendChild(input)
-                divMistura.appendChild(label)
+                divCarne.appendChild(label)
             })
             forcarUmCheckboxSelecionado(dia)
         })
 }
 
-function adicionarAoCarrinho() {
-    alert("Pedido adicionado ao carrinho! (Funcionalidade em desenvolvimento)");
-    window.location.href = `../meu-carrinho/index.html`
+function mostrarAvisoCarne(msg) {
+    const aviso = document.getElementById('avisoCarne');
+    aviso.textContent = msg;
+    aviso.style.display = 'block';
+    aviso.classList.add('show');
+    setTimeout(() => {
+        aviso.classList.remove('show');
+        setTimeout(() => aviso.style.display = 'none', 400);
+    }, 2500);
+}
 
+function adicionarAoCarrinho() {
+    const selectedCardapioItems = document.querySelectorAll('input[type="checkbox"][name="opcaoCardapio"]:checked');
+    const unselectedCardapioItems = document.querySelectorAll('input[type="checkbox"][name="opcaoCardapio"]:not(:checked)');
+    const selectedCarneItems = document.querySelectorAll('input[type="checkbox"][name="opcaoCarne"]:checked');
+
+    const selectedCardapioValues = Array.from(selectedCardapioItems).map(item => item.id);
+    const unselectedCardapioValues = Array.from(unselectedCardapioItems).map(item => item.id);
+    const selectedCarneValues = Array.from(selectedCarneItems).map(item => item.id);
+
+    console.log("Selecionados do cardápio:", selectedCardapioValues);
+    console.log("Não selecionados do cardápio:", unselectedCardapioValues);
+    console.log("Selecionados da carne:", selectedCarneValues);
+
+    if (selectedCarneItems.length == 0) {
+        mostrarAvisoCarne('Selecione uma carne para continuar!');
+        return;
+    }
+
+    //alert("Pedido adicionado ao carrinho! (Funcionalidade em desenvolvimento)");
+    //window.location.href = `../meu-carrinho/index.html`
 }

@@ -23,7 +23,7 @@
                 "name": "Batata frita"
             }
         ],
-        "opcaoMistura": [
+        "opcaoCarne": [
             {
                 "name": "Frango parmegiana"
             },
@@ -65,7 +65,7 @@
                 "name": "Bolinho de arroz"
             }
         ],
-        "opcaoMistura": [
+        "opcaoCarne": [
             {
                 "name": "Frango à milanesa"
             },
@@ -107,7 +107,7 @@
                 "name": "Mandioca frita"
             }
         ],
-        "opcaoMistura": [
+        "opcaoCarne": [
             {
                 "name": "Porco no tacho"
             },
@@ -149,7 +149,7 @@
                 "name": "Abobrinha à milanesa"
             }
         ],
-        "opcaoMistura": [
+        "opcaoCarne": [
             {
                 "name": "Frango à milanesa"
             },
@@ -194,7 +194,7 @@
                 "name": "Batata-doce frita"
             }
         ],
-        "opcaoMistura": [
+        "opcaoCarne": [
             {
                 "name": "Frango à milanesa"
             },
@@ -239,7 +239,7 @@
                 "name": "Ovo frito"
             }
         ],
-        "opcaoMistura": [
+        "opcaoCarne": [
             {
                 "name": "Frango à milanesa"
             },
