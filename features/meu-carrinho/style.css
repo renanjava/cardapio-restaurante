@@ -130,12 +130,12 @@ body {
     margin-top: var(--margin-xs);
     background: var(--cor-terciaria);
     border-radius: 10px;
-    color: #000;
+    color: #FFF;
 }
 
 .carrinho__total {
     width: 100%;
-    background: #000;
+    background: #FFF;
     color: var(--cor-terciaria);
     font-size: var(--font-size-m);
     font-family: var(--fonte-secundaria);

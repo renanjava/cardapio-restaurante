@@ -1,12 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Mulish:ital,wght@0,200..1000;1,200..1000&display=swap');
 
 :root {
-    --cor-primaria: #102126;
-    --cor-secundaria: #474F5A;
-    --cor-terciaria: #FF9A00;
+    --cor-primaria: #F7F8FA;
+    --cor-secundaria: #E3E6EA;
+    --cor-terciaria: #4F6F8F;
 
-    --cor-textos-primario: #F6F6F6;
-    --cor-textos-secundario: #818D9F;
+    --cor-textos-primario: #222831;
+    --cor-textos-secundario: #6C757D;
 
     --fonte-primaria: 'Montserrat', serif;
     --fonte-secundaria: "Mulish", serif;

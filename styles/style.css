@@ -12,13 +12,13 @@ body {
 }
 
 .cabecalho__container {
-    background-image: url("../assets/background-header.png");
-    background-color: rgba(0, 0, 0, 0.5);
+    background: linear-gradient(90deg, var(--cor-secundaria) 60%, #f7f8fa 100%);
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: var(--gap-s);
     padding: var(--padding-m);
+    border-bottom: 1px solid #dbe2ea;
 }
 
 .cabecalho__titulo-principal {
@@ -200,7 +200,7 @@ body {
 .descricao__produto {
     font-family: var(--fonte-secundaria);
     font-weight: 200;
-    color: #DCDCDC;
+    color: #4b4444;
     font-size: var(--font-size-s);
 }
 
