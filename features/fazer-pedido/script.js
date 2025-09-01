@@ -44,36 +44,10 @@ function getCardapioDia(dia) {
     fetch(`../../data/cardapio-dia.json`)
         .then(response => response.json())
         .then(data => {
-            const divCardapio = document.getElementById('cardapioDiv')
             const cardapioDia = data[dia]
-            cardapioDia.opcaoCardapio.forEach((opcao) => {
-                const label = document.createElement('label')
-                label.textContent = opcao.name
 
-                const input = document.createElement('input')
-                input.type = 'checkbox'
-                input.name = 'opcaoCardapio'
-                input.id = opcao.name
-                //if (!(dia == 'sabado' && opcao.name.includes("Feijão"))) {
-                input.checked = true
-                //}
-                label.appendChild(input)
-                divCardapio.appendChild(label)
-            })
-
-            const divCarne = document.getElementById('carneDiv')
-            cardapioDia.opcaoCarne.forEach((opcao) => {
-                const label = document.createElement('label')
-                label.textContent = opcao.name
-
-                const input = document.createElement('input')
-                input.type = 'checkbox'
-                input.id = opcao.name
-                input.name = 'opcaoCarne'
-
-                label.appendChild(input)
-                divCarne.appendChild(label)
-            })
+            montarCheckboxes(cardapioDia.opcaoCardapio, true, 'opcaoCardapio', 'cardapioDiv')
+            montarCheckboxes(cardapioDia.opcaoCarne, false, 'opcaoCarne', 'carneDiv')
             forcarUmCheckboxSelecionado(dia)
         })
 }
@@ -115,4 +89,21 @@ function adicionarAoCarrinho() {
 
     //alert("Pedido adicionado ao carrinho! (Funcionalidade em desenvolvimento)");
     //window.location.href = `../meu-carrinho/index.html`
+}
+
+function montarCheckboxes(opcoesArray, isChecked, nomeOpcao, nomeDiv) {
+    const divOpcao = document.getElementById(nomeDiv)
+    opcoesArray.forEach((opcao) => {
+        const label = document.createElement('label')
+        label.textContent = opcao.name
+
+        const input = document.createElement('input')
+        input.type = 'checkbox'
+        input.name = nomeOpcao
+        input.id = opcao.name
+        input.checked = isChecked
+
+        label.appendChild(input)
+        divOpcao.appendChild(label)
+    })
 }

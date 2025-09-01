@@ -20,10 +20,8 @@ async function renderCarrinho() {
         document.querySelector('.btn-pagar').remove()
         return;
     }
-    
-    for (const [idx, pedido] of pedidos.entries()) {
-        console.log(1);
 
+    for (const [idx, pedido] of pedidos.entries()) {
         const getMarmitaData = await fetch(`../../data/marmitas.json`)
             .then(response => response.json())
             .then(data => data.find((marmita) => marmita.titulo == pedido.tamanhoMarmita));
