@@ -1,7 +1,6 @@
 document.addEventListener('DOMContentLoaded', renderCarrinho);
 let pedidos;
 
-
 async function renderCarrinho() {
     pedidos = JSON.parse(localStorage.getItem("pedidos"))
     const lista = document.getElementById('carrinhoLista');
@@ -21,8 +20,7 @@ async function renderCarrinho() {
         document.querySelector('.btn-pagar').remove()
         return;
     }
-    console.log({ pedidos });
-
+    
     for (const [idx, pedido] of pedidos.entries()) {
         console.log(1);
 
