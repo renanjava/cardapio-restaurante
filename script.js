@@ -1,5 +1,13 @@
 carregarListaProdutos("lanches")
 
+document.addEventListener('DOMContentLoaded', atualizarCarrinhoBadge);
+
+function atualizarCarrinhoBadge() {
+    let pedidos = JSON.parse(localStorage.getItem('carrinhoPedidos') || '[]');
+    let totalQtd = pedidos.reduce((soma, pedido) => soma + (pedido.qtd || 1), 0);
+    document.getElementById('carrinhoBadge').textContent = totalQtd;
+}
+
 function carregarListaProdutos(tipoProduto) {
     fetch(`data/${tipoProduto}.json`)
         .then(response => response.json())

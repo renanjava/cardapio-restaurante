@@ -32,9 +32,6 @@
                         <p class="cabecalho__texto">Elpídio Monteiro, 21<br>Itambé-PR</p>
                     </li>
                 </ul>
-                <a class="icon-carrinho" href="features/meu-carrinho/index.html" title="Meu Carrinho">
-                    <i class="fa-solid fa-cart-shopping"></i>
-                </a>
             </div>
         </div>
 
@@ -42,11 +39,18 @@
 
     <main>
         <nav class="opcoes__menu">
-            <button class="menu__opcao opcao__texto active" disabled id="lanches"
-                onclick="atualizarListaProdutos(id)">Lanches</button>
-            <button class="menu__opcao opcao__texto" id="combos" onclick="atualizarListaProdutos(id)">Combos</button>
-            <button class="menu__opcao opcao__texto" id="marmitas"
-                onclick="atualizarListaProdutos(id)">Marmitas</button>
+            <div class="opcoes__grupo">
+                <button class="menu__opcao opcao__texto active" disabled id="lanches"
+                    onclick="atualizarListaProdutos(id)">Lanches</button>
+                <button class="menu__opcao opcao__texto" id="combos"
+                    onclick="atualizarListaProdutos(id)">Combos</button>
+                <button class="menu__opcao opcao__texto" id="marmitas"
+                    onclick="atualizarListaProdutos(id)">Marmitas</button>
+            </div>
+            <a class="nav__carrinho" href="features/carrinho/index.html" title="Meu Carrinho">
+                <i class="fa-solid fa-cart-shopping"></i>
+                <span id="carrinhoBadge" class="nav__carrinho-badge">0</span>
+            </a>
         </nav>
         <div class="container__flutuante">
             <div class="content__flutuante">

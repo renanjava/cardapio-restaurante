@@ -98,30 +98,54 @@ body {
     background-color: transparent;
 }
 
-.icon-carrinho {
-    position: fixed;
-    top: 30px;
-    right: 30px;
-    font-size: 2.2rem;
-    color: var(--cor-terciaria);
-    background: var(--cor-primaria);
-    border-radius: 50%;
-    padding: 0.4em;
-    z-index: 200;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.10);
-    transition: background 0.2s, color 0.2s;
-}
-
-.icon-carrinho:hover {
-    background: var(--cor-terciaria);
-    color: var(--cor-primaria);
-}
-
 .opcoes__menu {
     display: flex;
     justify-content: center;
-    gap: var(--gap-xl);
+    align-items: center;
+    width: 100%;
     padding: var(--padding-s) 0 var(--padding-l) 0;
+    position: relative;
+}
+
+.opcoes__grupo {
+    display: flex;
+    gap: var(--gap-xl);
+    margin: 0 auto;
+    justify-content: center;
+    flex: 1;
+}
+
+.nav__carrinho {
+    position: absolute;
+    right: 5vw;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    font-size: 1.7rem;
+    color: var(--cor-terciaria);
+    background: var(--cor-primaria);
+    border-radius: 50%;
+    padding: 0.2em 0.5em;
+    text-decoration: none;
+    transition: background 0.2s, color 0.2s;
+}
+
+.nav__carrinho-badge {
+    position: absolute;
+    top: -0.3em;
+    right: -0.3em;
+    background: var(--cor-terciaria);
+    color: var(--cor-primaria);
+    font-size: 0.9rem;
+    font-family: var(--fonte-secundaria);
+    font-weight: bold;
+    border-radius: 50%;
+    padding: 0.15em 0.5em;
+    min-width: 1.2em;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.10);
+    pointer-events: none;
 }
 
 .menu__opcao {
@@ -419,6 +443,38 @@ body {
 
     .rodape__texto {
         font-size: var(--font-size-xs);
+    }
+}
+
+@media (max-width: 600px) {
+    .opcoes__menu {
+        flex-direction: column-reverse;
+        align-items: center;
+        padding: var(--padding-xs) 0 var(--padding-s) 0;
+        height: 70px;
+    }
+
+    .opcoes__grupo {
+        justify-content: center;
+        width: 100%;
+        margin-bottom: var(--margin-xs);
+        margin: 0 2em;
+    }
+
+    .nav__carrinho {
+        position: static !important;
+        font-size: 1.4rem;
+        align-self: center;
+        display: flex;
+        justify-content: center;
+    }
+
+    .nav__carrinho-badge {
+        font-size: 0.7rem;
+        min-width: 1em;
+        padding: 0.1em 0.3em;
+        top: -0.2em;
+        right: -0.2em;
     }
 }
 
