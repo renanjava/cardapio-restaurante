@@ -3,7 +3,7 @@ carregarListaProdutos("marmitas")
 document.addEventListener('DOMContentLoaded', atualizarCarrinhoBadge);
 
 function atualizarCarrinhoBadge() {
-    let pedidos = JSON.parse(localStorage.getItem('carrinhoPedidos') || '[]');
+    let pedidos = JSON.parse(localStorage.getItem('pedidos'));
     let totalQtd = pedidos.reduce((soma, pedido) => soma + (pedido.qtd || 1), 0);
     document.getElementById('carrinhoBadge').textContent = totalQtd;
 }

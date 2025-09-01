@@ -1,3 +1,5 @@
+let titulo;
+
 document.addEventListener('DOMContentLoaded', () => {
     setarTituloProduto()
     getCardapioDia("sabado")
@@ -10,7 +12,7 @@ function redirecionarPagina(nomePagina) {
 
 function setarTituloProduto() {
     const params = new URLSearchParams(window.location.search);
-    const titulo = params.get('titulo');
+    titulo = params.get('titulo');
 
     if (titulo) {
         const tituloElemento = document.getElementById('produtoPedido');
@@ -96,14 +98,20 @@ function adicionarAoCarrinho() {
     const unselectedCardapioValues = Array.from(unselectedCardapioItems).map(item => item.id);
     const selectedCarneValues = Array.from(selectedCarneItems).map(item => item.id);
 
-    console.log("Selecionados do cardápio:", selectedCardapioValues);
-    console.log("Não selecionados do cardápio:", unselectedCardapioValues);
-    console.log("Selecionados da carne:", selectedCarneValues);
-
-    if (selectedCarneItems.length == 0) {
+    if (selectedCarneValues.length == 0) {
         mostrarAvisoCarne('Selecione uma carne para continuar!');
         return;
     }
+
+    const pedidoPayload = [{
+        tamanhoMarmita: titulo,
+        carne: selectedCarneValues[0],
+        adicionarItens: selectedCardapioValues,
+        removerItens: unselectedCardapioValues,
+        quantidade: 1,
+    }]
+
+    localStorage.setItem('pedidos', JSON.stringify(pedidoPayload))
 
     //alert("Pedido adicionado ao carrinho! (Funcionalidade em desenvolvimento)");
     //window.location.href = `../meu-carrinho/index.html`

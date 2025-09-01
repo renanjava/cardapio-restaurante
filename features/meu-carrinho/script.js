@@ -1,28 +1,13 @@
-const pedidos = [
-    {
-        id: 1,
-        titulo: "Marmita Média",
-        descricao: "Arroz, feijão, carne de panela, salada",
-        preco: 22,
-        qtd: 1,
-        imagem: "../../assets/data/marmitas/marmita_base.png"
-    },
-    {
-        id: 2,
-        titulo: "Combo Lanche",
-        descricao: "X-Salada + Refrigerante + Batata frita",
-        preco: 18,
-        qtd: 2,
-        imagem: "../../assets/data/combos/combo-x-salada.png"
-    }
-];
+document.addEventListener('DOMContentLoaded', renderCarrinho);
+const pedidos = JSON.parse(localStorage.getItem("pedidos"))
+console.log(pedidos);
 
 function renderCarrinho() {
     const lista = document.getElementById('carrinhoLista');
     lista.innerHTML = '';
     let total = 0;
     let totalQtd = 0;
-    if (pedidos.length === 0) {
+    if (!pedidos) {
         lista.innerHTML = `
             <div class="carrinho__vazio">
                 <p>Seu carrinho está vazio.</p>
@@ -36,8 +21,8 @@ function renderCarrinho() {
         return;
     }
     pedidos.forEach((pedido, idx) => {
-        total += pedido.preco * pedido.qtd;
-        totalQtd += pedido.qtd;
+        total += pedido.preco * pedido.quantidade;
+        totalQtd += pedido.quantidade;
 
         const card = document.createElement('div');
         card.className = 'carrinho__card';
@@ -57,14 +42,17 @@ function renderCarrinho() {
         const img = document.createElement('img');
         img.className = 'carrinho__card-imagem';
         img.src = pedido.imagem;
-        img.alt = pedido.titulo;
+        img.alt = pedido.tamanhoMarmita;
 
         const info = document.createElement('div');
         info.className = 'carrinho__card-info';
         info.innerHTML = `
-            <div class="carrinho__card-titulo">${pedido.titulo}</div>
-            <div class="carrinho__card-descricao">${pedido.descricao}</div>
-            <div class="carrinho__card-preco">R$ ${pedido.preco},00</div>
+            <div class="carrinho__card-titulo">${pedido.tamanhoMarmita}</div>
+            <div class="carrinho__card-descricao"><b>Carne:</b> ${pedido.carne}</div>
+            <div class="carrinho__card-descricao"><b>Adicionar:</b> ${pedido.adicionarItens.length > 0 ? pedido.adicionarItens.join(", ") : 'apenas uma porção de carne'}</div>
+            <div class="carrinho__card-descricao">${pedido.removerItens.length > 0 ? `<b>Remover:</b> ` + pedido.removerItens.join(", ") : ''}
+            </div>
+    <div class="carrinho__card-preco">R$ ${pedido.preco},00</div>
         `;
 
         const actions = document.createElement('div');
@@ -79,7 +67,7 @@ function renderCarrinho() {
         btnMenos.onclick = () => alterarQtd(idx, -1);
 
         const qtdSpan = document.createElement('span');
-        qtdSpan.textContent = pedido.qtd;
+        qtdSpan.textContent = pedido.quantidade;
         qtdSpan.style.fontWeight = 'bold';
 
         const btnMais = document.createElement('button');
@@ -103,13 +91,13 @@ function renderCarrinho() {
     });
 
     const totalDiv = document.getElementById('carrinhoTotal');
-    totalDiv.textContent = `Total (${totalQtd} itens): R$ ${total},00`;
+    totalDiv.textContent = `Total(${totalQtd} itens): R$ ${total},00`;
 }
 
 function alterarQtd(idx, delta) {
-    pedidos[idx].qtd += delta;
-    if (pedidos[idx].qtd < 1) {
-        pedidos[idx].qtd = 1;
+    pedidos[idx].quantidade += delta;
+    if (pedidos[idx].quantidade < 1) {
+        pedidos[idx].quantidade = 1;
     }
     renderCarrinho();
 }
@@ -126,5 +114,3 @@ function editarPedido(idx) {
 function pagarCarrinho() {
     alert("Pagamento em desenvolvimento!");
 }
-
-document.addEventListener('DOMContentLoaded', renderCarrinho);
