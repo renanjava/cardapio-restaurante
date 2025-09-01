@@ -1,8 +1,9 @@
 document.addEventListener('DOMContentLoaded', renderCarrinho);
-const pedidos = JSON.parse(localStorage.getItem("pedidos"))
-console.log(pedidos);
+let pedidos;
 
-function renderCarrinho() {
+
+async function renderCarrinho() {
+    pedidos = JSON.parse(localStorage.getItem("pedidos"))
     const lista = document.getElementById('carrinhoLista');
     lista.innerHTML = '';
     let total = 0;
@@ -20,8 +21,16 @@ function renderCarrinho() {
         document.querySelector('.btn-pagar').remove()
         return;
     }
-    pedidos.forEach((pedido, idx) => {
-        total += pedido.preco * pedido.quantidade;
+    console.log({ pedidos });
+
+    for (const [idx, pedido] of pedidos.entries()) {
+        console.log(1);
+
+        const getMarmitaData = await fetch(`../../data/marmitas.json`)
+            .then(response => response.json())
+            .then(data => data.find((marmita) => marmita.titulo == pedido.tamanhoMarmita));
+
+        total += getMarmitaData.valor * pedido.quantidade;
         totalQtd += pedido.quantidade;
 
         const card = document.createElement('div');
@@ -41,19 +50,18 @@ function renderCarrinho() {
 
         const img = document.createElement('img');
         img.className = 'carrinho__card-imagem';
-        img.src = pedido.imagem;
+        img.src = '../../assets/data/marmitas/marmita_base.png';
         img.alt = pedido.tamanhoMarmita;
 
         const info = document.createElement('div');
         info.className = 'carrinho__card-info';
         info.innerHTML = `
-            <div class="carrinho__card-titulo">${pedido.tamanhoMarmita}</div>
-            <div class="carrinho__card-descricao"><b>Carne:</b> ${pedido.carne}</div>
-            <div class="carrinho__card-descricao"><b>Adicionar:</b> ${pedido.adicionarItens.length > 0 ? pedido.adicionarItens.join(", ") : 'apenas uma porção de carne'}</div>
-            <div class="carrinho__card-descricao">${pedido.removerItens.length > 0 ? `<b>Remover:</b> ` + pedido.removerItens.join(", ") : ''}
-            </div>
-    <div class="carrinho__card-preco">R$ ${pedido.preco},00</div>
-        `;
+        <div class="carrinho__card-titulo">${pedido.tamanhoMarmita}</div>
+        <div class="carrinho__card-descricao"><b>Carne:</b> ${pedido.carne}</div>
+        <div class="carrinho__card-descricao"><b>Adicionar:</b> ${pedido.adicionarItens.length > 0 ? pedido.adicionarItens.join(", ") : 'apenas uma porção de carne'}</div>
+        <div class="carrinho__card-descricao">${pedido.removerItens.length > 0 ? `<b>Remover:</b> ` + pedido.removerItens.join(", ") : ''}</div>
+        <div class="carrinho__card-preco">R$ ${getMarmitaData.valor},00</div>
+    `;
 
         const actions = document.createElement('div');
         actions.className = 'carrinho__card-actions';
@@ -64,7 +72,7 @@ function renderCarrinho() {
         const btnMenos = document.createElement('button');
         btnMenos.className = 'btn-qtd';
         btnMenos.innerHTML = '<i class="fa-solid fa-minus"></i>';
-        btnMenos.onclick = () => alterarQtd(idx, -1);
+        btnMenos.onclick = () => alterarQtd(idx, -1, pedidos);
 
         const qtdSpan = document.createElement('span');
         qtdSpan.textContent = pedido.quantidade;
@@ -73,7 +81,7 @@ function renderCarrinho() {
         const btnMais = document.createElement('button');
         btnMais.className = 'btn-qtd';
         btnMais.innerHTML = '<i class="fa-solid fa-plus"></i>';
-        btnMais.onclick = () => alterarQtd(idx, 1);
+        btnMais.onclick = () => alterarQtd(idx, 1, pedidos);
 
         qtdDiv.appendChild(btnMenos);
         qtdDiv.appendChild(qtdSpan);
@@ -88,7 +96,7 @@ function renderCarrinho() {
         card.appendChild(actions);
 
         lista.appendChild(card);
-    });
+    }
 
     const totalDiv = document.getElementById('carrinhoTotal');
     totalDiv.textContent = `Total(${totalQtd} itens): R$ ${total},00`;
@@ -99,11 +107,12 @@ function alterarQtd(idx, delta) {
     if (pedidos[idx].quantidade < 1) {
         pedidos[idx].quantidade = 1;
     }
+    localStorage.setItem('pedidos', JSON.stringify(pedidos))
     renderCarrinho();
 }
 
-function removerPedido(idx) {
-    pedidos.splice(idx, 1);
+function removerPedido() {
+    localStorage.removeItem('pedidos')
     renderCarrinho();
 }
 
