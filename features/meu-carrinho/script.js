@@ -26,7 +26,7 @@ function renderCarrinho() {
         lista.innerHTML = `
             <div class="carrinho__vazio">
                 <p>Seu carrinho está vazio.</p>
-                <button class="btn-fazer-pedido" onclick="window.location.href='../../index.html#marmitas'">
+                <button class="btn-fazer-pedido" onclick="window.location.href='../../index.html'">
                     <i class="fa-solid fa-utensils"></i> Fazer um pedido de marmita
                 </button>
             </div>

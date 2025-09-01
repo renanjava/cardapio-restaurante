@@ -1,4 +1,4 @@
-carregarListaProdutos("lanches")
+carregarListaProdutos("marmitas")
 
 document.addEventListener('DOMContentLoaded', atualizarCarrinhoBadge);
 
