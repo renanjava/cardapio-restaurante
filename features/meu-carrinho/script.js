@@ -31,6 +31,14 @@ async function renderCarrinho() {
 
         const card = document.createElement('div');
         card.className = 'carrinho__card';
+        card.style.position = 'relative';
+
+        // Top right: editar/remover
+        const actions = document.createElement('div');
+        actions.className = 'carrinho__card-actions';
+
+        const iconsDiv = document.createElement('div');
+        iconsDiv.className = 'carrinho__card-actions-icons';
 
         const btnEdit = document.createElement('button');
         btnEdit.className = 'carrinho__card-edit';
@@ -44,6 +52,11 @@ async function renderCarrinho() {
         btnRemove.title = "Remover pedido";
         btnRemove.onclick = () => removerPedido(idx);
 
+        iconsDiv.appendChild(btnEdit);
+        iconsDiv.appendChild(btnRemove);
+        actions.appendChild(iconsDiv);
+
+        // Imagem e info
         const img = document.createElement('img');
         img.className = 'carrinho__card-imagem';
         img.src = '../../assets/data/marmitas/marmita_base.png';
@@ -59,11 +72,12 @@ async function renderCarrinho() {
         <div class="carrinho__card-preco">R$ ${getMarmitaData.valor},00</div>
     `;
 
-        const actions = document.createElement('div');
-        actions.className = 'carrinho__card-actions';
-
+        // Bottom right: quantidade
         const qtdDiv = document.createElement('div');
         qtdDiv.className = 'carrinho__card-qtd';
+        qtdDiv.style.position = 'absolute';
+        qtdDiv.style.right = 'var(--margin-xs)';
+        qtdDiv.style.bottom = 'var(--margin-xs)';
 
         const btnMenos = document.createElement('button');
         btnMenos.className = 'btn-qtd';
@@ -83,13 +97,11 @@ async function renderCarrinho() {
         qtdDiv.appendChild(qtdSpan);
         qtdDiv.appendChild(btnMais);
 
-        actions.appendChild(qtdDiv);
-
-        card.appendChild(btnEdit);
-        card.appendChild(btnRemove);
+        // Monta card
+        card.appendChild(actions);
         card.appendChild(img);
         card.appendChild(info);
-        card.appendChild(actions);
+        card.appendChild(qtdDiv);
 
         lista.appendChild(card);
     }
