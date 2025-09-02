@@ -86,9 +86,49 @@ function adicionarAoCarrinho() {
     }]
 
     localStorage.setItem('pedidos', JSON.stringify(pedidoPayload))
-
+    mostrarModalCarrinho();
     //alert("Pedido adicionado ao carrinho! (Funcionalidade em desenvolvimento)");
     //window.location.href = `../meu-carrinho/index.html`
+}
+
+function mostrarModalCarrinho() {
+    const modal = document.createElement('div');
+    modal.id = 'modal-carrinho';
+    modal.style.position = 'fixed';
+    modal.style.top = '0';
+    modal.style.left = '0';
+    modal.style.width = '100vw';
+    modal.style.height = '100vh';
+    modal.style.background = 'rgba(0,0,0,0.5)';
+    modal.style.display = 'flex';
+    modal.style.alignItems = 'center';
+    modal.style.justifyContent = 'center';
+    modal.style.zIndex = '9999';
+
+    modal.innerHTML = `
+        <div style="
+            background: #fff;
+            padding: 32px 24px;
+            border-radius: 12px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+            text-align: center;
+            max-width: 90vw;
+        ">
+            <h2 style="margin-bottom: 18px;">Item adicionado ao carrinho!</h2>
+            <p style="margin-bottom: 24px;">Deseja ir para o carrinho ou continuar adicionando itens?</p>
+            <button id="btn-ir-carrinho" style="margin-right: 16px; padding: 8px 24px; border-radius: 8px; border: none; background: #e67e22; color: #fff; font-weight: bold; cursor: pointer;">Ir para o carrinho</button>
+            <button id="btn-continuar" style="padding: 8px 24px; border-radius: 8px; border: none; background: #27ae60; color: #fff; font-weight: bold; cursor: pointer;">Continuar adicionando</button>
+        </div>
+    `;
+
+    document.body.appendChild(modal);
+
+    document.getElementById('btn-ir-carrinho').onclick = function () {
+        window.location.href = '../meu-carrinho/index.html';
+    };
+    document.getElementById('btn-continuar').onclick = function () {
+        window.location.href = '../../index.html';
+    };
 }
 
 function montarCheckboxes(opcoesArray, isChecked, nomeOpcao, nomeDiv) {

@@ -33,7 +33,6 @@ async function renderCarrinho() {
         card.className = 'carrinho__card';
         card.style.position = 'relative';
 
-        // Top right: editar/remover
         const actions = document.createElement('div');
         actions.className = 'carrinho__card-actions';
 
@@ -56,7 +55,6 @@ async function renderCarrinho() {
         iconsDiv.appendChild(btnRemove);
         actions.appendChild(iconsDiv);
 
-        // Imagem e info
         const img = document.createElement('img');
         img.className = 'carrinho__card-imagem';
         img.src = '../../assets/data/marmitas/marmita_base.png';
@@ -72,7 +70,6 @@ async function renderCarrinho() {
         <div class="carrinho__card-preco">R$ ${getMarmitaData.valor},00</div>
     `;
 
-        // Bottom right: quantidade
         const qtdDiv = document.createElement('div');
         qtdDiv.className = 'carrinho__card-qtd';
         qtdDiv.style.position = 'absolute';
@@ -97,7 +94,6 @@ async function renderCarrinho() {
         qtdDiv.appendChild(qtdSpan);
         qtdDiv.appendChild(btnMais);
 
-        // Monta card
         card.appendChild(actions);
         card.appendChild(img);
         card.appendChild(info);
