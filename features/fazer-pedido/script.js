@@ -45,7 +45,6 @@ function getCardapioDia(dia) {
         .then(response => response.json())
         .then(data => {
             const cardapioDia = data[dia]
-
             montarCheckboxes(cardapioDia.opcaoCardapio, true, 'opcaoCardapio', 'cardapioDiv')
             montarCheckboxes(cardapioDia.opcaoCarne, false, 'opcaoCarne', 'carneDiv')
             forcarUmCheckboxSelecionado(dia)
@@ -63,32 +62,21 @@ function mostrarAvisoCarne(msg) {
     }, 2500);
 }
 
-function adicionarAoCarrinho() {
-    const selectedCardapioItems = document.querySelectorAll('input[type="checkbox"][name="opcaoCardapio"]:checked');
-    const unselectedCardapioItems = document.querySelectorAll('input[type="checkbox"][name="opcaoCardapio"]:not(:checked)');
-    const selectedCarneItems = document.querySelectorAll('input[type="checkbox"][name="opcaoCarne"]:checked');
+function montarCheckboxes(opcoesArray, isChecked, nomeOpcao, nomeDiv) {
+    const divOpcao = document.getElementById(nomeDiv)
+    opcoesArray.forEach((opcao) => {
+        const label = document.createElement('label')
+        label.textContent = opcao.name
 
-    const selectedCardapioValues = Array.from(selectedCardapioItems).map(item => item.id);
-    const unselectedCardapioValues = Array.from(unselectedCardapioItems).map(item => item.id);
-    const selectedCarneValues = Array.from(selectedCarneItems).map(item => item.id);
+        const input = document.createElement('input')
+        input.type = 'checkbox'
+        input.name = nomeOpcao
+        input.id = opcao.name
+        input.checked = isChecked
 
-    if (selectedCarneValues.length == 0) {
-        mostrarAvisoCarne('Selecione uma carne para continuar!');
-        return;
-    }
-
-    const pedidoPayload = [{
-        tamanhoMarmita: titulo,
-        carne: selectedCarneValues[0],
-        adicionarItens: selectedCardapioValues,
-        removerItens: unselectedCardapioValues,
-        quantidade: 1,
-    }]
-
-    localStorage.setItem('pedidos', JSON.stringify(pedidoPayload))
-    mostrarModalCarrinho();
-    //alert("Pedido adicionado ao carrinho! (Funcionalidade em desenvolvimento)");
-    //window.location.href = `../meu-carrinho/index.html`
+        label.appendChild(input)
+        divOpcao.appendChild(label)
+    })
 }
 
 function mostrarModalCarrinho() {
@@ -131,19 +119,42 @@ function mostrarModalCarrinho() {
     };
 }
 
-function montarCheckboxes(opcoesArray, isChecked, nomeOpcao, nomeDiv) {
-    const divOpcao = document.getElementById(nomeDiv)
-    opcoesArray.forEach((opcao) => {
-        const label = document.createElement('label')
-        label.textContent = opcao.name
+function gerarIdUnico() {
+    return Date.now().toString(36) + Math.random().toString(36).substring(2, 8);
+}
 
-        const input = document.createElement('input')
-        input.type = 'checkbox'
-        input.name = nomeOpcao
-        input.id = opcao.name
-        input.checked = isChecked
+function adicionarAoCarrinho() {
+    const selectedCardapioItems = document.querySelectorAll('input[type="checkbox"][name="opcaoCardapio"]:checked');
+    const unselectedCardapioItems = document.querySelectorAll('input[type="checkbox"][name="opcaoCardapio"]:not(:checked)');
+    const selectedCarneItems = document.querySelectorAll('input[type="checkbox"][name="opcaoCarne"]:checked');
 
-        label.appendChild(input)
-        divOpcao.appendChild(label)
-    })
+    const selectedCardapioValues = Array.from(selectedCardapioItems).map(item => item.id);
+    const unselectedCardapioValues = Array.from(unselectedCardapioItems).map(item => item.id);
+    const selectedCarneValues = Array.from(selectedCarneItems).map(item => item.id);
+
+    if (selectedCarneValues.length == 0) {
+        mostrarAvisoCarne('Selecione uma carne para continuar!');
+        return;
+    }
+
+    const getLocalStoragePedidos = JSON.parse(localStorage.getItem("pedidos"))
+
+    const pedidoPayload = [{
+        id: gerarIdUnico(),
+        tamanhoMarmita: titulo,
+        carne: selectedCarneValues[0],
+        adicionarItens: selectedCardapioValues,
+        removerItens: unselectedCardapioValues,
+        quantidade: 1,
+    }]
+
+    if (getLocalStoragePedidos == null) {
+        localStorage.setItem('pedidos', JSON.stringify(pedidoPayload))
+        mostrarModalCarrinho();
+        return;
+    }
+    getLocalStoragePedidos.push(pedidoPayload[0]);
+    localStorage.setItem('pedidos', JSON.stringify(getLocalStoragePedidos))
+    mostrarModalCarrinho();
+    return;
 }
