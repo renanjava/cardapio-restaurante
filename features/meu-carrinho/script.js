@@ -7,7 +7,7 @@ async function renderCarrinho() {
     lista.innerHTML = '';
     let total = 0;
     let totalQtd = 0;
-    if (!pedidos) {
+    if (!pedidos || pedidos.length == 0) {
         lista.innerHTML = `
             <div class="carrinho__vazio">
                 <p>Seu carrinho está vazio.</p>
@@ -49,7 +49,8 @@ async function renderCarrinho() {
         btnRemove.className = 'carrinho__card-remove';
         btnRemove.innerHTML = '<i class="fa-solid fa-trash"></i>';
         btnRemove.title = "Remover pedido";
-        btnRemove.onclick = () => removerPedido(idx);
+        btnRemove.id = pedido.id;
+        btnRemove.onclick = () => removerPedido(pedido.id);
 
         iconsDiv.appendChild(btnEdit);
         iconsDiv.appendChild(btnRemove);
@@ -115,12 +116,16 @@ function alterarQtd(idx, delta) {
     renderCarrinho();
 }
 
-function removerPedido() {
-    localStorage.removeItem('pedidos')
+function removerPedido(idPedido) {
+    const pedidosLocalStorage = JSON.parse(localStorage.getItem('pedidos'));
+    const pedidoRemovido = pedidosLocalStorage.filter((pedido) => pedido.id != idPedido)
+    console.log({ pedidosLocalStorage, pedidoRemovido });
+
+    localStorage.setItem('pedidos', JSON.stringify(pedidoRemovido))
     renderCarrinho();
 }
 
-function editarPedido(idx) {
+function editarPedido() {
     alert("Funcionalidade de edição em breve!");
 }
 
