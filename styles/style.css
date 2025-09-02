@@ -111,6 +111,36 @@ body {
     background-color: var(--cor-primaria);
     color: var(--cor-textos-primario);
     border-color: transparent;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: none;
+    border-bottom: 2px solid transparent;
+    padding-bottom: var(--padding-xs);
+}
+
+.menu__opcao:hover:not(:disabled) {
+    color: var(--cor-terciaria);
+    transform: translateY(-2px);
+}
+
+.menu__opcao:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.loading-spinner {
+    border: 3px solid var(--cor-secundaria);
+    border-top: 3px solid var(--cor-terciaria);
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    animation: spin 1s linear infinite;
+    margin: 0 auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 
 .opcao__texto {
@@ -126,6 +156,36 @@ body {
 .active {
     color: var(--cor-textos-primario);
     border-bottom: solid 0.15rem var(--cor-terciaria);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        border-bottom-color: var(--cor-terciaria);
+    }
+    50% {
+        border-bottom-color: rgba(255, 165, 0, 0.5);
+    }
+}
+
+.lista__produtos.loading {
+    pointer-events: none;
+}
+
+.imagem__produto {
+    transition: transform 0.3s ease;
+}
+
+.imagem__produto:hover {
+    transform: scale(1.05);
+}
+
+.container__lista {
+    transition: opacity 0.3s ease;
+}
+
+.opcoes__menu {
+    transition: all 0.3s ease;
 }
 
 .icon {
@@ -174,6 +234,13 @@ body {
     border-radius: 1.25rem;
     margin: 0 var(--margin-xs);
     margin-bottom: var(--margin-xl);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform, opacity;
+}
+
+.item__produto:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
 }
 
 .imagem__produto {
