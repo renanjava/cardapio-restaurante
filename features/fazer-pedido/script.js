@@ -2,7 +2,20 @@ let titulo;
 
 document.addEventListener('DOMContentLoaded', () => {
     setarTituloProduto()
-    getCardapioDia("sabado")
+
+    const diasDaSemana = [
+        'domingo',
+        'segunda',
+        'terca',
+        'quarta',
+        'quinta',
+        'sexta',
+        'sabado'
+    ];
+    const hoje = new Date();
+    const diaDaSemanaNumero = hoje.getDay();
+
+    getCardapioDia(diasDaSemana[diaDaSemanaNumero])
 })
 
 
