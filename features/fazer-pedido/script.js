@@ -40,6 +40,91 @@ function forcarUmCheckboxSelecionado(dia) {
     });
 }
 
+function mostrarCardapioSemanal() {
+    document.getElementById('btn-cardapio-semanal').onclick = async function () {
+        const modal = document.createElement('div');
+        modal.id = 'modal-cardapio-semanal';
+        modal.className = 'modal-cardapio-semanal-bg';
+        modal.style.position = 'fixed';
+        modal.style.top = '0';
+        modal.style.left = '0';
+        modal.style.width = '100vw';
+        modal.style.height = '100vh';
+        modal.style.background = 'rgba(0,0,0,0.5)';
+        modal.style.display = 'flex';
+        modal.style.alignItems = 'center';
+        modal.style.justifyContent = 'center';
+        modal.style.zIndex = '9999';
+
+        const content = document.createElement('div');
+        content.className = 'modal-cardapio-semanal-content';
+        content.style.background = '#fff';
+        content.style.padding = '32px 24px';
+        content.style.borderRadius = '12px';
+        content.style.boxShadow = '0 4px 24px rgba(0,0,0,0.15)';
+        content.style.maxWidth = '95vw';
+        content.style.maxHeight = '90vh';
+        content.style.overflowY = 'auto';
+        content.style.position = 'relative';
+
+        const btnClose = document.createElement('button');
+        btnClose.innerHTML = '<i class="fa-solid fa-xmark"></i>';
+        btnClose.className = 'btn-close-modal';
+        btnClose.style.position = 'absolute';
+        btnClose.style.top = '12px';
+        btnClose.style.right = '12px';
+        btnClose.style.background = 'none';
+        btnClose.style.border = 'none';
+        btnClose.style.fontSize = '1.5rem';
+        btnClose.style.cursor = 'pointer';
+        btnClose.onclick = () => document.body.removeChild(modal);
+
+        content.appendChild(btnClose);
+
+        const titulo = document.createElement('h2');
+        titulo.textContent = 'Cardápio da Semana';
+        titulo.style.marginBottom = '18px';
+        content.appendChild(titulo);
+
+        const response = await fetch('../../data/cardapio-dia.json');
+        const cardapio = await response.json();
+
+        Object.entries(cardapio).forEach(([dia, dados]) => {
+            const diaDiv = document.createElement('div');
+            diaDiv.style.marginBottom = '18px';
+
+            const nomeDia = document.createElement('h3');
+            nomeDia.textContent = dia.charAt(0).toUpperCase() + dia.slice(1);
+            nomeDia.style.color = '#e67e22';
+            nomeDia.style.marginBottom = '8px';
+            diaDiv.appendChild(nomeDia);
+
+            const listaCardapio = document.createElement('ul');
+            listaCardapio.style.marginBottom = '6px';
+            listaCardapio.style.paddingLeft = '18px';
+            listaCardapio.innerHTML = dados.opcaoCardapio.map(item => `<li>${item.name}</li>`).join('');
+            diaDiv.appendChild(listaCardapio);
+
+            const carnesTitulo = document.createElement('strong');
+            carnesTitulo.textContent = 'Carnes: ';
+            diaDiv.appendChild(carnesTitulo);
+
+            const listaCarnes = document.createElement('span');
+            listaCarnes.textContent = dados.opcaoCarne.map(item => item.name).join(', ');
+            diaDiv.appendChild(listaCarnes);
+
+            content.appendChild(diaDiv);
+        });
+        const diasGrid = document.createElement('div');
+        diasGrid.className = 'dias-grid';
+
+        content.appendChild(diasGrid)
+
+        modal.appendChild(content);
+        document.body.appendChild(modal);
+    };
+}
+
 function getCardapioDia(dia) {
     fetch(`../../data/cardapio-dia.json`)
         .then(response => response.json())

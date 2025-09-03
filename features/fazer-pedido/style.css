@@ -82,6 +82,131 @@ body {
     align-items: center;
 }
 
+.btn-cardapio-semanal {
+    background: var(--cor-terciaria);
+    color: var(--cor-primaria);
+    border: none;
+    border-radius: 8px;
+    padding: 10px 24px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.10);
+    transition: background 0.2s, color 0.2s;
+}
+
+.btn-cardapio-semanal:hover {
+    background: var(--cor-primaria);
+    color: var(--cor-terciaria);
+    border: 1px solid var(--cor-terciaria);
+}
+
+.modal-cardapio-semanal-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+.modal-cardapio-semanal-content {
+    background: #fff;
+    padding: 2.2rem 1.5rem 1.5rem 1.5rem;
+    border-radius: 18px;
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.18);
+    max-width: 95vw;
+    width: 420px;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    animation: modalShow 0.3s;
+}
+
+@keyframes modalShow {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.modal-cardapio-semanal-content h2 {
+    font-size: 1.5rem;
+    color: var(--cor-terciaria);
+    font-family: var(--fonte-secundaria);
+    text-align: center;
+    margin-bottom: 0.5rem;
+}
+
+.modal-cardapio-semanal-content h3 {
+    font-size: 1.1rem;
+    color: var(--cor-terciaria);
+    margin-bottom: 0.3rem;
+    margin-top: 0.8rem;
+    font-family: var(--fonte-secundaria);
+}
+
+.modal-cardapio-semanal-content ul {
+    margin: 0 0 0.5rem 0;
+    padding-left: 1.2em;
+}
+
+.modal-cardapio-semanal-content li {
+    font-size: 1rem;
+    color: var(--cor-textos-primario);
+    margin-bottom: 0.2em;
+    font-family: var(--fonte-primaria);
+}
+
+.modal-cardapio-semanal-content strong {
+    color: var(--cor-terciaria);
+    font-size: 1rem;
+}
+
+.modal-cardapio-semanal-content span {
+    font-size: 1rem;
+    color: var(--cor-textos-primario);
+}
+
+.modal-cardapio-semanal-content .btn-close-modal {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: none;
+    border: none;
+    font-size: 2rem;
+    color: var(--cor-terciaria);
+    cursor: pointer;
+    transition: color 0.2s;
+    z-index: 2;
+}
+
+.modal-cardapio-semanal-content .btn-close-modal:hover {
+    color: #e74c3c;
+}
+
+.modal-cardapio-semanal-content .dias-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--gap-m);
+}
+
 .aviso__container {
     width: 100%;
     background: rgba(255, 154, 0, 0.12);
@@ -267,6 +392,57 @@ body {
     .aviso__container {
         font-size: var(--font-size-s);
         padding: var(--padding-xs);
+    }
+
+    .modal-cardapio-semanal-content {
+        width: 90vw;
+        max-width: 400px;
+        min-width: 260px;
+        padding: var(--padding-m) var(--padding-s);
+        border-radius: 14px;
+        font-size: var(--font-size-s);
+        box-shadow: 0 8px 40px rgba(0, 0, 0, 0.22);
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: var(--gap-s);
+        justify-items: stretch;
+        align-items: flex-start;
+        overflow-y: auto;
+    }
+
+    .modal-cardapio-semanal-content h2 {
+        font-size: var(--font-size-base);
+        grid-column: 1 / span 2;
+        text-align: center;
+        margin-bottom: var(--margin-xs);
+    }
+
+    .modal-cardapio-semanal-content h3 {
+        font-size: var(--font-size-s);
+        margin-bottom: var(--margin-2xs);
+        margin-top: var(--margin-xs);
+        color: var(--cor-terciaria);
+    }
+
+    .modal-cardapio-semanal-content ul {
+        margin-bottom: var(--margin-xs);
+        padding-left: var(--padding-xs);
+    }
+
+    .modal-cardapio-semanal-content li,
+    .modal-cardapio-semanal-content strong,
+    .modal-cardapio-semanal-content span {
+        font-size: var(--font-size-xs);
+    }
+
+    .modal-cardapio-semanal-content .btn-close-modal {
+        font-size: 1.2rem;
+        top: var(--margin-xs);
+        right: var(--margin-xs);
+    }
+
+    .modal-cardapio-semanal-content .dias-grid {
+        gap: var(--gap-xs);
     }
 
     .btn-carrinho {
