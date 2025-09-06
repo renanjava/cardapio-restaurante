@@ -143,7 +143,7 @@ async function renderCarrinho() {
         btnEdit.className = 'carrinho__card-edit';
         btnEdit.innerHTML = '<i class="fa-solid fa-pencil"></i>';
         btnEdit.title = "Editar pedido";
-        btnEdit.onclick = () => editarPedido(idx);
+        btnEdit.onclick = () => editarPedido(pedido.id, pedido.tamanhoMarmita);
 
         const btnRemove = document.createElement('button');
         btnRemove.className = 'carrinho__card-remove';
@@ -226,8 +226,8 @@ function removerPedido(idPedido) {
     renderCarrinho();
 }
 
-function editarPedido() {
-    alert("Funcionalidade de edição em breve!");
+function editarPedido(idPedido, tamanhoMarmita) {
+    window.location.href = `../fazer-pedido/index.html?titulo=${encodeURIComponent(tamanhoMarmita)}&edit=${idPedido}`;
 }
 
 async function enviarPedido() {

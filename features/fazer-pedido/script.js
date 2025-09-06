@@ -1,7 +1,15 @@
 let titulo;
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     setarTituloProduto()
+
+    const params = new URLSearchParams(window.location.search);
+    const editId = params.get('edit');
+    if (editId) {
+        console.log({titulo});
+        
+        await carregarPedidoParaEdicao(editId);
+    }
 
     const diasDaSemana = [
         'domingo',
@@ -219,6 +227,26 @@ function mostrarModalCarrinho() {
     };
 }
 
+async function carregarPedidoParaEdicao(idPedido) {
+    const pedidos = JSON.parse(localStorage.getItem('pedidos')) || [];
+    const pedido = pedidos.find(p => p.id == idPedido);
+    if (!pedido) return;
+
+    setTimeout(() => {
+        const carneCheckboxes = document.querySelectorAll('input[name="opcaoCarne"]');
+        carneCheckboxes.forEach(cb => {
+            cb.checked = cb.id === pedido.carne;
+        });
+    }, 300);
+
+    setTimeout(() => {
+        const cardapioCheckboxes = document.querySelectorAll('input[name="opcaoCardapio"]');
+        cardapioCheckboxes.forEach(cb => {
+            cb.checked = pedido.adicionarItens.includes(cb.id);
+        });
+    }, 300);
+}
+
 function gerarIdUnico() {
     return Date.now().toString(36) + Math.random().toString(36).substring(2, 8);
 }
@@ -239,20 +267,32 @@ function adicionarAoCarrinho() {
 
     const getLocalStoragePedidos = JSON.parse(localStorage.getItem("pedidos"))
 
+    const params = new URLSearchParams(window.location.search);
+    const editId = params.get('edit');
+
     const pedidoPayload = [{
-        id: gerarIdUnico(),
+        id: editId || gerarIdUnico(),
         tamanhoMarmita: titulo,
         carne: selectedCarneValues[0],
         adicionarItens: selectedCardapioValues,
         removerItens: unselectedCardapioValues,
         quantidade: 1,
     }]
+    
 
     if (getLocalStoragePedidos == null) {
         localStorage.setItem('pedidos', JSON.stringify(pedidoPayload))
         mostrarModalCarrinho();
         return;
     }
+
+    if (editId) {
+        pedidos = getLocalStoragePedidos.map(p => p.id == editId ? pedidoPayload[0] : p);
+        localStorage.setItem('pedidos', JSON.stringify(pedidos))
+        mostrarModalCarrinho();
+        return;
+    }
+
     getLocalStoragePedidos.push(pedidoPayload[0]);
     localStorage.setItem('pedidos', JSON.stringify(getLocalStoragePedidos))
     mostrarModalCarrinho();
