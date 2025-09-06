@@ -1,10 +1,11 @@
 let titulo;
+let editId;
 
 document.addEventListener('DOMContentLoaded', async () => {
     setarTituloProduto()
 
     const params = new URLSearchParams(window.location.search);
-    const editId = params.get('edit');
+    editId = params.get('edit');
     if (editId) {
         console.log({titulo});
         
@@ -305,9 +306,6 @@ function adicionarAoCarrinho() {
     }
 
     const getLocalStoragePedidos = JSON.parse(localStorage.getItem("pedidos"))
-
-    const params = new URLSearchParams(window.location.search);
-    const editId = params.get('edit');
 
     const pedidoPayload = [{
         id: editId || gerarIdUnico(),
