@@ -233,3 +233,80 @@ function editarPedido() {
 function pagarCarrinho() {
     alert("Pagamento em desenvolvimento!");
 }
+
+async function enviarPedido() {
+    const pedidos = JSON.parse(localStorage.getItem("pedidos")) || [];
+    let mensagem = "*Pedido Restaurante da Juliana*\n\n";
+    let total = 0;
+    let taxaEntrega = 0;
+
+    const hoje = new Date();
+    const isSabado = hoje.getDay() === 6;
+
+    const marmitas = await fetch('../../data/marmitas.json').then(r => r.json());
+
+    for (const [idx, pedido] of pedidos.entries()) {
+        mensagem += `*${idx + 1}.* Marmita: ${pedido.tamanhoMarmita}\n`;
+        mensagem += `   Carne: ${pedido.carne}\n`;
+
+        if (pedido.adicionarItens?.length) {
+            mensagem += `   Adicionais: ${pedido.adicionarItens.join(", ")}\n`;
+        }
+        if (pedido.removerItens?.length) {
+            mensagem += `   Sem: ${pedido.removerItens.join(", ")}\n`;
+        }
+
+        mensagem += `   Quantidade: ${pedido.quantidade}\n`;
+
+        const marmitaData = marmitas.find(m => m.titulo === pedido.tamanhoMarmita);
+        const valorUnitario = marmitaData?.valor ?? 0;
+
+        mensagem += `   Valor unitário: R$ ${valorUnitario.toFixed(2)}\n`;
+        mensagem += `   Subtotal: R$ ${(valorUnitario * pedido.quantidade).toFixed(2)}\n\n`;
+
+        total += valorUnitario * pedido.quantidade;
+    }
+
+
+    const retirada = document.querySelector('input[type=checkbox][name=retirada]:checked');
+    if (retirada) {
+        mensagem += `*Forma de retirada:* ${retirada.value === 'balcao' ? 'Balcão' : 'Entrega'}\n`;
+        if (retirada.value === 'entrega') {
+            const rua = document.getElementById('rua').value.trim();
+            const numero = document.getElementById('numero').value.trim();
+            mensagem += `Endereço: ${rua}, ${numero}\n`;
+            if (isSabado) {
+                taxaEntrega = 2;
+                mensagem += `*Taxa de entrega (sábado):* R$ 2,00\n`;
+            }
+        }
+    }
+
+    const pagamento = document.querySelector('input[type=checkbox][name=pagamento]:checked');
+    if (pagamento) {
+        mensagem += `*Forma de pagamento:* ${pagamento.value.charAt(0).toUpperCase() + pagamento.value.slice(1)}\n`;
+        if (pagamento.value === 'pix') {
+            mensagem += `Chave Pix: 03085367977\n`;
+        }
+        if (pagamento.value === 'dinheiro') {
+            const troco = document.querySelector('input[type=radio][name=troco]:checked');
+            if (troco) {
+                mensagem += `Precisa de troco? ${troco.value === 'sim' ? 'Sim' : 'Não'}\n`;
+                if (troco.value === 'sim') {
+                    const valorTroco = document.getElementById('valorTroco').value.trim();
+                    mensagem += `Troco para: R$ ${valorTroco}\n`;
+                }
+            }
+        }
+    }
+
+    const valorFinal = total + taxaEntrega;
+    mensagem += `\n*Valor total:* R$ ${valorFinal.toFixed(2)}\n`;
+
+    const numeroTelefone = "5544988129535";
+    const mensagemAdaptada = encodeURIComponent(mensagem);
+    const url = `https://wa.me/${numeroTelefone}?text=${mensagemAdaptada}`;
+    window.open(url, '_blank');
+
+    fecharModalPedido();
+}
