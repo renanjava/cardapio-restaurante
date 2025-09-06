@@ -54,6 +54,31 @@ function forcarUmCheckboxSelecionado(dia) {
     });
 }
 
+function aplicarRegraFeijaoSabado() {
+    const cardapioCheckboxes = document.querySelectorAll('input[type="checkbox"][name="opcaoCardapio"]');
+    const feijaoIds = [];
+    cardapioCheckboxes.forEach(cb => {
+        if (cb.id.toLowerCase().includes('feijão preto') || cb.id.toLowerCase().includes('feijão carioca')) {
+            feijaoIds.push(cb.id);
+        }
+    });
+
+    cardapioCheckboxes.forEach(cb => {
+        if (feijaoIds.includes(cb.id)) {
+            cb.addEventListener('change', () => {
+                if (cb.checked) {
+                    feijaoIds.forEach(id => {
+                        if (id !== cb.id) {
+                            const outro = document.getElementById(id);
+                            if (outro) outro.checked = false;
+                        }
+                    });
+                }
+            });
+        }
+    });
+}
+
 async function mostrarCardapioSemanal() {
     const modal = document.createElement('div');
     modal.id = 'modal-cardapio-semanal';
@@ -145,6 +170,9 @@ function getCardapioDia(dia) {
             montarCheckboxes(cardapioDia.opcaoCardapio, true, 'opcaoCardapio', 'cardapioDiv')
             montarCheckboxes(cardapioDia.opcaoCarne, false, 'opcaoCarne', 'carneDiv')
             forcarUmCheckboxSelecionado(dia)
+            if(dia === 'sabado') {
+                aplicarRegraFeijaoSabado()
+            }
         })
 }
 
@@ -180,7 +208,18 @@ function montarCheckboxes(opcoesArray, isChecked, nomeOpcao, nomeDiv) {
         input.type = 'checkbox'
         input.name = nomeOpcao
         input.id = opcao.name
-        input.checked = isChecked
+
+        if (nomeOpcao === 'opcaoCardapio') {
+            if (opcao.name.toLowerCase().includes('feijão carioca')) {
+                input.checked = true;
+            } else if (opcao.name.toLowerCase().includes('feijão preto')) {
+                input.checked = false;
+            } else {
+                input.checked = isChecked;
+            }
+        } else {
+            input.checked = isChecked;
+        }
 
         label.appendChild(input)
         divOpcao.appendChild(label)
