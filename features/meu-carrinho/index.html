@@ -62,6 +62,11 @@
                         <div id="entregaCampos" style="display:none;">
                             <input type="text" id="rua" placeholder="Nome da rua">
                             <input type="text" id="numero" placeholder="Número">
+                            <br></br>
+                            <div id="obsEntrega" class="modal__obs-entrega" style="display:none;">
+                                <i class="fa-solid fa-circle-info"></i>
+                                <span>Em dias de <strong>sábado</strong> as entregas de marmitas custam <strong>R$ 2,00</strong></span>
+                            </div>
                         </div>
                     </div>
                     <div class="modal__coluna">
@@ -89,11 +94,17 @@
                         </div>
                         <div id="dinheiroCampos" style="display:none;">
                             <span>Precisa de troco?</span>
-                            <label><input type="radio" name="troco" value="nao" onchange="onTrocoChange(this)">
-                                Não</label>
-                            <label><input type="radio" name="troco" value="sim" onchange="onTrocoChange(this)">
-                                Sim</label>
-                            <input type="number" id="valorTroco" placeholder="Valor para troco" style="display:none;">
+                            <div class="modal__troco-opcoes">
+                                <label>
+                                    <input type="radio" name="troco" value="sim" onchange="onTrocoChange(this)">
+                                    Sim
+                                </label>
+                                <label>
+                                    <input type="radio" name="troco" value="nao" onchange="onTrocoChange(this)">
+                                    Não
+                                </label>
+                            </div>
+                            <input type="number" id="valorTroco" placeholder="Para quantos reais?" style="display:none;">
                         </div>
                     </div>
                 </div>

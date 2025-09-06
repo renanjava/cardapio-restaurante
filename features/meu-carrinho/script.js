@@ -29,10 +29,12 @@ function onRetiradaChange(checkbox) {
     });
     if (checkbox.value === 'entrega' && checkbox.checked) {
         document.getElementById('entregaCampos').style.display = 'block';
+        document.getElementById('obsEntrega').style.display = 'flex';
     } else {
         document.getElementById('entregaCampos').style.display = 'none';
         document.getElementById('rua').value = '';
         document.getElementById('numero').value = '';
+        document.getElementById('obsEntrega').style.display = 'none';
     }
     validarModalPedido();
 }
