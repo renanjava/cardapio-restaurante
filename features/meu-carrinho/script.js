@@ -242,7 +242,7 @@ async function enviarPedido() {
     const marmitas = await fetch('../../data/marmitas.json').then(r => r.json());
 
     for (const [idx, pedido] of pedidos.entries()) {
-        mensagem += `*${idx + 1}.* Marmita: ${pedido.tamanhoMarmita}\n`;
+        mensagem += `*${pedido.quantidade} ${pedido.tamanhoMarmita}*\n`;
         mensagem += `   Carne: ${pedido.carne}\n`;
 
         if (pedido.adicionarItens?.length) {
@@ -251,14 +251,13 @@ async function enviarPedido() {
         if (pedido.removerItens?.length) {
             mensagem += `   Sem: ${pedido.removerItens.join(", ")}\n`;
         }
-        mensagem += `   Quantidade: ${pedido.quantidade}\n`;
 
         const marmitaData = marmitas.find(m => m.titulo === pedido.tamanhoMarmita);
-        const valorUnitario = marmitaData?.valor ?? 0;
+        let valorUnitario = marmitaData?.valor ?? 0;
         if (pedido.tamanhoMarmita === "Marmita Mini" && pedido.carne === "Bisteca de boi") {
             mensagem += `   *Acréscimo Bisteca de boi: R$ 2,00*\n`;
+            valorUnitario += 2;
         }
-        valorUnitario += 2;
 
         mensagem += `   Valor unitário: R$ ${valorUnitario.toFixed(2)}\n`;
         mensagem += `   Subtotal: R$ ${(valorUnitario * pedido.quantidade).toFixed(2)}\n\n`;
