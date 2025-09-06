@@ -1,7 +1,106 @@
 document.addEventListener('DOMContentLoaded', renderCarrinho);
+
+function abrirModalPedido() {
+    document.getElementById('modalPedido').style.display = 'block';
+    resetModalCampos();
+}
+
+function fecharModalPedido() {
+    document.getElementById('modalPedido').style.display = 'none';
+}
+
+function resetModalCampos() {
+    document.querySelectorAll('input[type=checkbox][name=retirada]').forEach(cb => cb.checked = false);
+    document.getElementById('entregaCampos').style.display = 'none';
+    document.getElementById('rua').value = '';
+    document.getElementById('numero').value = '';
+    document.querySelectorAll('input[type=checkbox][name=pagamento]').forEach(cb => cb.checked = false);
+    document.getElementById('pixCampos').style.display = 'none';
+    document.getElementById('dinheiroCampos').style.display = 'none';
+    document.querySelectorAll('input[type=radio][name=troco]').forEach(rb => rb.checked = false);
+    document.getElementById('valorTroco').style.display = 'none';
+    document.getElementById('valorTroco').value = '';
+    document.getElementById('btnEnviarPedido').disabled = true;
+}
+
+function onRetiradaChange(checkbox) {
+    document.querySelectorAll('input[type=checkbox][name=retirada]').forEach(cb => {
+        if (cb !== checkbox) cb.checked = false;
+    });
+    if (checkbox.value === 'entrega' && checkbox.checked) {
+        document.getElementById('entregaCampos').style.display = 'block';
+    } else {
+        document.getElementById('entregaCampos').style.display = 'none';
+        document.getElementById('rua').value = '';
+        document.getElementById('numero').value = '';
+    }
+    validarModalPedido();
+}
+
+function onPagamentoChange(checkbox) {
+    document.querySelectorAll('input[type=checkbox][name=pagamento]').forEach(cb => {
+        if (cb !== checkbox) cb.checked = false;
+    });
+    document.getElementById('pixCampos').style.display = (checkbox.value === 'pix' && checkbox.checked) ? 'block' : 'none';
+    document.getElementById('dinheiroCampos').style.display = (checkbox.value === 'dinheiro' && checkbox.checked) ? 'block' : 'none';
+    if (checkbox.value !== 'dinheiro') {
+        document.querySelectorAll('input[type=radio][name=troco]').forEach(rb => rb.checked = false);
+        document.getElementById('valorTroco').style.display = 'none';
+        document.getElementById('valorTroco').value = '';
+    }
+    validarModalPedido();
+}
+
+function onTrocoChange(radio) {
+    if (radio.value === 'sim') {
+        document.getElementById('valorTroco').style.display = 'inline-block';
+    } else {
+        document.getElementById('valorTroco').style.display = 'none';
+        document.getElementById('valorTroco').value = '';
+    }
+    validarModalPedido();
+}
+
+function validarModalPedido() {
+    const retiradaSelecionada = document.querySelector('input[type=checkbox][name=retirada]:checked');
+    let entregaOk = true;
+    if (retiradaSelecionada && retiradaSelecionada.value === 'entrega') {
+        const rua = document.getElementById('rua').value.trim();
+        const numero = document.getElementById('numero').value.trim();
+        entregaOk = rua.length > 0 && numero.length > 0;
+    }
+    const pagamentoSelecionado = document.querySelector('input[type=checkbox][name=pagamento]:checked');
+    let pagamentoOk = !!pagamentoSelecionado;
+    if (pagamentoSelecionado && pagamentoSelecionado.value === 'dinheiro') {
+        const trocoSelecionado = document.querySelector('input[type=radio][name=troco]:checked');
+        pagamentoOk = !!trocoSelecionado;
+        if (trocoSelecionado && trocoSelecionado.value === 'sim') {
+            const valorTroco = document.getElementById('valorTroco').value.trim();
+            pagamentoOk = valorTroco.length > 0 && !isNaN(Number(valorTroco)) && Number(valorTroco) > 0;
+        }
+    }
+    document.getElementById('btnEnviarPedido').disabled = !(retiradaSelecionada && entregaOk && pagamentoOk);
+}
+
+function enviarPedido() {
+    fecharModalPedido();
+    alert('Pedido enviado com sucesso!');
+}
+
 let pedidos;
 
 async function renderCarrinho() {
+    document.querySelector('.btn-pagar').addEventListener('click', abrirModalPedido);
+    document.addEventListener('input', function(e) {
+        if (
+            e.target.id === 'rua' ||
+            e.target.id === 'numero' ||
+            e.target.id === 'valorTroco'
+        ) {
+            validarModalPedido();
+        }
+    });
+
     pedidos = JSON.parse(localStorage.getItem("pedidos"))
     const lista = document.getElementById('carrinhoLista');
     lista.innerHTML = '';

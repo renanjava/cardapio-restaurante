@@ -34,9 +34,75 @@
             </div>
             <div id="carrinhoTotal" class="carrinho__total"></div>
             <button class="btn-pagar" onclick="pagarCarrinho()">
-                <i class="fa-solid fa-credit-card"></i> Pagar
+                <i class="fa-solid fa-credit-card"></i> Continuar
             </button>
         </section>
+<div id="modalPedido" class="modal__pedido" style="display:none;">
+    <div class="modal__content modal__content--pedido">
+        <span class="modal__close" onclick="fecharModalPedido()">&times;</span>
+        <div class="modal__grid">
+            <div class="modal__aside">
+                <h2 class="modal__titulo">Finalizar Pedido</h2>
+            </div>
+            <div class="modal__principal">
+                <div class="modal__colunas">
+                    <div class="modal__coluna">
+                        <h3>Forma de Retirada</h3>
+                        <div class="modal__opcoes">
+                            <label class="modal__checkbox">
+                                <input type="checkbox" name="retirada" value="balcao" onchange="onRetiradaChange(this)">
+                                Balcão
+                            </label>
+                            <label class="modal__checkbox">
+                                <input type="checkbox" name="retirada" value="entrega"
+                                    onchange="onRetiradaChange(this)">
+                                Entrega
+                            </label>
+                        </div>
+                        <div id="entregaCampos" style="display:none;">
+                            <input type="text" id="rua" placeholder="Nome da rua">
+                            <input type="text" id="numero" placeholder="Número">
+                        </div>
+                    </div>
+                    <div class="modal__coluna">
+                        <h3>Forma de Pagamento</h3>
+                        <div class="modal__opcoes">
+                            <label class="modal__checkbox">
+                                <input type="checkbox" name="pagamento" value="cartao"
+                                    onchange="onPagamentoChange(this)">
+                                Cartão
+                            </label>
+                            <label class="modal__checkbox">
+                                <input type="checkbox" name="pagamento" value="pix" onchange="onPagamentoChange(this)">
+                                Pix
+                            </label>
+                            <label class="modal__checkbox">
+                                <input type="checkbox" name="pagamento" value="dinheiro"
+                                    onchange="onPagamentoChange(this)">
+                                Dinheiro
+                            </label>
+                        </div>
+                        <div id="pixCampos" style="display:none;">
+                            <span>Chave Pix: <strong>03085367977</strong></span>
+                            <br></br>
+                            <span>Envie o <strong>comprovante</strong> no número do restaurante</span>
+                        </div>
+                        <div id="dinheiroCampos" style="display:none;">
+                            <span>Precisa de troco?</span>
+                            <label><input type="radio" name="troco" value="nao" onchange="onTrocoChange(this)">
+                                Não</label>
+                            <label><input type="radio" name="troco" value="sim" onchange="onTrocoChange(this)">
+                                Sim</label>
+                            <input type="number" id="valorTroco" placeholder="Valor para troco" style="display:none;">
+                        </div>
+                    </div>
+                </div>
+                <button id="btnEnviarPedido" class="modal__enviar" disabled onclick="enviarPedido()">Enviar
+                    Pedido</button>
+            </div>
+        </div>
+    </div>
+</div>
     </main>
     <footer class="rodape__container">
         <p class="rodape__texto">Desenvolvido por Renan Geraldini Leão.</p>

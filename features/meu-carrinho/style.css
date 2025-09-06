@@ -262,6 +262,164 @@ body {
     color: var(--cor-terciaria);
     border: 1px solid var(--cor-terciaria);
 }
+.modal__pedido {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.45);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal__content--pedido {
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.18);
+    border-radius: 18px;
+    background: var(--cor-primaria, #fff);
+    padding: 0;
+    min-width: 340px;
+    max-width: 700px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.modal__grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 0;
+    width: 100%;
+}
+
+.modal__aside {
+    background: var(--cor-secundaria, #f7f7f7);
+    border-top-left-radius: 18px;
+    border-bottom-left-radius: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2.5rem 1.2rem;
+}
+
+.modal__titulo {
+    font-size: 2rem;
+    font-family: var(--fonte-secundaria);
+    color: var(--cor-terciaria);
+    font-weight: 700;
+    text-align: left;
+}
+
+.modal__principal {
+    background: #fff;
+    border-top-right-radius: 18px;
+    border-bottom-right-radius: 18px;
+    padding: 2.5rem 2rem 2rem 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.modal__close {
+    position: absolute;
+    top: 18px;
+    right: 22px;
+    font-size: 1.7rem;
+    color: var(--cor-terciaria);
+    cursor: pointer;
+    font-weight: bold;
+    transition: color 0.2s;
+    z-index: 2;
+}
+
+.modal__close:hover {
+    color: #e67e22;
+}
+
+.modal__colunas {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-bottom: 1rem;
+}
+
+.modal__coluna h3 {
+    font-size: 1.1rem;
+    color: var(--cor-terciaria);
+    font-family: var(--fonte-secundaria);
+    margin-bottom: 0.3rem;
+}
+
+.modal__opcoes {
+    background: #f3f3f3;
+    border-radius: 8px;
+    padding: 0.7rem 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.modal__checkbox {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1rem;
+    font-family: var(--fonte-primaria);
+    cursor: pointer;
+}
+
+.modal__coluna input[type="checkbox"],
+.modal__coluna input[type="radio"] {
+    accent-color: var(--cor-terciaria);
+    width: 20px;
+    height: 20px;
+}
+
+#entregaCampos,
+#pixCampos,
+#dinheiroCampos {
+    background: #fffbe6;
+    border-radius: 8px;
+    padding: 0.7rem 0.5rem;
+    margin-top: 0.3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+#entregaCampos input,
+#dinheiroCampos input {
+    padding: 0.5rem;
+    border-radius: 6px;
+    border: 1px solid var(--cor-terciaria);
+    font-size: 1rem;
+    margin-top: 0.2rem;
+    font-family: var(--fonte-primaria);
+}
+
+.modal__enviar {
+    width: 100%;
+    padding: 0.9rem;
+    background: var(--cor-terciaria);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.15rem;
+    font-family: var(--fonte-secundaria);
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s;
+    margin-top: 0.5rem;
+}
+
+.modal__enviar:disabled {
+    background: #ccc;
+    color: #888;
+    cursor: not-allowed;
+}
 
 .rodape__container {
     background: var(--cor-secundaria);
@@ -272,6 +430,33 @@ body {
     margin-top: auto;
     border-top-left-radius: 12px;
     border-top-right-radius: 12px;
+}
+
+@media (max-width: 900px) {
+    .modal__grid {
+        grid-template-columns: 1fr;
+    }
+
+    .modal__aside {
+        border-radius: 18px 18px 0 0;
+        padding: 1.2rem 0.5rem;
+        justify-content: center;
+    }
+
+    .modal__principal {
+        border-radius: 0 0 18px 18px;
+        padding: 1.2rem 0.5rem;
+    }
+
+    .modal__content--pedido {
+        min-width: 90vw;
+        max-width: 98vw;
+    }
+
+    .modal__colunas {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
 }
 
 @media (max-width: 700px) {
