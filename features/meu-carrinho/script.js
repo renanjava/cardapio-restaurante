@@ -1,3 +1,5 @@
+let pedidos;
+
 document.addEventListener('DOMContentLoaded', renderCarrinho);
 
 function abrirModalPedido() {
@@ -84,15 +86,7 @@ function validarModalPedido() {
     document.getElementById('btnEnviarPedido').disabled = !(retiradaSelecionada && entregaOk && pagamentoOk);
 }
 
-function enviarPedido() {
-    fecharModalPedido();
-    alert('Pedido enviado com sucesso!');
-}
-
-let pedidos;
-
 async function renderCarrinho() {
-    document.querySelector('.btn-pagar').addEventListener('click', abrirModalPedido);
     document.addEventListener('input', function(e) {
         if (
             e.target.id === 'rua' ||
@@ -122,12 +116,17 @@ async function renderCarrinho() {
         return;
     }
 
-    for (const [idx, pedido] of pedidos.entries()) {
-        const getMarmitaData = await fetch(`../../data/marmitas.json`)
+    let marmitaData = await fetch(`../../data/marmitas.json`)
             .then(response => response.json())
-            .then(data => data.find((marmita) => marmita.titulo == pedido.tamanhoMarmita));
 
-        total += getMarmitaData.valor * pedido.quantidade;
+    for (const [idx, pedido] of pedidos.entries()) {
+        const getMarmitaData = marmitaData.find((marmita) => marmita.titulo == pedido.tamanhoMarmita);
+
+        if (getMarmitaData.titulo === "Marmita Mini" && pedido.carne === "Bisteca de boi") {
+            total += (getMarmitaData.valor + 2) * pedido.quantidade;
+        } else {
+            total += getMarmitaData.valor * pedido.quantidade;
+        }
         totalQtd += pedido.quantidade;
 
         const card = document.createElement('div');
@@ -170,6 +169,7 @@ async function renderCarrinho() {
         <div class="carrinho__card-descricao"><b>Adicionar:</b> ${pedido.adicionarItens.length > 0 ? pedido.adicionarItens.join(", ") : 'apenas uma porção de carne'}</div>
         <div class="carrinho__card-descricao">${pedido.removerItens.length > 0 ? `<b>Remover:</b> ` + pedido.removerItens.join(", ") : ''}</div>
         <div class="carrinho__card-preco">R$ ${getMarmitaData.valor},00</div>
+        ${(getMarmitaData.titulo === "Marmita Mini" && pedido.carne === "Bisteca de boi") ? `<div class="carrinho__card-preco">+ R$ 2,00</div>` : ``}
     `;
 
         const qtdDiv = document.createElement('div');
@@ -230,10 +230,6 @@ function editarPedido() {
     alert("Funcionalidade de edição em breve!");
 }
 
-function pagarCarrinho() {
-    alert("Pagamento em desenvolvimento!");
-}
-
 async function enviarPedido() {
     const pedidos = JSON.parse(localStorage.getItem("pedidos")) || [];
     let mensagem = "*Pedido Restaurante da Juliana*\n\n";
@@ -255,11 +251,14 @@ async function enviarPedido() {
         if (pedido.removerItens?.length) {
             mensagem += `   Sem: ${pedido.removerItens.join(", ")}\n`;
         }
-
         mensagem += `   Quantidade: ${pedido.quantidade}\n`;
 
         const marmitaData = marmitas.find(m => m.titulo === pedido.tamanhoMarmita);
         const valorUnitario = marmitaData?.valor ?? 0;
+        if (pedido.tamanhoMarmita === "Marmita Mini" && pedido.carne === "Bisteca de boi") {
+            mensagem += `   *Acréscimo Bisteca de boi: R$ 2,00*\n`;
+        }
+        valorUnitario += 2;
 
         mensagem += `   Valor unitário: R$ ${valorUnitario.toFixed(2)}\n`;
         mensagem += `   Subtotal: R$ ${(valorUnitario * pedido.quantidade).toFixed(2)}\n\n`;

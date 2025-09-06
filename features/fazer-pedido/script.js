@@ -35,13 +35,6 @@ function setarTituloProduto() {
 
 function forcarUmCheckboxSelecionado(dia) {
     const checkboxes = document.querySelectorAll('input[type="checkbox"][name="opcaoCarne"]');
-
-    /*if (dia == "sabado") {
-        const todosCheckboxes = document.querySelectorAll('input[type="checkbox"][name="opcaoCardapio"]');
-        const feijoes = Array.from(todosCheckboxes).filter(input => {
-            return input.parentElement.textContent.includes("Feijão");
-        })
-    }*/
     checkboxes.forEach(cb => {
         cb.addEventListener('change', () => {
             if (cb.checked) {
@@ -160,9 +153,20 @@ function mostrarAvisoCarne(msg) {
 
 function montarCheckboxes(opcoesArray, isChecked, nomeOpcao, nomeDiv) {
     const divOpcao = document.getElementById(nomeDiv)
+    const params = new URLSearchParams(window.location.search)
+    const tituloMarmita = params.get('titulo')
+
     opcoesArray.forEach((opcao) => {
         const label = document.createElement('label')
-        label.textContent = opcao.name
+        let textoLabel = opcao.name;
+
+        if (nomeOpcao === 'opcaoCarne' && tituloMarmita === 'Marmita Mini' && opcao.name === 'Bisteca de boi') {
+            textoLabel += ' (+R$ 2,00)';
+            label.style.color = '#e67e22';
+            label.style.fontWeight = 'bold';
+        }
+
+        label.textContent = textoLabel
 
         const input = document.createElement('input')
         input.type = 'checkbox'
