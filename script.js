@@ -18,7 +18,10 @@ function criarLoadingSpinner() {
 
 function atualizarCarrinhoBadge() {
     let pedidos = JSON.parse(localStorage.getItem('pedidos'));
-    let totalQtd = pedidos.reduce((soma, pedido) => soma + (pedido.qtd || 1), 0);
+    let totalQtd = 0;
+    if(pedidos) {
+        totalQtd = pedidos.reduce((soma, pedido) => soma + (pedido.qtd || 1), 0);
+    }
     document.getElementById('carrinhoBadge').textContent = totalQtd;
 }
 
