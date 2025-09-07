@@ -1,0 +1,263 @@
+{
+    "segunda": {
+        "opcaoCardapio": [
+            {
+                "name": "Arroz branco"
+            },
+            {
+                "name": "Feijão carioca"
+            },
+            {
+                "name": "Macarrão alho e óleo"
+            },
+            {
+                "name": "Chuchu"
+            },
+            {
+                "name": "Vagem"
+            },
+            {
+                "name": "Cenoura"
+            },
+            {
+                "name": "Batata frita"
+            }
+        ],
+        "opcaoCarne": [
+            {
+                "name": "Frango parmegiana"
+            },
+            {
+                "name": "Frango à milanesa"
+            },
+            {
+                "name": "Frango grelhado"
+            },
+            {
+                "name": "Bife"
+            },
+            {
+                "name": "Bisteca de boi"
+            },
+            {
+                "name": "Bistequinha de Porco"
+            }
+        ]
+    },
+    "terca": {
+        "opcaoCardapio": [
+            {
+                "name": "Arroz branco"
+            },
+            {
+                "name": "Feijão carioca"
+            },
+            {
+                "name": "Macarrão molho vermelho"
+            },
+            {
+                "name": "Farofa"
+            },
+            {
+                "name": "Legumes"
+            },
+            {
+                "name": "Bolinho de arroz"
+            }
+        ],
+        "opcaoCarne": [
+            {
+                "name": "Frango à milanesa"
+            },
+            {
+                "name": "Frango grelhado"
+            },
+            {
+                "name": "Carne de panela"
+            },
+            {
+                "name": "Bife"
+            },
+            {
+                "name": "Bisteca de boi"
+            },
+            {
+                "name": "Bistequinha de porco"
+            }
+        ]
+    },
+    "quarta": {
+        "opcaoCardapio": [
+            {
+                "name": "Arroz branco"
+            },
+            {
+                "name": "Feijão carioca"
+            },
+            {
+                "name": "Macarrão molho branco"
+            },
+            {
+                "name": "Repolho refogado"
+            },
+            {
+                "name": "Farofa"
+            },
+            {
+                "name": "Mandioca frita"
+            }
+        ],
+        "opcaoCarne": [
+            {
+                "name": "Porco no tacho"
+            },
+            {
+                "name": "Frango à milanesa"
+            },
+            {
+                "name": "Frango grelhado"
+            },
+            {
+                "name": "Bife"
+            },
+            {
+                "name": "Bisteca de boi"
+            }
+        ]
+    },
+    "quinta": {
+        "opcaoCardapio": [
+            {
+                "name": "Arroz branco"
+            },
+            {
+                "name": "Feijão carioca"
+            },
+            {
+                "name": "Macarronese"
+            },
+            {
+                "name": "Purê de batata"
+            },
+            {
+                "name": "Farofa da casa"
+            },
+            {
+                "name": "Beterraba"
+            },
+            {
+                "name": "Abobrinha à milanesa"
+            }
+        ],
+        "opcaoCarne": [
+            {
+                "name": "Frango à milanesa"
+            },
+            {
+                "name": "Frango grelhado"
+            },
+            {
+                "name": "Carne de panela"
+            },
+            {
+                "name": "Bife"
+            },
+            {
+                "name": "Bisteca de boi"
+            },
+            {
+                "name": "Bistequinha de porco"
+            }
+        ]
+    },
+    "sexta": {
+        "opcaoCardapio": [
+            {
+                "name": "Arroz branco"
+            },
+            {
+                "name": "Feijão carioca"
+            },
+            {
+                "name": "Feijão tropeiro"
+            },
+            {
+                "name": "Couve"
+            },
+            {
+                "name": "Vinagrete"
+            },
+            {
+                "name": "Cabotiá"
+            },
+            {
+                "name": "Batata-doce frita"
+            }
+        ],
+        "opcaoCarne": [
+            {
+                "name": "Frango à milanesa"
+            },
+            {
+                "name": "Frango grelhado"
+            },
+            {
+                "name": "Carne de panela"
+            },
+            {
+                "name": "Bife"
+            },
+            {
+                "name": "Bisteca de boi"
+            },
+            {
+                "name": "Bistequinha de porco"
+            }
+        ]
+    },
+    "sabado": {
+        "opcaoCardapio": [
+            {
+                "name": "Arroz branco"
+            },
+            {
+                "name": "Feijão carioca"
+            },
+            {
+                "name": "Feijão preto com pernil de porco e calabresa"
+            },
+            {
+                "name": "Macarrão molho vermelho"
+            },
+            {
+                "name": "Farofa de couve"
+            },
+            {
+                "name": "Maionese"
+            },
+            {
+                "name": "Ovo frito"
+            }
+        ],
+        "opcaoCarne": [
+            {
+                "name": "Frango à milanesa"
+            },
+            {
+                "name": "Frango grelhado"
+            },
+            {
+                "name": "Carne de panela"
+            },
+            {
+                "name": "Bife"
+            },
+            {
+                "name": "Bisteca de boi"
+            },
+            {
+                "name": "Bistequinha de porco"
+            }
+        ]
+    }
+}

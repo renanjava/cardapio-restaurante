@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ptbr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,8 +10,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
         integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <script src="index.js"></script>
+    <script src="script.js"></script>
 </head>
+
 <body>
     <header>
         <div class="cabecalho__container">
@@ -20,7 +22,9 @@
                     <li class="lista-contato__item">
                         <img class="cabecalho__icone" src="assets/whatsapp.png" alt="Ícone do WhatsApp"
                             aria-label="WhatsApp">
-                        <a class="cabecalho__texto menu__opcao" href="https://api.whatsapp.com/send/?phone=5544988129535&text=Oi%2C+gostaria+de+fazer+um+pedido">(44) 988129535</a>
+                        <a class="cabecalho__texto menu__opcao"
+                            href="https://api.whatsapp.com/send/?phone=5544988129535&text=Oi%2C+gostaria+de+fazer+um+pedido">(44)
+                            988129535</a>
                     </li>
                     <li class="lista-contato__item">
                         <img class="cabecalho__icone" src="assets/localizacao.png" alt="Ícone da Localização"
@@ -30,17 +34,27 @@
                 </ul>
             </div>
         </div>
+
     </header>
 
     <main>
         <nav class="opcoes__menu">
-            <button class="menu__opcao opcao__texto active" disabled id="lanches" onclick="atualizarListaProdutos(id)">Lanches</button>
-            <button class="menu__opcao opcao__texto" id="combos" onclick="atualizarListaProdutos(id)">Combos</button>
+            <div class="opcoes__grupo">
+                <button class="menu__opcao opcao__texto" id="lanches"
+                    onclick="atualizarListaProdutos(id)">Lanches</button>
+                <button class="menu__opcao opcao__texto" id="combos"
+                    onclick="atualizarListaProdutos(id)">Combos</button>
+                <button class="menu__opcao opcao__texto active" disabled id="marmitas"
+                    onclick="atualizarListaProdutos(id)">Marmitas</button>
+            </div>
+            <a class="nav__carrinho" href="features/meu-carrinho/index.html" title="Meu Carrinho">
+                <i class="fa-solid fa-cart-shopping"></i>
+                <span id="carrinhoBadge" class="nav__carrinho-badge">0</span>
+            </a>
         </nav>
         <div class="container__flutuante">
             <div class="content__flutuante">
-                <a
-                    class="icon"
+                <a class="icon"
                     href="https://api.whatsapp.com/send/?phone=5544988129535&text=Oi%2C+gostaria+de+fazer+um+pedido"
                     target="_blank">
                     <i class="fab fa-whatsapp"></i>
@@ -49,7 +63,7 @@
         </div>
         <div class="container__lista">
             <ul class="lista__produtos">
-                
+
             </ul>
         </div>
         <div class="container__section">
@@ -83,4 +97,5 @@
         <p class="rodape__texto">Desenvolvido por Renan Geraldini Leão.</p>
     </footer>
 </body>
+
 </html>
