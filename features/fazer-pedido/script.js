@@ -7,8 +7,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     const params = new URLSearchParams(window.location.search);
     editId = params.get('edit');
     if (editId) {
-        console.log({titulo});
-        
         await carregarPedidoParaEdicao(editId);
     }
 
@@ -25,6 +23,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     const diaDaSemanaNumero = hoje.getDay();
 
     getCardapioDia(diasDaSemana[diaDaSemanaNumero])
+
+    document.getElementById('btn-ir-carrinho').onclick = function () {
+        window.location.href = '../meu-carrinho/index.html';
+    };
+
+    document.getElementById('btn-continuar').onclick = function () {
+        window.location.href = '../../index.html';
+    };
 })
 
 
@@ -84,38 +90,14 @@ async function mostrarCardapioSemanal() {
     const modal = document.createElement('div');
     modal.id = 'modal-cardapio-semanal';
     modal.className = 'modal-cardapio-semanal-bg';
-    modal.style.position = 'fixed';
-    modal.style.top = '0';
-    modal.style.left = '0';
-    modal.style.width = '100vw';
-    modal.style.height = '100vh';
-    modal.style.background = 'rgba(0,0,0,0.5)';
-    modal.style.display = 'flex';
-    modal.style.alignItems = 'center';
-    modal.style.justifyContent = 'center';
-    modal.style.zIndex = '9999';
 
     const content = document.createElement('div');
     content.className = 'modal-cardapio-semanal-content';
     content.style.background = '#fff';
-    content.style.padding = '32px 24px';
-    content.style.borderRadius = '12px';
-    content.style.boxShadow = '0 4px 24px rgba(0,0,0,0.15)';
-    content.style.maxWidth = '95vw';
-    content.style.maxHeight = '90vh';
-    content.style.overflowY = 'auto';
-    content.style.position = 'relative';
 
     const btnClose = document.createElement('button');
     btnClose.innerHTML = '<i class="fa-solid fa-xmark"></i>';
     btnClose.className = 'btn-close-modal';
-    btnClose.style.position = 'absolute';
-    btnClose.style.top = '12px';
-    btnClose.style.right = '12px';
-    btnClose.style.background = 'none';
-    btnClose.style.border = 'none';
-    btnClose.style.fontSize = '1.5rem';
-    btnClose.style.cursor = 'pointer';
     btnClose.onclick = () => document.body.removeChild(modal);
 
     content.appendChild(btnClose);
@@ -182,7 +164,7 @@ function getCardapioDia(dia) {
             montarCheckboxes(cardapioDia.opcaoCardapio, true, 'opcaoCardapio', 'cardapioDiv')
             montarCheckboxes(cardapioDia.opcaoCarne, false, 'opcaoCarne', 'carneDiv')
             forcarUmCheckboxSelecionado(dia)
-            if(dia === 'sabado') {
+            if (dia === 'sabado') {
                 aplicarRegraFeijaoSabado()
             }
         })
@@ -239,44 +221,10 @@ function montarCheckboxes(opcoesArray, isChecked, nomeOpcao, nomeDiv) {
 }
 
 function mostrarModalCarrinho() {
-    const modal = document.createElement('div');
-    modal.id = 'modal-carrinho';
-    modal.style.position = 'fixed';
-    modal.style.top = '0';
-    modal.style.left = '0';
-    modal.style.width = '100vw';
-    modal.style.height = '100vh';
-    modal.style.background = 'rgba(0,0,0,0.5)';
-    modal.style.display = 'flex';
-    modal.style.alignItems = 'center';
-    modal.style.justifyContent = 'center';
-    modal.style.zIndex = '9999';
-
-    modal.innerHTML = `
-        <div style="
-            background: #fff;
-            padding: 32px 24px;
-            border-radius: 12px;
-            box-shadow: 0 4px 24px rgba(0,0,0,0.15);
-            text-align: center;
-            max-width: 90vw;
-        ">
-            <h2 style="margin-bottom: 18px;">Item adicionado ao carrinho!</h2>
-            <p style="margin-bottom: 24px;">Deseja ir para o carrinho ou continuar adicionando itens?</p>
-            <button id="btn-ir-carrinho" style="margin-right: 16px; padding: 8px 24px; border-radius: 8px; border: none; background: #e67e22; color: #fff; font-weight: bold; cursor: pointer;">Ir para o carrinho</button>
-            <button id="btn-continuar" style="padding: 8px 24px; border-radius: 8px; border: none; background: #27ae60; color: #fff; font-weight: bold; cursor: pointer;">Continuar adicionando</button>
-        </div>
-    `;
-
-    document.body.appendChild(modal);
-
-    document.getElementById('btn-ir-carrinho').onclick = function () {
-        window.location.href = '../meu-carrinho/index.html';
-    };
-    document.getElementById('btn-continuar').onclick = function () {
-        window.location.href = '../../index.html';
-    };
+    const modal = document.getElementById('modal-carrinho');
+    modal.classList.add('active');
 }
+
 
 async function carregarPedidoParaEdicao(idPedido) {
     const pedidos = JSON.parse(localStorage.getItem('pedidos')) || [];
@@ -326,7 +274,7 @@ function adicionarAoCarrinho() {
         removerItens: unselectedCardapioValues,
         quantidade: 1,
     }]
-    
+
 
     if (getLocalStoragePedidos == null) {
         localStorage.setItem('pedidos', JSON.stringify(pedidoPayload))
