@@ -164,6 +164,17 @@ async function mostrarCardapioSemanal() {
 }
 
 function getCardapioDia(dia) {
+    if (dia === 'domingo') {
+        const cardapioDiv = document.getElementById('cardapioDiv');
+        const carneDiv = document.getElementById('carneDiv');
+        const adicionarAoCarrinho = document.getElementById('btn-carrinho');
+        adicionarAoCarrinho.remove()
+        cardapioDiv.className = 'cardapio-indisponivel';
+        carneDiv.className = 'carne-indisponivel';
+        cardapioDiv.innerHTML = '<i class="fa-solid fa-ban"></i> Indisponível aos domingos';
+        carneDiv.innerHTML = '<i class="fa-solid fa-ban"></i> Indisponível aos domingos';
+        return;
+    }
     fetch(`../../data/cardapio-dia.json`)
         .then(response => response.json())
         .then(data => {

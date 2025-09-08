@@ -207,6 +207,31 @@ body {
     gap: var(--gap-m);
 }
 
+.cardapio-indisponivel,
+.carne-indisponivel {
+    background: #f3f3f3 !important;
+    color: #b0b0b0 !important;
+    border-radius: 12px;
+    opacity: 0.7;
+    pointer-events: none;
+    min-height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    text-align: center;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+}
+
+.cardapio-indisponivel i,
+.carne-indisponivel i {
+    margin-right: 10px;
+    font-size: 1.5em;
+    color: #e67e22;
+}
+
 .aviso__container {
     width: 100%;
     background: rgba(255, 154, 0, 0.12);
