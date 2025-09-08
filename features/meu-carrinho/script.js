@@ -87,7 +87,7 @@ function validarModalPedido() {
 }
 
 async function renderCarrinho() {
-    document.addEventListener('input', function(e) {
+    document.addEventListener('input', function (e) {
         if (
             e.target.id === 'rua' ||
             e.target.id === 'numero' ||
@@ -117,7 +117,7 @@ async function renderCarrinho() {
     }
 
     let marmitaData = await fetch(`../../data/marmitas.json`)
-            .then(response => response.json())
+        .then(response => response.json())
 
     for (const [idx, pedido] of pedidos.entries()) {
         const getMarmitaData = marmitaData.find((marmita) => marmita.titulo == pedido.tamanhoMarmita);
@@ -305,6 +305,7 @@ async function enviarPedido() {
     const mensagemAdaptada = encodeURIComponent(mensagem);
     const url = `https://wa.me/${numeroTelefone}?text=${mensagemAdaptada}`;
     window.open(url, '_blank');
-
+    localStorage.removeItem("pedidos");
     fecharModalPedido();
+    renderCarrinho();
 }
