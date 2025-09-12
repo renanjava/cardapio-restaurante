@@ -20,6 +20,7 @@ function resetModalCampos() {
     document.getElementById('pixCampos').style.display = 'none';
     document.getElementById('dinheiroCampos').style.display = 'none';
     document.querySelectorAll('input[type=radio][name=troco]').forEach(rb => rb.checked = false);
+    document.getElementById('labelValorTroco').style.display = 'none';
     document.getElementById('valorTroco').style.display = 'none';
     document.getElementById('valorTroco').value = '';
     document.getElementById('btnEnviarPedido').disabled = true;
@@ -49,6 +50,7 @@ function onPagamentoChange(checkbox) {
     document.getElementById('dinheiroCampos').style.display = (checkbox.value === 'dinheiro' && checkbox.checked) ? 'block' : 'none';
     if (checkbox.value !== 'dinheiro') {
         document.querySelectorAll('input[type=radio][name=troco]').forEach(rb => rb.checked = false);
+        document.getElementById('labelValorTroco').style.display = 'none';
         document.getElementById('valorTroco').style.display = 'none';
         document.getElementById('valorTroco').value = '';
     }
@@ -57,8 +59,10 @@ function onPagamentoChange(checkbox) {
 
 function onTrocoChange(radio) {
     if (radio.value === 'sim') {
+        document.getElementById('labelValorTroco').style.display = 'inline-block';
         document.getElementById('valorTroco').style.display = 'inline-block';
     } else {
+        document.getElementById('labelValorTroco').style.display = 'none';
         document.getElementById('valorTroco').style.display = 'none';
         document.getElementById('valorTroco').value = '';
     }
@@ -245,9 +249,6 @@ async function enviarPedido() {
         mensagem += `*${pedido.quantidade} ${pedido.tamanhoMarmita}*\n`;
         mensagem += `   Carne: ${pedido.carne}\n`;
 
-        if (pedido.adicionarItens?.length) {
-            mensagem += `   Adicionais: ${pedido.adicionarItens.join(", ")}\n`;
-        }
         if (pedido.removerItens?.length) {
             mensagem += `   Sem: ${pedido.removerItens.join(", ")}\n`;
         }
