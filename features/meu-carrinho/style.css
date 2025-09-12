@@ -479,6 +479,9 @@ body {
     .modal__content--pedido {
         min-width: 90vw;
         max-width: 98vw;
+        max-height: 90vh;
+        overflow-y: auto;
+        padding-bottom: 2.5rem;
     }
 
     .modal__colunas {
