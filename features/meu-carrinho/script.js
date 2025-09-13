@@ -305,7 +305,7 @@ async function enviarPedido() {
     const numeroTelefone = "5544988129535";
     const mensagemAdaptada = encodeURIComponent(mensagem);
     const url = `https://wa.me/${numeroTelefone}?text=${mensagemAdaptada}`;
-    window.open(url, '_blank');
+    window.location.href = url;
     localStorage.removeItem("pedidos");
     fecharModalPedido();
     renderCarrinho();
