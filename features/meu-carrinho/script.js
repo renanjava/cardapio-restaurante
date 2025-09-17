@@ -250,7 +250,16 @@ async function enviarPedido() {
         mensagem += `   Carne: ${pedido.carne}\n`;
 
         if (pedido.removerItens?.length) {
-            mensagem += `   Sem: ${pedido.removerItens.join(", ")}\n`;
+            if(isSabado) {
+                removerItensSemFeijoesSabado = pedido.removerItens.filter(item => item !== "Feijão carioca" && item !== "Feijão preto com pernil de porco e calabresa")                
+                const feijaoRemovido = pedido.removerItens.filter(item => !removerItensSemFeijoesSabado.includes(item))
+                mensagem += `   Feijão: ${feijaoRemovido[0] == "Feijão carioca" ? 'Preto' : 'Carioca'}\n`;
+                if(removerItensSemFeijoesSabado?.length) {
+                    mensagem += `   Sem: ${removerItensSemFeijoesSabado.join(", ")}\n`;
+                }
+            } else {
+                mensagem += `   Sem: ${pedido.removerItens.join(", ")}\n`;
+            }
         }
 
         const marmitaData = marmitas.find(m => m.titulo === pedido.tamanhoMarmita);
