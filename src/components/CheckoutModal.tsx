@@ -75,7 +75,6 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
   const buildWhatsAppMessage = () => {
     let message = `🍽️ *NOVO PEDIDO - ${restaurantInfo.name}*\n\n`;
 
-    // Seção do cardápio com acompanhamentos
     message += `📅 *CARDÁPIO - ${dayDisplayNames[dayKey] || "Hoje"}*\n`;
     const dayMenu = weeklyMenu[dayKey];
     if (dayMenu && dayMenu.items) {
@@ -401,22 +400,30 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
         </div>
 
         <div className="p-4 pb-6 md:pb-4 border-t border-border bg-muted/30 shrink-0">
-          <div className="flex items-center justify-between mb-4">
-            <span className="text-lg font-bold text-foreground">Total:</span>
-            <span className="text-2xl font-bold text-primary">
-              R$ {total},00
-            </span>
-          </div>
+          <div className="space-y-2 mb-4">
+            <div className="flex items-center justify-between text-sm">
+              <span className="text-muted-foreground">Subtotal:</span>
+              <span className="font-semibold">R$ {subtotal},00</span>
+            </div>
 
-          {deliveryMethod === "entrega" && isSaturday && deliveryFee > 0 && (
-            <div className="flex items-center gap-2 p-3 rounded-xl bg-amber-500/10 border border-amber-500/20 text-sm mb-4">
-              <Info className="w-4 h-4 text-amber-600 shrink-0" />
-              <span className="text-amber-900 dark:text-amber-100">
-                Inclui taxa de entrega de <strong>R$ {deliveryFee},00</strong>{" "}
-                (sábado)
+            {deliveryMethod === "entrega" && isSaturday && deliveryFee > 0 && (
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-muted-foreground">
+                  Taxa de entrega (sábado):
+                </span>
+                <span className="font-semibold text-amber-600">
+                  R$ {deliveryFee},00
+                </span>
+              </div>
+            )}
+
+            <div className="flex items-center justify-between pt-2 border-t border-border">
+              <span className="text-lg font-bold text-foreground">Total:</span>
+              <span className="text-2xl font-bold text-primary">
+                R$ {total},00
               </span>
             </div>
-          )}
+          </div>
 
           <Button
             variant="whatsapp"
