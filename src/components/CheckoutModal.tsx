@@ -14,6 +14,7 @@ import { Label } from "@/components/ui/label";
 import { useCart } from "@/contexts/CartContext";
 import { restaurantInfo } from "@/data/menuData";
 import toast from "react-hot-toast";
+import { useDay } from "@/contexts/DayContext";
 
 interface CheckoutModalProps {
   isOpen: boolean;
@@ -25,8 +26,7 @@ type PaymentMethod = "cartao" | "pix" | "dinheiro" | null;
 
 export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
   const { items, getTotal, getItemSubtotal, clearCart } = useCart();
-  const today = new Date().getDay();
-  const isSaturday = today === 6;
+  const { isSaturday } = useDay();
 
   const [deliveryMethod, setDeliveryMethod] = useState<DeliveryMethod>(null);
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>(null);
@@ -98,9 +98,6 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
     } else {
       message += `Entrega\n`;
       message += `${address.street}, ${address.number}\n`;
-      if (isSaturday && deliveryFee > 0) {
-        message += `⚠️ Taxa de entrega (sábado): R$ ${deliveryFee},00\n`;
-      }
     }
 
     message += `\n💳 *PAGAMENTO:*\n`;
@@ -124,8 +121,8 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
 
     message += `\n💰 *RESUMO:*\n`;
     message += `Subtotal: R$ ${subtotal},00\n`;
-    if (deliveryFee > 0) {
-      message += `Taxa de entrega: R$ ${deliveryFee},00\n`;
+    if (deliveryMethod === "entrega" && isSaturday && deliveryFee > 0) {
+      message += `Taxa de entrega (sábado): R$ ${deliveryFee},00\n`;
     }
     message += `*TOTAL: R$ ${total},00*`;
 
@@ -232,12 +229,17 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
                   />
                 </div>
                 {isSaturday && (
-                  <div className="flex items-center gap-2 p-3 rounded-xl bg-primary/10 border border-primary/20 text-sm">
-                    <Info className="w-4 h-4 text-primary shrink-0" />
-                    <span>
-                      Em dias de <strong>sábado</strong> as entregas custam{" "}
-                      <strong>R$ 2,00</strong>
-                    </span>
+                  <div className="flex items-start gap-2 p-3 rounded-xl bg-amber-500/10 border border-amber-500/20 text-sm">
+                    <Info className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
+                    <div>
+                      <p className="font-semibold text-amber-900 dark:text-amber-100">
+                        Taxa de entrega aos sábados
+                      </p>
+                      <p className="text-amber-800 dark:text-amber-200 mt-1">
+                        Será cobrada uma taxa de <strong>R$ 2,00</strong> para
+                        entregas realizadas aos sábados.
+                      </p>
+                    </div>
                   </div>
                 )}
               </div>
@@ -382,17 +384,31 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
         </div>
 
         <div className="p-4 pb-6 md:pb-4 border-t border-border bg-muted/30 shrink-0">
-          <div className="flex items-center justify-between mb-4">
-            <div>
-              <p className="text-sm text-muted-foreground">
-                Subtotal: R$ {subtotal},00
-                {deliveryFee > 0 && ` | Taxa: R$ ${deliveryFee},00`}
-              </p>
-              <p className="text-2xl font-bold text-primary">
-                Total: R$ {total},00
-              </p>
+          <div className="space-y-2 mb-4">
+            <div className="flex items-center justify-between text-sm">
+              <span className="text-muted-foreground">Subtotal:</span>
+              <span className="font-semibold">R$ {subtotal},00</span>
+            </div>
+
+            {deliveryMethod === "entrega" && isSaturday && deliveryFee > 0 && (
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-muted-foreground">
+                  Taxa de entrega (sábado):
+                </span>
+                <span className="font-semibold text-amber-600">
+                  R$ {deliveryFee},00
+                </span>
+              </div>
+            )}
+
+            <div className="flex items-center justify-between pt-2 border-t border-border">
+              <span className="text-lg font-bold text-foreground">Total:</span>
+              <span className="text-2xl font-bold text-primary">
+                R$ {total},00
+              </span>
             </div>
           </div>
+
           <Button
             variant="whatsapp"
             size="lg"
