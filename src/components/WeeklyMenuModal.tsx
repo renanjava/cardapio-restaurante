@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { X, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { weeklyMenu, dayDisplayNames } from "@/data/menuData";
@@ -11,13 +12,38 @@ interface WeeklyMenuModalProps {
 export function WeeklyMenuModal({ isOpen, onClose }: WeeklyMenuModalProps) {
   const { dayKey } = useDay();
 
+  useEffect(() => {
+    if (isOpen) {
+      const scrollY = window.scrollY;
+
+      document.body.style.position = "fixed";
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.width = "100%";
+      document.body.style.overflow = "hidden";
+
+      return () => {
+        document.body.style.position = "";
+        document.body.style.top = "";
+        document.body.style.width = "";
+        document.body.style.overflow = "";
+        window.scrollTo(0, scrollY);
+      };
+    }
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
   const days = ["segunda", "terca", "quarta", "quinta", "sexta", "sabado"];
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end md:items-center justify-center bg-foreground/50 backdrop-blur-sm animate-fade-in">
-      <div className="bg-card rounded-t-3xl md:rounded-3xl w-full max-w-lg max-h-[85vh] overflow-hidden shadow-glow animate-slide-up">
+    <div
+      className="fixed inset-0 z-50 flex items-end md:items-center justify-center bg-foreground/50 backdrop-blur-sm animate-fade-in"
+      onClick={onClose}
+    >
+      <div
+        className="bg-card rounded-t-3xl md:rounded-3xl w-full max-w-lg max-h-[85vh] overflow-hidden shadow-glow animate-slide-up"
+        onClick={(e) => e.stopPropagation()}
+      >
         <div className="flex items-center justify-between p-4 border-b border-border sticky top-0 bg-card z-10">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-full gradient-warm flex items-center justify-center">
