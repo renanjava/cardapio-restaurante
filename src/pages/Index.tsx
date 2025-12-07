@@ -45,14 +45,15 @@ const Index = () => {
               </div>
 
               <h1 className="font-display text-3xl md:text-5xl font-bold text-primary-foreground mb-4 leading-tight">
-                Comida caseira
+                Restaurante da Juliana
                 <br />
-                <span className="text-[hsl(42_95%_55%)]">feita com amor</span>
+                <span className="text-[hsl(42_95%_55%)]">
+                  comida caseira
+                </span>
               </h1>
 
               <p className="text-primary-foreground/80 mb-6 text-sm md:text-base">
-                Marmitas, lanches e combos fresquinhos. Faça seu pedido e receba
-                pelo WhatsApp!
+                Marmitas, lanches e combos fresquinhos. Faça seu pedido!
               </p>
 
               <div className="flex gap-4 text-xs md:text-sm text-primary-foreground/80">
@@ -155,15 +156,12 @@ const Index = () => {
               </div>
               <div className="space-y-1 text-sm text-muted-foreground">
                 <p>
-                  <strong className="text-foreground">Marmitas:</strong> Seg a
-                  Sáb, 10:30 - 14:00
+                  <strong className="text-foreground">Marmitas:</strong>{" "}
+                  {restaurantInfo.openingHours.marmitas}
                 </p>
                 <p>
-                  <strong className="text-foreground">Lanches:</strong> Seg a
-                  Sáb, 10:30 - 18:00
-                </p>
-                <p className="text-xs italic">
-                  *Quinta os lanches encerram às 14:00*
+                  <strong className="text-foreground">Lanches:</strong>{" "}
+                  {restaurantInfo.openingHours.lanches}
                 </p>
               </div>
             </div>

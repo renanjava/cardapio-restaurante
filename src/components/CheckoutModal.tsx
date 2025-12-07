@@ -80,7 +80,7 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
 
     message += `📋 *ITENS DO PEDIDO:*\n`;
     items.forEach((item, index) => {
-      message += `\n${index + 1}. *${item.tamanhoMarmita}* - ${item.carne}\n`;
+      message += `\n*${item.tamanhoMarmita}* - ${item.carne}\n`;
       message += `   Qtd: ${item.quantidade} | R$ ${getItemSubtotal(
         item
       )},00\n`;

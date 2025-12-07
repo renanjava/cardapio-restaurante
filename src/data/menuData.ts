@@ -57,12 +57,12 @@ export const weeklyMenu: Record<string, DayMenu> = {
       {
         id: "macarrao-alho-oleo",
         name: "Macarrão alho e óleo",
-        checked: false,
+        checked: true,
       },
-      { id: "chuchu", name: "Chuchu", checked: false },
-      { id: "vagem", name: "Vagem", checked: false },
-      { id: "cenoura", name: "Cenoura", checked: false },
-      { id: "batata-frita", name: "Batata frita", checked: false },
+      { id: "chuchu", name: "Chuchu", checked: true },
+      { id: "vagem", name: "Vagem", checked: true },
+      { id: "cenoura", name: "Cenoura", checked: true },
+      { id: "batata-frita", name: "Batata frita", checked: true },
     ],
     meats: [
       { id: "frango-parmegiana", name: "Frango parmegiana" },
@@ -85,11 +85,11 @@ export const weeklyMenu: Record<string, DayMenu> = {
       {
         id: "macarrao-molho-vermelho",
         name: "Macarrão molho vermelho",
-        checked: false,
+        checked: true,
       },
-      { id: "farofa", name: "Farofa", checked: false },
-      { id: "legumes", name: "Legumes", checked: false },
-      { id: "bolinho-arroz", name: "Bolinho de arroz", checked: false },
+      { id: "farofa", name: "Farofa", checked: true },
+      { id: "legumes", name: "Legumes", checked: true },
+      { id: "bolinho-arroz", name: "Bolinho de arroz", checked: true },
     ],
     meats: [
       { id: "frango-milanesa", name: "Frango à milanesa" },
@@ -112,11 +112,11 @@ export const weeklyMenu: Record<string, DayMenu> = {
       {
         id: "macarrao-molho-branco",
         name: "Macarrão molho branco",
-        checked: false,
+        checked: true,
       },
-      { id: "repolho-refogado", name: "Repolho refogado", checked: false },
-      { id: "farofa", name: "Farofa", checked: false },
-      { id: "mandioca-frita", name: "Mandioca frita", checked: false },
+      { id: "repolho-refogado", name: "Repolho refogado", checked: true },
+      { id: "farofa", name: "Farofa", checked: true },
+      { id: "mandioca-frita", name: "Mandioca frita", checked: true },
     ],
     meats: [
       { id: "porco-tacho", name: "Porco no tacho" },
@@ -135,14 +135,14 @@ export const weeklyMenu: Record<string, DayMenu> = {
     items: [
       { id: "arroz-branco", name: "Arroz branco", checked: true },
       { id: "feijao-carioca", name: "Feijão carioca", checked: true },
-      { id: "macarronese", name: "Macarronese", checked: false },
-      { id: "pure-batata", name: "Purê de batata", checked: false },
-      { id: "farofa-casa", name: "Farofa da casa", checked: false },
-      { id: "beterraba", name: "Beterraba", checked: false },
+      { id: "macarronese", name: "Macarronese", checked: true },
+      { id: "pure-batata", name: "Purê de batata", checked: true },
+      { id: "farofa-casa", name: "Farofa da casa", checked: true },
+      { id: "beterraba", name: "Beterraba", checked: true },
       {
         id: "abobrinha-milanesa",
         name: "Abobrinha à milanesa",
-        checked: false,
+        checked: true,
       },
     ],
     meats: [
@@ -163,11 +163,11 @@ export const weeklyMenu: Record<string, DayMenu> = {
     items: [
       { id: "arroz-branco", name: "Arroz branco", checked: true },
       { id: "feijao-carioca", name: "Feijão carioca", checked: true },
-      { id: "feijao-tropeiro", name: "Feijão tropeiro", checked: false },
-      { id: "couve", name: "Couve", checked: false },
-      { id: "vinagrete", name: "Vinagrete", checked: false },
-      { id: "cabotia", name: "Cabotiá", checked: false },
-      { id: "batata-doce-frita", name: "Batata-doce frita", checked: false },
+      { id: "feijao-tropeiro", name: "Feijão tropeiro", checked: true },
+      { id: "couve", name: "Couve", checked: true },
+      { id: "vinagrete", name: "Vinagrete", checked: true },
+      { id: "cabotia", name: "Cabotiá", checked: true },
+      { id: "batata-doce-frita", name: "Batata-doce frita", checked: true },
     ],
     meats: [
       { id: "frango-milanesa", name: "Frango à milanesa" },
@@ -195,11 +195,11 @@ export const weeklyMenu: Record<string, DayMenu> = {
       {
         id: "macarrao-molho-vermelho",
         name: "Macarrão molho vermelho",
-        checked: false,
+        checked: true,
       },
-      { id: "farofa-couve", name: "Farofa de couve", checked: false },
-      { id: "maionese", name: "Maionese", checked: false },
-      { id: "ovo-frito", name: "Ovo frito", checked: false },
+      { id: "farofa-couve", name: "Farofa de couve", checked: true },
+      { id: "maionese", name: "Maionese", checked: true },
+      { id: "ovo-frito", name: "Ovo frito", checked: true },
     ],
     meats: [
       { id: "frango-milanesa", name: "Frango à milanesa" },
@@ -245,7 +245,7 @@ export const restaurantInfo = {
   deliveryFeeSaturday: 2.0,
   openingHours: {
     marmitas: "Segunda a Sábado, 10:30 - 14:00",
-    lanches: "Segunda a Sábado, 10:30 - 18:00",
+    lanches: "Consultar no WhatsApp",
     sunday: "Fechado aos domingos",
   },
 };

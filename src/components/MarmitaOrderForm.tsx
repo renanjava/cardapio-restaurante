@@ -227,7 +227,7 @@ export function MarmitaOrderForm({
 
           <div className="mb-6">
             <h3 className="font-display text-lg font-bold mb-3 text-foreground">
-              Cardápio de {dayDisplayNames[dayKey]}
+              Escolha os acompanhamentos
             </h3>
             <div className="grid grid-cols-2 gap-2">
               {dayMenu.items.map((item) => {
