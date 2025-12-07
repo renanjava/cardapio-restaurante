@@ -255,7 +255,17 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
               </button>
 
               <button
-                onClick={() => setPaymentMethod("pix")}
+                onClick={() => {
+                  setPaymentMethod("pix");
+                  setTimeout(() => {
+                    if (scrollContainerRef.current) {
+                      scrollContainerRef.current.scrollTo({
+                        top: scrollContainerRef.current.scrollHeight,
+                        behavior: "smooth",
+                      });
+                    }
+                  }, 100);
+                }}
                 className={`w-full flex items-center gap-3 p-4 rounded-2xl border-2 transition-all ${
                   paymentMethod === "pix"
                     ? "border-primary bg-primary/5"
@@ -308,7 +318,6 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
                   <button
                     onClick={() => {
                       setNeedsChange(true);
-
                       setTimeout(() => {
                         if (scrollContainerRef.current) {
                           scrollContainerRef.current.scrollTo({
