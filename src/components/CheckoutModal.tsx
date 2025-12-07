@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import {
   X,
   MapPin,
@@ -14,7 +14,6 @@ import { Label } from "@/components/ui/label";
 import { useCart } from "@/contexts/CartContext";
 import { restaurantInfo } from "@/data/menuData";
 import toast from "react-hot-toast";
-import { CustomToaster } from "./CustomToaster";
 
 interface CheckoutModalProps {
   isOpen: boolean;
@@ -34,6 +33,7 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
   const [address, setAddress] = useState({ street: "", number: "" });
   const [needsChange, setNeedsChange] = useState<boolean | null>(null);
   const [changeAmount, setChangeAmount] = useState("");
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const deliveryFee =
     deliveryMethod === "entrega" && isSaturday
@@ -165,7 +165,10 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
           </Button>
         </div>
 
-        <div className="flex-1 overflow-y-auto p-4 space-y-6">
+        <div
+          ref={scrollContainerRef}
+          className="flex-1 overflow-y-auto p-4 space-y-6"
+        >
           <div>
             <h3 className="flex items-center gap-2 font-display font-bold mb-3">
               <MapPin className="w-5 h-5 text-primary" />
@@ -264,7 +267,17 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
               </button>
 
               <button
-                onClick={() => setPaymentMethod("dinheiro")}
+                onClick={() => {
+                  setPaymentMethod("dinheiro");
+                  setTimeout(() => {
+                    if (scrollContainerRef.current) {
+                      scrollContainerRef.current.scrollTo({
+                        top: scrollContainerRef.current.scrollHeight,
+                        behavior: "smooth",
+                      });
+                    }
+                  }, 100);
+                }}
                 className={`w-full flex items-center gap-3 p-4 rounded-2xl border-2 transition-all ${
                   paymentMethod === "dinheiro"
                     ? "border-primary bg-primary/5"
@@ -293,7 +306,18 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
                 <p className="font-medium text-foreground">Precisa de troco?</p>
                 <div className="flex gap-3">
                   <button
-                    onClick={() => setNeedsChange(true)}
+                    onClick={() => {
+                      setNeedsChange(true);
+
+                      setTimeout(() => {
+                        if (scrollContainerRef.current) {
+                          scrollContainerRef.current.scrollTo({
+                            top: scrollContainerRef.current.scrollHeight,
+                            behavior: "smooth",
+                          });
+                        }
+                      }, 100);
+                    }}
                     className={`flex-1 p-3 rounded-xl border-2 transition-all ${
                       needsChange === true
                         ? "border-primary bg-primary/5"
