@@ -1,0 +1,174 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=Fredoka:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 35 40% 96%;
+    --foreground: 25 30% 15%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 25 30% 15%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 25 30% 15%;
+
+    --primary: 28 90% 50%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 35 30% 90%;
+    --secondary-foreground: 25 30% 20%;
+
+    --muted: 35 20% 92%;
+    --muted-foreground: 25 15% 45%;
+
+    --accent: 145 55% 42%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 35 25% 85%;
+    --input: 35 25% 85%;
+    --ring: 28 90% 50%;
+
+    --radius: 1rem;
+
+    --warm-orange: 28 90% 50%;
+    --warm-orange-light: 32 95% 58%;
+    --terracotta: 18 70% 42%;
+    --cream: 40 50% 97%;
+    --brown-dark: 25 40% 18%;
+    --green-fresh: 145 55% 42%;
+    --yellow-warm: 42 95% 55%;
+    --red-soft: 5 75% 55%;
+
+    --shadow-sm: 0 2px 8px -2px hsl(25 30% 15% / 0.08);
+    --shadow-md: 0 4px 16px -4px hsl(25 30% 15% / 0.12);
+    --shadow-lg: 0 8px 32px -8px hsl(28 90% 50% / 0.2);
+    --shadow-xl: 0 16px 48px -12px hsl(28 90% 50% / 0.25);
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 25 25% 8%;
+    --foreground: 35 30% 95%;
+
+    --card: 25 22% 12%;
+    --card-foreground: 35 30% 95%;
+
+    --popover: 25 22% 12%;
+    --popover-foreground: 35 30% 95%;
+
+    --primary: 28 85% 55%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 25 18% 18%;
+    --secondary-foreground: 35 25% 90%;
+
+    --muted: 25 15% 20%;
+    --muted-foreground: 35 15% 60%;
+
+    --accent: 145 50% 45%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 65% 45%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 25 18% 22%;
+    --input: 25 18% 22%;
+    --ring: 28 85% 55%;
+
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Nunito', sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Fredoka', sans-serif;
+  }
+}
+
+@layer utilities {
+  .shadow-soft {
+    box-shadow: var(--shadow-md);
+  }
+
+  .shadow-float {
+    box-shadow: var(--shadow-lg);
+  }
+
+  .shadow-glow {
+    box-shadow: var(--shadow-xl);
+  }
+
+  .gradient-warm {
+    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--terracotta)) 100%);
+  }
+
+  .gradient-hero {
+    background: linear-gradient(135deg, hsl(var(--brown-dark)) 0%, hsl(var(--primary) / 0.9) 100%);
+  }
+
+  .text-gradient {
+    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--terracotta)) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+}
+
+@layer components {
+  .card-hover {
+    @apply transition-all duration-300 ease-out;
+  }
+
+  .card-hover:hover {
+    @apply -translate-y-1;
+    box-shadow: var(--shadow-xl);
+  }
+
+  .btn-bounce {
+    @apply transition-transform duration-150;
+  }
+
+  .btn-bounce:active {
+    @apply scale-95;
+  }
+
+  .bottom-nav {
+    @apply fixed bottom-0 left-0 right-0 bg-card border-t border-border z-40;
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .fab {
+    @apply fixed z-50 w-14 h-14 rounded-full flex items-center justify-center;
+    box-shadow: var(--shadow-lg);
+  }
+}
