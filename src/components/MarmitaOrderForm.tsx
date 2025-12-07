@@ -74,7 +74,6 @@ export function MarmitaOrderForm({
   );
 
   const [showWeeklyMenu, setShowWeeklyMenu] = useState(false);
-  const [showAddedModal, setShowAddedModal] = useState(false);
 
   const toggleItem = (itemId: string) => {
     if (isSaturday && dayMenu.beansOnlyOne) {
@@ -139,7 +138,8 @@ export function MarmitaOrderForm({
       onComplete?.();
     } else {
       addItem(cartData);
-      setShowAddedModal(true);
+      toast.success("Marmita adicionada ao carrinho!");
+      navigate("/carrinho");
     }
   };
 
@@ -358,44 +358,6 @@ export function MarmitaOrderForm({
       />
 
       <CustomToaster />
-
-      {showAddedModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-foreground/50 backdrop-blur-sm animate-fade-in">
-          <div className="bg-card rounded-3xl p-6 max-w-sm w-full shadow-glow animate-scale-in text-center">
-            <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-accent/20 flex items-center justify-center">
-              <Check className="w-8 h-8 text-accent" />
-            </div>
-            <h2 className="font-display text-xl font-bold text-foreground mb-2">
-              Item adicionado ao carrinho!
-            </h2>
-            <p className="text-muted-foreground mb-6">
-              Deseja ir para o carrinho ou continuar adicionando itens?
-            </p>
-            <div className="flex flex-col gap-3">
-              <Button
-                variant="warm"
-                size="lg"
-                onClick={() => navigate("/carrinho")}
-                className="w-full"
-              >
-                <ShoppingCart className="w-5 h-5" />
-                Ir para o carrinho
-              </Button>
-              <Button
-                variant="outline"
-                size="lg"
-                onClick={() => {
-                  setShowAddedModal(false);
-                  navigate("/");
-                }}
-                className="w-full"
-              >
-                Continuar adicionando
-              </Button>
-            </div>
-          </div>
-        </div>
-      )}
     </>
   );
 }
