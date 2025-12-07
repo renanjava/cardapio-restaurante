@@ -1,10 +1,8 @@
 import {
   Clock,
   MapPin,
-  Phone,
   Truck,
   ChevronRight,
-  UtensilsCrossed,
   Sandwich,
   Package,
 } from "lucide-react";
@@ -12,12 +10,7 @@ import { Link } from "react-router-dom";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { BottomNav } from "@/components/BottomNav";
-import {
-  marmitaSizes,
-  restaurantInfo,
-  dayNames,
-  dayDisplayNames,
-} from "@/data/menuData";
+import { marmitaSizes, restaurantInfo, dayDisplayNames } from "@/data/menuData";
 import { useDay } from "@/contexts/DayContext";
 
 const Index = () => {
@@ -47,9 +40,7 @@ const Index = () => {
               <h1 className="font-display text-3xl md:text-5xl font-bold text-primary-foreground mb-4 leading-tight">
                 Restaurante da Juliana
                 <br />
-                <span className="text-[hsl(42_95%_55%)]">
-                  comida caseira
-                </span>
+                <span className="text-[hsl(42_95%_55%)]">comida caseira</span>
               </h1>
 
               <p className="text-primary-foreground/80 mb-6 text-sm md:text-base">

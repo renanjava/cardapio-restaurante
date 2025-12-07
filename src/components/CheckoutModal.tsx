@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useCart } from "@/contexts/CartContext";
-import { restaurantInfo } from "@/data/menuData";
+import { restaurantInfo, dayDisplayNames, weeklyMenu } from "@/data/menuData";
 import toast from "react-hot-toast";
 import { useDay } from "@/contexts/DayContext";
 
@@ -26,7 +26,7 @@ type PaymentMethod = "cartao" | "pix" | "dinheiro" | null;
 
 export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
   const { items, getTotal, getItemSubtotal, clearCart } = useCart();
-  const { isSaturday } = useDay();
+  const { isSaturday, dayKey } = useDay();
 
   const [deliveryMethod, setDeliveryMethod] = useState<DeliveryMethod>(null);
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>(null);
@@ -75,6 +75,14 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
   const buildWhatsAppMessage = () => {
     let message = `🍽️ *NOVO PEDIDO - ${restaurantInfo.name}*\n\n`;
 
+    // Seção do cardápio com acompanhamentos
+    message += `📅 *CARDÁPIO - ${dayDisplayNames[dayKey] || "Hoje"}*\n`;
+    const dayMenu = weeklyMenu[dayKey];
+    if (dayMenu && dayMenu.items) {
+      const accompaniments = dayMenu.items.map((item) => item.name).join(", ");
+      message += `${accompaniments}\n\n`;
+    }
+
     message += `📋 *ITENS DO PEDIDO:*\n`;
     items.forEach((item, index) => {
       message += `\n*${item.tamanhoMarmita}* - ${item.carne}\n`;
@@ -84,11 +92,22 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
       if (item.extraCharge > 0) {
         message += `   ⚠️ Acréscimo: +R$ ${item.extraCharge},00\n`;
       }
-      if (item.adicionarItens.length > 0) {
-        message += `   ✓ Com: ${item.adicionarItens.join(", ")}\n`;
-      }
       if (item.removerItens.length > 0) {
         message += `   ✗ Sem: ${item.removerItens.join(", ")}\n`;
+
+        if (isSaturday) {
+          const hasFeijaoPreto = item.adicionarItens.includes(
+            "Feijão preto com pernil de porco e calabresa"
+          );
+          const hasFeijaoCarioca =
+            item.adicionarItens.includes("Feijão carioca");
+
+          if (hasFeijaoPreto) {
+            message += `   🫘 Feijão: Feijão preto com pernil de porco e calabresa\n`;
+          } else if (hasFeijaoCarioca) {
+            message += `   🫘 Feijão: Feijão carioca\n`;
+          }
+        }
       }
     });
 
@@ -98,6 +117,9 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
     } else {
       message += `Entrega\n`;
       message += `${address.street}, ${address.number}\n`;
+      if (isSaturday && deliveryFee > 0) {
+        message += `⚠️ Este pedido possui taxa de entrega de R$ ${deliveryFee},00 (sábado)\n`;
+      }
     }
 
     message += `\n💳 *PAGAMENTO:*\n`;
@@ -119,12 +141,7 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
         break;
     }
 
-    message += `\n💰 *RESUMO:*\n`;
-    message += `Subtotal: R$ ${subtotal},00\n`;
-    if (deliveryMethod === "entrega" && isSaturday && deliveryFee > 0) {
-      message += `Taxa de entrega (sábado): R$ ${deliveryFee},00\n`;
-    }
-    message += `*TOTAL: R$ ${total},00*`;
+    message += `\n💰 *TOTAL: R$ ${total},00*`;
 
     return encodeURIComponent(message);
   };
@@ -384,30 +401,22 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
         </div>
 
         <div className="p-4 pb-6 md:pb-4 border-t border-border bg-muted/30 shrink-0">
-          <div className="space-y-2 mb-4">
-            <div className="flex items-center justify-between text-sm">
-              <span className="text-muted-foreground">Subtotal:</span>
-              <span className="font-semibold">R$ {subtotal},00</span>
-            </div>
+          <div className="flex items-center justify-between mb-4">
+            <span className="text-lg font-bold text-foreground">Total:</span>
+            <span className="text-2xl font-bold text-primary">
+              R$ {total},00
+            </span>
+          </div>
 
-            {deliveryMethod === "entrega" && isSaturday && deliveryFee > 0 && (
-              <div className="flex items-center justify-between text-sm">
-                <span className="text-muted-foreground">
-                  Taxa de entrega (sábado):
-                </span>
-                <span className="font-semibold text-amber-600">
-                  R$ {deliveryFee},00
-                </span>
-              </div>
-            )}
-
-            <div className="flex items-center justify-between pt-2 border-t border-border">
-              <span className="text-lg font-bold text-foreground">Total:</span>
-              <span className="text-2xl font-bold text-primary">
-                R$ {total},00
+          {deliveryMethod === "entrega" && isSaturday && deliveryFee > 0 && (
+            <div className="flex items-center gap-2 p-3 rounded-xl bg-amber-500/10 border border-amber-500/20 text-sm mb-4">
+              <Info className="w-4 h-4 text-amber-600 shrink-0" />
+              <span className="text-amber-900 dark:text-amber-100">
+                Inclui taxa de entrega de <strong>R$ {deliveryFee},00</strong>{" "}
+                (sábado)
               </span>
             </div>
-          </div>
+          )}
 
           <Button
             variant="whatsapp"

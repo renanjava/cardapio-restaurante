@@ -1,15 +1,12 @@
 import { Header } from "@/components/Header";
 import { MarmitaOrderForm } from "@/components/MarmitaOrderForm";
 import { useSearchParams } from "react-router-dom";
-import { marmitaSizes, dayNames, dayDisplayNames } from "@/data/menuData";
+import { marmitaSizes } from "@/data/menuData";
 
 const Cardapio = () => {
   const [searchParams] = useSearchParams();
   const sizeId = searchParams.get("size");
   const size = marmitaSizes.find((s) => s.id === sizeId);
-
-  const today = 2;
-  const dayKey = dayNames[today];
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
@@ -18,7 +15,6 @@ const Cardapio = () => {
       <main className="flex-1 flex flex-col">
         <MarmitaOrderForm />
       </main>
-
     </div>
   );
 };

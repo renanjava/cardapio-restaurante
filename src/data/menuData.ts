@@ -28,19 +28,19 @@ export const marmitaSizes: MarmitaSize[] = [
     id: "mini",
     name: "Marmita Mini",
     price: 16,
-    description: "Porção individual",
+    description: "Refeição individual",
   },
   {
     id: "media",
     name: "Marmita Média",
     price: 20,
-    description: "Porção para 1-2 pessoas",
+    description: "Refeição para 1-2 pessoas",
   },
   {
     id: "grande",
     name: "Marmita Grande",
     price: 22,
-    description: "Porção para 2-3 pessoas",
+    description: "Refeição para 2-3 pessoas",
   },
 ];
 
