@@ -152,8 +152,11 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-end md:items-center justify-center bg-foreground/50 backdrop-blur-sm animate-fade-in">
-      <div className="bg-card rounded-t-3xl md:rounded-3xl w-full max-w-lg max-h-[90vh] overflow-hidden shadow-glow animate-slide-up">
-        <div className="flex items-center justify-between p-4 border-b border-border">
+      <div
+        className="bg-card rounded-t-3xl md:rounded-3xl w-full max-w-lg flex flex-col shadow-glow animate-slide-up"
+        style={{ maxHeight: "90vh" }}
+      >
+        <div className="flex items-center justify-between p-4 border-b border-border shrink-0">
           <h2 className="font-display text-xl font-bold text-foreground">
             Finalizar Pedido
           </h2>
@@ -162,7 +165,7 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
           </Button>
         </div>
 
-        <div className="p-4 overflow-y-auto max-h-[calc(90vh-180px)] space-y-6">
+        <div className="flex-1 overflow-y-auto p-4 space-y-6">
           <div>
             <h3 className="flex items-center gap-2 font-display font-bold mb-3">
               <MapPin className="w-5 h-5 text-primary" />
@@ -328,7 +331,7 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
           </div>
         </div>
 
-        <div className="p-4 pb-6 md:pb-4 border-t border-border bg-muted/30">
+        <div className="p-4 pb-6 md:pb-4 border-t border-border bg-muted/30 shrink-0">
           <div className="flex items-center justify-between mb-4">
             <div>
               <p className="text-sm text-muted-foreground">
