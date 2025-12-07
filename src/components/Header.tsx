@@ -24,7 +24,6 @@ export function Header({ showBack, title }: HeaderProps) {
     <header className="sticky top-0 z-50 bg-card/95 backdrop-blur-md border-b border-border shadow-soft">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-14 md:h-16">
-          {/* Left side */}
           <div className="flex items-center gap-3">
             {showBack ? (
               <Button
@@ -47,14 +46,12 @@ export function Header({ showBack, title }: HeaderProps) {
             </Link>
           </div>
 
-          {/* Mobile title */}
           {title && (
             <span className="font-display font-bold text-base text-foreground sm:hidden absolute left-1/2 -translate-x-1/2">
               {title}
             </span>
           )}
 
-          {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-6">
             <Link
               to="/"
@@ -82,7 +79,6 @@ export function Header({ showBack, title }: HeaderProps) {
             </Link>
           </nav>
 
-          {/* Actions */}
           <div className="flex items-center gap-2">
             <Button
               variant="ghost"

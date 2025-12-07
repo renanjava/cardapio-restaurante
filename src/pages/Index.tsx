@@ -28,7 +28,6 @@ const Index = () => {
       <Header />
 
       <main className="flex-1">
-        {/* Hero - Mobile optimized */}
         <section className="relative overflow-hidden">
           <div className="absolute inset-0 gradient-hero" />
 
@@ -56,7 +55,6 @@ const Index = () => {
                 pelo WhatsApp!
               </p>
 
-              {/* Quick info cards - mobile */}
               <div className="flex gap-4 text-xs md:text-sm text-primary-foreground/80">
                 <div className="flex items-center gap-1">
                   <Clock className="w-4 h-4" />
@@ -71,7 +69,6 @@ const Index = () => {
           </div>
         </section>
 
-        {/* Marmitas List - Mobile first */}
         <section className="container mx-auto px-4 py-6 md:py-10">
           <div className="flex items-center justify-between mb-4">
             <h2 className="font-display text-xl md:text-2xl font-bold text-foreground">
@@ -115,7 +112,6 @@ const Index = () => {
           </div>
         </section>
 
-        {/* Categories preview - disabled for now */}
         <section className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between mb-4">
             <h2 className="font-display text-xl md:text-2xl font-bold text-foreground">
@@ -146,10 +142,8 @@ const Index = () => {
           </div>
         </section>
 
-        {/* Info Section - Mobile optimized */}
         <section className="container mx-auto px-4 py-6">
           <div className="space-y-4">
-            {/* Hours */}
             <div className="bg-card rounded-2xl p-4 shadow-soft">
               <div className="flex items-center gap-3 mb-3">
                 <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
@@ -174,7 +168,6 @@ const Index = () => {
               </div>
             </div>
 
-            {/* Delivery */}
             <div className="bg-card rounded-2xl p-4 shadow-soft">
               <div className="flex items-center gap-3 mb-3">
                 <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center">

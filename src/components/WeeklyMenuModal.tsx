@@ -18,7 +18,6 @@ export function WeeklyMenuModal({ isOpen, onClose }: WeeklyMenuModalProps) {
   return (
     <div className="fixed inset-0 z-50 flex items-end md:items-center justify-center bg-foreground/50 backdrop-blur-sm animate-fade-in">
       <div className="bg-card rounded-t-3xl md:rounded-3xl w-full max-w-lg max-h-[85vh] overflow-hidden shadow-glow animate-slide-up">
-        {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-border sticky top-0 bg-card z-10">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-full gradient-warm flex items-center justify-center">

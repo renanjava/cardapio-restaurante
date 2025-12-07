@@ -36,7 +36,6 @@
 
     --radius: 1rem;
 
-    /* Restaurant theme colors */
     --warm-orange: 28 90% 50%;
     --warm-orange-light: 32 95% 58%;
     --terracotta: 18 70% 42%;
@@ -46,7 +45,6 @@
     --yellow-warm: 42 95% 55%;
     --red-soft: 5 75% 55%;
 
-    /* Shadows */
     --shadow-sm: 0 2px 8px -2px hsl(25 30% 15% / 0.08);
     --shadow-md: 0 4px 16px -4px hsl(25 30% 15% / 0.12);
     --shadow-lg: 0 8px 32px -8px hsl(28 90% 50% / 0.2);
@@ -164,13 +162,11 @@
     @apply scale-95;
   }
 
-  /* Mobile bottom navigation */
   .bottom-nav {
     @apply fixed bottom-0 left-0 right-0 bg-card border-t border-border z-40;
     padding-bottom: env(safe-area-inset-bottom);
   }
 
-  /* Floating action button */
   .fab {
     @apply fixed z-50 w-14 h-14 rounded-full flex items-center justify-center;
     box-shadow: var(--shadow-lg);

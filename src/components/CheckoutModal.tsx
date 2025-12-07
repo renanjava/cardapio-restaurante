@@ -120,7 +120,6 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
   return (
     <div className="fixed inset-0 z-50 flex items-end md:items-center justify-center bg-foreground/50 backdrop-blur-sm animate-fade-in">
       <div className="bg-card rounded-t-3xl md:rounded-3xl w-full max-w-lg max-h-[90vh] overflow-hidden shadow-glow animate-slide-up">
-        {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-border">
           <h2 className="font-display text-xl font-bold text-foreground">Finalizar Pedido</h2>
           <Button variant="ghost" size="icon" onClick={onClose}>
@@ -129,7 +128,6 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
         </div>
 
         <div className="p-4 overflow-y-auto max-h-[calc(90vh-180px)] space-y-6">
-          {/* Delivery Method */}
           <div>
             <h3 className="flex items-center gap-2 font-display font-bold mb-3">
               <MapPin className="w-5 h-5 text-primary" />
@@ -190,7 +188,6 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
             )}
           </div>
 
-          {/* Payment Method */}
           <div>
             <h3 className="flex items-center gap-2 font-display font-bold mb-3">
               <CreditCard className="w-5 h-5 text-primary" />
@@ -287,7 +284,6 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
           </div>
         </div>
 
-        {/* Footer */}
         <div className="p-4 border-t border-border bg-muted/30">
           <div className="flex items-center justify-between mb-4">
             <div>

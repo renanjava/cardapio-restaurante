@@ -6,7 +6,6 @@ export function Footer() {
     <footer className="bg-card border-t border-border mt-auto hidden md:block">
       <div className="container mx-auto px-4 py-8">
         <div className="grid gap-8 md:grid-cols-3">
-          {/* Logo */}
           <div>
             <div className="flex items-center gap-2 mb-4">
               <div className="w-10 h-10 rounded-full gradient-warm flex items-center justify-center">
@@ -21,7 +20,6 @@ export function Footer() {
             </p>
           </div>
 
-          {/* Hours */}
           <div>
             <h4 className="flex items-center gap-2 font-display font-bold text-foreground mb-4">
               <Clock className="w-5 h-5 text-primary" />
@@ -34,7 +32,6 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Contact */}
           <div>
             <h4 className="flex items-center gap-2 font-display font-bold text-foreground mb-4">
               <MapPin className="w-5 h-5 text-primary" />

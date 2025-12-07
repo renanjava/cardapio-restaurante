@@ -18,7 +18,6 @@ export function CategoryCard({ title, description, icon: Icon, href, imageUrl, d
       style={{ animationDelay: `${delay}ms` }}
     >
       <div className="relative overflow-hidden rounded-2xl bg-card shadow-card card-hover h-64">
-        {/* Background Image or Gradient */}
         {imageUrl ? (
           <img
             src={imageUrl}
@@ -29,10 +28,8 @@ export function CategoryCard({ title, description, icon: Icon, href, imageUrl, d
           <div className="absolute inset-0 gradient-warm opacity-80" />
         )}
         
-        {/* Overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-brown-dark/90 via-brown-dark/40 to-transparent" />
         
-        {/* Content */}
         <div className="relative h-full flex flex-col justify-end p-6 text-primary-foreground">
           <div className="flex items-center gap-3 mb-2">
             <div className="w-12 h-12 rounded-xl bg-primary/20 backdrop-blur-sm flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
@@ -42,7 +39,6 @@ export function CategoryCard({ title, description, icon: Icon, href, imageUrl, d
           </div>
           <p className="text-primary-foreground/80 text-sm">{description}</p>
           
-          {/* Hover Arrow */}
           <div className="absolute bottom-6 right-6 w-10 h-10 rounded-full bg-primary/20 backdrop-blur-sm flex items-center justify-center opacity-0 translate-x-4 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0">
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />

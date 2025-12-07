@@ -40,7 +40,6 @@ export function MarmitaOrderForm({
   const { dayKey, isSunday, isSaturday } = useDay();
   const dayMenu = weeklyMenu[dayKey];
 
-  // Get size from URL params or editing item
   const sizeFromUrl = searchParams.get("size");
   const initialSize = editingItem
     ? marmitaSizes.find((s) => s.name === editingItem.tamanhoMarmita)
@@ -76,7 +75,6 @@ export function MarmitaOrderForm({
   const [showWeeklyMenu, setShowWeeklyMenu] = useState(false);
   const [showAddedModal, setShowAddedModal] = useState(false);
 
-  // Handle Saturday bean restriction
   const toggleItem = (itemId: string) => {
     if (isSaturday && dayMenu.beansOnlyOne) {
       if (itemId === "feijao-preto" || itemId === "feijao-carioca") {
@@ -85,7 +83,7 @@ export function MarmitaOrderForm({
         setCheckedItems((prev) => ({
           ...prev,
           [itemId]: !prev[itemId],
-          [otherId]: prev[itemId] ? prev[otherId] : false, // If turning on this one, turn off the other
+          [otherId]: prev[itemId] ? prev[otherId] : false,
         }));
         return;
       }
@@ -165,7 +163,6 @@ export function MarmitaOrderForm({
     <>
       <div className="flex-1 overflow-y-auto pb-32 md:pb-8">
         <div className="container mx-auto px-4 py-4 md:py-6 max-w-2xl">
-          {/* Header info */}
           <div className="mb-6">
             <Button
               variant="outline"
@@ -177,7 +174,6 @@ export function MarmitaOrderForm({
               Ver cardápio da semana
             </Button>
 
-            {/* Notices */}
             <div className="space-y-2 mb-4">
               <div className="flex items-center gap-2 p-3 rounded-xl bg-muted/50 text-sm">
                 <Info className="w-4 h-4 text-primary shrink-0" />
@@ -196,7 +192,6 @@ export function MarmitaOrderForm({
             </div>
           </div>
 
-          {/* Size Selection */}
           <div className="mb-6">
             <h3 className="font-display text-lg font-bold mb-3 text-foreground">
               Escolha o Tamanho
@@ -230,7 +225,6 @@ export function MarmitaOrderForm({
             </div>
           </div>
 
-          {/* Menu Items */}
           <div className="mb-6">
             <h3 className="font-display text-lg font-bold mb-3 text-foreground">
               Cardápio de {dayDisplayNames[dayKey]}
@@ -275,7 +269,6 @@ export function MarmitaOrderForm({
             </div>
           </div>
 
-          {/* Meat Selection */}
           <div className="mb-6">
             <h3 className="font-display text-lg font-bold mb-3 text-foreground">
               Escolha a Carne
@@ -331,7 +324,6 @@ export function MarmitaOrderForm({
         </div>
       </div>
 
-      {/* Fixed bottom bar */}
       <div className="fixed bottom-16 md:bottom-0 left-0 right-0 bg-card border-t border-border p-4 shadow-float z-30">
         <div className="container mx-auto max-w-2xl">
           <div className="flex items-center justify-between gap-4">
@@ -355,13 +347,11 @@ export function MarmitaOrderForm({
         </div>
       </div>
 
-      {/* Weekly Menu Modal */}
       <WeeklyMenuModal
         isOpen={showWeeklyMenu}
         onClose={() => setShowWeeklyMenu(false)}
       />
 
-      {/* Added to Cart Modal */}
       {showAddedModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-foreground/50 backdrop-blur-sm animate-fade-in">
           <div className="bg-card rounded-3xl p-6 max-w-sm w-full shadow-glow animate-scale-in text-center">

@@ -25,7 +25,6 @@ const Carrinho = () => {
       
       <main className="flex-1">
         <div className="container mx-auto px-4 py-4 md:py-6 max-w-2xl">
-          {/* Header actions */}
           {items.length > 0 && (
             <div className="flex items-center justify-between mb-4">
               <p className="text-muted-foreground text-sm">
@@ -77,7 +76,6 @@ const Carrinho = () => {
         </div>
       </main>
 
-      {/* Fixed bottom bar */}
       {items.length > 0 && (
         <div className="fixed bottom-16 md:bottom-0 left-0 right-0 bg-card border-t border-border p-4 shadow-float z-30">
           <div className="container mx-auto max-w-2xl">
@@ -108,7 +106,6 @@ const Carrinho = () => {
         onClose={() => setShowCheckout(false)}
       />
 
-      {/* Edit Item Dialog */}
       <Dialog open={!!editingItem} onOpenChange={() => setEditingItem(null)}>
         <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto p-0">
           {editingItem && (

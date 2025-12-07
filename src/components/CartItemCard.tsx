@@ -14,12 +14,10 @@ export function CartItemCard({ item, onEdit }: CartItemCardProps) {
   return (
     <div className="bg-card rounded-2xl p-4 shadow-soft animate-fade-in">
       <div className="flex gap-3">
-        {/* Image placeholder */}
         <div className="w-20 h-20 rounded-xl bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center shrink-0">
           <span className="text-3xl">🍱</span>
         </div>
 
-        {/* Info */}
         <div className="flex-1 min-w-0">
           <div className="flex items-start justify-between gap-2">
             <h3 className="font-display font-bold text-foreground text-base">
@@ -60,7 +58,6 @@ export function CartItemCard({ item, onEdit }: CartItemCardProps) {
           )}
 
           <div className="flex items-center justify-between mt-3">
-            {/* Quantity */}
             <div className="flex items-center gap-2">
               <Button
                 variant="outline"
@@ -81,7 +78,6 @@ export function CartItemCard({ item, onEdit }: CartItemCardProps) {
               </Button>
             </div>
 
-            {/* Price */}
             <div className="text-right">
               <p className="font-bold text-primary">R$ {subtotal},00</p>
               {item.extraCharge > 0 && (
