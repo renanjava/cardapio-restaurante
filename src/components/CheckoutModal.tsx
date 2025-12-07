@@ -13,7 +13,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useCart } from "@/contexts/CartContext";
 import { restaurantInfo } from "@/data/menuData";
-import { toast } from "sonner";
+import toast from "react-hot-toast";
+import { CustomToaster } from "./CustomToaster";
 
 interface CheckoutModalProps {
   isOpen: boolean;
@@ -349,6 +350,7 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
           </Button>
         </div>
       </div>
+      <CustomToaster />
     </div>
   );
 }

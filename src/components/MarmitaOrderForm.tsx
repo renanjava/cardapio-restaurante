@@ -19,10 +19,11 @@ import {
   MarmitaSize,
   MeatOption,
 } from "@/data/menuData";
-import { toast } from "sonner";
+import toast from "react-hot-toast";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { WeeklyMenuModal } from "./WeeklyMenuModal";
 import { useDay } from "@/contexts/DayContext";
+import { CustomToaster } from "./CustomToaster";
 
 interface MarmitaOrderFormProps {
   editingItem?: CartItem;
@@ -104,8 +105,13 @@ export function MarmitaOrderForm({
   };
 
   const handleAddToCart = () => {
-    if (!selectedSize || !selectedMeat) {
-      toast.error("Selecione o tamanho e a carne");
+    if (!selectedSize) {
+      toast.error("Por favor, selecione o tamanho da marmita");
+      return;
+    }
+
+    if (!selectedMeat) {
+      toast.error("Por favor, escolha a carne antes de continuar");
       return;
     }
 
@@ -337,7 +343,6 @@ export function MarmitaOrderForm({
               variant="warm"
               size="lg"
               onClick={handleAddToCart}
-              disabled={!selectedSize || !selectedMeat}
               className="flex-1 max-w-xs"
             >
               <ShoppingCart className="w-5 h-5" />
@@ -351,6 +356,8 @@ export function MarmitaOrderForm({
         isOpen={showWeeklyMenu}
         onClose={() => setShowWeeklyMenu(false)}
       />
+
+      <CustomToaster />
 
       {showAddedModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-foreground/50 backdrop-blur-sm animate-fade-in">
