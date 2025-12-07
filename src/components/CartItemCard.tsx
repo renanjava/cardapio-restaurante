@@ -1,6 +1,7 @@
-import { Plus, Minus, Trash2, Edit2 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { CartItem, useCart } from '@/contexts/CartContext';
+import { Plus, Minus, Trash2, Edit2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { CartItem, useCart } from "@/contexts/CartContext";
+import toast from "react-hot-toast";
 
 interface CartItemCardProps {
   item: CartItem;
@@ -28,7 +29,15 @@ export function CartItemCard({ item, onEdit }: CartItemCardProps) {
                 variant="ghost"
                 size="icon"
                 className="h-8 w-8 text-muted-foreground hover:text-foreground"
-                onClick={() => onEdit(item)}
+                onClick={() => {
+                  toast("Funcionalidade em desenvolvimento.", {
+                    icon: "⚠️",
+                    style: {
+                      background: "#f8db38",
+                      color: "#000",
+                    },
+                  }); /*onEdit(item)*/
+                }}
               >
                 <Edit2 className="w-4 h-4" />
               </Button>
@@ -44,16 +53,16 @@ export function CartItemCard({ item, onEdit }: CartItemCardProps) {
           </div>
 
           <p className="text-sm text-primary font-semibold">{item.carne}</p>
-          
+
           {item.adicionarItens.length > 0 && (
             <p className="text-xs text-muted-foreground mt-1 truncate">
-              {item.adicionarItens.join(', ')}
+              {item.adicionarItens.join(", ")}
             </p>
           )}
-          
+
           {item.removerItens.length > 0 && (
             <p className="text-xs text-destructive/70 mt-0.5">
-              Sem: {item.removerItens.join(', ')}
+              Sem: {item.removerItens.join(", ")}
             </p>
           )}
 
@@ -67,7 +76,9 @@ export function CartItemCard({ item, onEdit }: CartItemCardProps) {
               >
                 <Minus className="w-3 h-3" />
               </Button>
-              <span className="w-6 text-center font-bold text-foreground">{item.quantidade}</span>
+              <span className="w-6 text-center font-bold text-foreground">
+                {item.quantidade}
+              </span>
               <Button
                 variant="outline"
                 size="icon"
@@ -81,7 +92,9 @@ export function CartItemCard({ item, onEdit }: CartItemCardProps) {
             <div className="text-right">
               <p className="font-bold text-primary">R$ {subtotal},00</p>
               {item.extraCharge > 0 && (
-                <p className="text-xs text-muted-foreground">+R$ {item.extraCharge} extra</p>
+                <p className="text-xs text-muted-foreground">
+                  +R$ {item.extraCharge} extra
+                </p>
               )}
             </div>
           </div>

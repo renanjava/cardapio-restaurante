@@ -6,7 +6,7 @@ export function CustomToaster() {
       position="top-right"
       reverseOrder={false}
       toastOptions={{
-        duration: 4000,
+        duration: 3000,
         style: {
           borderRadius: "10px",
           background: "#1f2937",
@@ -25,6 +25,13 @@ export function CustomToaster() {
           icon: "❌",
           style: {
             background: "#dc2626",
+            color: "#fff",
+          },
+        },
+        custom: {
+          icon: "⚠️",
+          style: {
+            background: "#ffd900",
             color: "#fff",
           },
         },

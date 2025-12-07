@@ -107,7 +107,7 @@ const Carrinho = () => {
         onClose={() => setShowCheckout(false)}
       />
 
-      <Dialog open={!!editingItem} onOpenChange={() => setEditingItem(null)}>
+      {/* <Dialog open={!!editingItem} onOpenChange={() => setEditingItem(null)}>
         <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto p-0">
           {editingItem && (
             <div className="flex flex-col h-full">
@@ -125,7 +125,7 @@ const Carrinho = () => {
             </div>
           )}
         </DialogContent>
-      </Dialog>
+      </Dialog> */}
     </div>
   );
 };
