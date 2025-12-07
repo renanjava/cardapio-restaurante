@@ -328,7 +328,7 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
           </div>
         </div>
 
-        <div className="p-4 border-t border-border bg-muted/30">
+        <div className="p-4 pb-6 md:pb-4 border-t border-border bg-muted/30">
           <div className="flex items-center justify-between mb-4">
             <div>
               <p className="text-sm text-muted-foreground">
