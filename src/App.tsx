@@ -8,25 +8,28 @@ import Index from "./pages/Index";
 import Cardapio from "./pages/Cardapio";
 import Carrinho from "./pages/Carrinho";
 import NotFound from "./pages/NotFound";
+import { DayProvider } from "./contexts/DayContext";
 
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <CartProvider>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner position="top-center" />
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/cardapio" element={<Cardapio />} />
-            <Route path="/carrinho" element={<Carrinho />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </TooltipProvider>
-    </CartProvider>
+    <DayProvider>
+      <CartProvider>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner position="top-center" />
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/cardapio" element={<Cardapio />} />
+              <Route path="/carrinho" element={<Carrinho />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+        </TooltipProvider>
+      </CartProvider>
+    </DayProvider>
   </QueryClientProvider>
 );
 

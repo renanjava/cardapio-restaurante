@@ -1,6 +1,7 @@
-import { X, Calendar } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { weeklyMenu, dayDisplayNames } from '@/data/menuData';
+import { X, Calendar } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { weeklyMenu, dayDisplayNames } from "@/data/menuData";
+import { useDay } from "@/contexts/DayContext";
 
 interface WeeklyMenuModalProps {
   isOpen: boolean;
@@ -8,11 +9,11 @@ interface WeeklyMenuModalProps {
 }
 
 export function WeeklyMenuModal({ isOpen, onClose }: WeeklyMenuModalProps) {
+  const { dayKey } = useDay();
+
   if (!isOpen) return null;
 
-  const days = ['segunda', 'terca', 'quarta', 'quinta', 'sexta', 'sabado'];
-  const today = new Date().getDay();
-  const todayKey = ['domingo', 'segunda', 'terca', 'quarta', 'quinta', 'sexta', 'sabado'][today];
+  const days = ["segunda", "terca", "quarta", "quinta", "sexta", "sabado"];
 
   return (
     <div className="fixed inset-0 z-50 flex items-end md:items-center justify-center bg-foreground/50 backdrop-blur-sm animate-fade-in">
@@ -23,7 +24,9 @@ export function WeeklyMenuModal({ isOpen, onClose }: WeeklyMenuModalProps) {
             <div className="w-10 h-10 rounded-full gradient-warm flex items-center justify-center">
               <Calendar className="w-5 h-5 text-primary-foreground" />
             </div>
-            <h2 className="font-display text-xl font-bold text-foreground">Cardápio da Semana</h2>
+            <h2 className="font-display text-xl font-bold text-foreground">
+              Cardápio da Semana
+            </h2>
           </div>
           <Button variant="ghost" size="icon" onClick={onClose}>
             <X className="w-5 h-5" />
@@ -34,15 +37,15 @@ export function WeeklyMenuModal({ isOpen, onClose }: WeeklyMenuModalProps) {
           <div className="space-y-4">
             {days.map((day) => {
               const menu = weeklyMenu[day];
-              const isToday = day === todayKey;
+              const isToday = day === dayKey;
 
               return (
                 <div
                   key={day}
                   className={`p-4 rounded-2xl border-2 transition-all ${
                     isToday
-                      ? 'border-primary bg-primary/5'
-                      : 'border-border bg-card'
+                      ? "border-primary bg-primary/5"
+                      : "border-border bg-card"
                   }`}
                 >
                   <div className="flex items-center gap-2 mb-3">
@@ -88,7 +91,7 @@ export function WeeklyMenuModal({ isOpen, onClose }: WeeklyMenuModalProps) {
                     </div>
                   </div>
 
-                  {day === 'sabado' && (
+                  {day === "sabado" && (
                     <p className="mt-2 text-xs text-muted-foreground italic">
                       * Apenas um tipo de feijão disponível
                     </p>
