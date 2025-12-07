@@ -1,5 +1,5 @@
-import { Clock, MapPin, Phone, Truck } from 'lucide-react';
-import { restaurantInfo } from '@/data/menuData';
+import { Clock, MapPin, Phone, Truck } from "lucide-react";
+import { restaurantInfo } from "@/data/menuData";
 
 export function Footer() {
   return (
@@ -9,14 +9,17 @@ export function Footer() {
           <div>
             <div className="flex items-center gap-2 mb-4">
               <div className="w-10 h-10 rounded-full gradient-warm flex items-center justify-center">
-                <span className="text-primary-foreground font-bold text-lg">J</span>
+                <span className="text-primary-foreground font-bold text-lg">
+                  J
+                </span>
               </div>
               <span className="font-display font-bold text-xl text-foreground">
                 {restaurantInfo.name}
               </span>
             </div>
             <p className="text-muted-foreground text-sm">
-              Comida caseira feita com carinho e ingredientes frescos todos os dias.
+              Comida caseira feita com carinho e ingredientes frescos todos os
+              dias.
             </p>
           </div>
 
@@ -26,9 +29,16 @@ export function Footer() {
               Horários
             </h4>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              <li><strong>Marmitas:</strong> {restaurantInfo.openingHours.marmitas}</li>
-              <li><strong>Lanches:</strong> {restaurantInfo.openingHours.lanches}</li>
-              <li className="text-destructive">{restaurantInfo.openingHours.sunday}</li>
+              <li>
+                <strong>Marmitas:</strong>{" "}
+                {restaurantInfo.openingHours.marmitas}
+              </li>
+              <li>
+                <strong>Lanches:</strong> {restaurantInfo.openingHours.lanches}
+              </li>
+              <li className="text-destructive">
+                {restaurantInfo.openingHours.sunday}
+              </li>
             </ul>
           </div>
 
@@ -41,7 +51,7 @@ export function Footer() {
               <li>{restaurantInfo.address}</li>
               <li className="flex items-center gap-2">
                 <Phone className="w-4 h-4" />
-                <a 
+                <a
                   href={`https://wa.me/${restaurantInfo.phone}`}
                   className="text-fresh-green hover:underline font-semibold"
                   target="_blank"
@@ -59,7 +69,10 @@ export function Footer() {
         </div>
 
         <div className="mt-8 pt-8 border-t border-border text-center text-sm text-muted-foreground">
-          <p>© {new Date().getFullYear()} {restaurantInfo.name}</p>
+          <p>
+            © {new Date().getFullYear()} {restaurantInfo.name}
+          </p>
+          <p>Desenvolvido por Renan Geraldini Leão</p>
         </div>
       </div>
     </footer>

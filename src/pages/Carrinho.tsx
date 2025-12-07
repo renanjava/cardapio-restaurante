@@ -52,7 +52,7 @@ const Carrinho = () => {
               <p className="text-muted-foreground mb-6 text-sm">
                 Adicione marmitas deliciosas!
               </p>
-              <Link to="/">
+              <Link to="/cardapio?size=mini">
                 <Button variant="warm" size="lg">
                   Fazer um pedido
                   <ArrowRight className="w-5 h-5" />
