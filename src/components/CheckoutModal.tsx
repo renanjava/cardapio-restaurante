@@ -141,7 +141,9 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
     const whatsappUrl = `https://wa.me/${restaurantInfo.phone}?text=${message}`;
     window.open(whatsappUrl, "_blank");
 
-    toast.success("Pedido enviado! Aguarde a confirmação no WhatsApp.");
+    toast.success(
+      "Você será redirecionado para o WhatsApp com o pedido pronto para enviar!"
+    );
     clearCart();
     onClose();
   };
@@ -350,7 +352,6 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
           </Button>
         </div>
       </div>
-      <CustomToaster />
     </div>
   );
 }

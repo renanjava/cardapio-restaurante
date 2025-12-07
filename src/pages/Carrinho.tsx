@@ -9,6 +9,7 @@ import { MarmitaOrderForm } from "@/components/MarmitaOrderForm";
 import { Button } from "@/components/ui/button";
 import { useCart, CartItem } from "@/contexts/CartContext";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { CustomToaster } from "@/components/CustomToaster";
 
 const Carrinho = () => {
   const { items, getTotal, clearCart } = useCart();
@@ -98,6 +99,8 @@ const Carrinho = () => {
       )}
 
       <Footer />
+
+      <CustomToaster />
 
       <CheckoutModal
         isOpen={showCheckout}
