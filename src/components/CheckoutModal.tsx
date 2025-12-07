@@ -223,6 +223,7 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
                   <Input
                     id="number"
                     placeholder="Número..."
+                    inputMode="numeric"
                     value={address.number}
                     onChange={(e) =>
                       setAddress({ ...address, number: e.target.value })
