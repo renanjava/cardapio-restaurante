@@ -14,7 +14,6 @@ export interface MeatOption {
 export interface DayMenu {
   items: MenuItem[];
   meats: MeatOption[];
-  beansOnlyOne?: boolean;
 }
 
 export interface MarmitaSize {
@@ -188,7 +187,7 @@ export const weeklyMenu: Record<string, DayMenu> = {
       { id: "arroz-branco", name: "Arroz branco", checked: true },
       { id: "feijao-carioca", name: "Feijão carioca", checked: true },
       {
-        id: "feijao-preto-pernil",
+        id: "feijao-preto",
         name: "Feijão preto com pernil de porco e calabresa",
         checked: false,
       },

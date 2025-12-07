@@ -76,7 +76,7 @@ export function MarmitaOrderForm({
   const [showWeeklyMenu, setShowWeeklyMenu] = useState(false);
 
   const toggleItem = (itemId: string) => {
-    if (isSaturday && dayMenu.beansOnlyOne) {
+    if (isSaturday) {
       if (itemId === "feijao-preto" || itemId === "feijao-carioca") {
         const otherId =
           itemId === "feijao-preto" ? "feijao-carioca" : "feijao-preto";
@@ -114,13 +114,32 @@ export function MarmitaOrderForm({
       return;
     }
 
-    const addedItems = dayMenu.items
+    let addedItems = dayMenu.items
       .filter((item) => checkedItems[item.id])
       .map((item) => item.name);
 
-    const removedItems = dayMenu.items
+    let removedItems = dayMenu.items
       .filter((item) => !checkedItems[item.id])
       .map((item) => item.name);
+
+    if (isSaturday) {
+      const hasFeijaoPreto = checkedItems["feijao-preto"];
+      const hasFeijaoCarioca = checkedItems["feijao-carioca"];
+
+      if (hasFeijaoPreto) {
+        addedItems = addedItems.filter((item) => item !== "Feijão carioca");
+        removedItems = removedItems.filter((item) => item !== "Feijão carioca");
+      }
+
+      if (hasFeijaoCarioca) {
+        addedItems = addedItems.filter(
+          (item) => item !== "Feijão preto com pernil de porco e calabresa"
+        );
+        removedItems = removedItems.filter(
+          (item) => item !== "Feijão preto com pernil de porco e calabresa"
+        );
+      }
+    }
 
     const cartData = {
       tamanhoMarmita: selectedSize.name,
@@ -181,17 +200,11 @@ export function MarmitaOrderForm({
             </Button>
 
             <div className="space-y-2 mb-4">
-              <div className="flex items-center gap-2 p-3 rounded-xl bg-muted/50 text-sm">
-                <Info className="w-4 h-4 text-primary shrink-0" />
-                <span>Remova ou selecione os itens e escolha a carne</span>
-              </div>
               {isSaturday && (
                 <div className="flex items-center gap-2 p-3 rounded-xl bg-primary/10 border border-primary/20 text-sm">
                   <AlertCircle className="w-4 h-4 text-primary shrink-0" />
                   <span>
-                    Aos sábados, escolha apenas{" "}
-                    <strong>um tipo de feijão</strong> e entregas custam{" "}
-                    <strong>R$ 2,00</strong>
+                    Aos sábados, as entregas custam <strong>R$ 2,00</strong>
                   </span>
                 </div>
               )}
