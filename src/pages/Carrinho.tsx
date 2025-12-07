@@ -3,7 +3,6 @@ import { ShoppingBag, ArrowRight, Trash2 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { BottomNav } from "@/components/BottomNav";
 import { CartItemCard } from "@/components/CartItemCard";
 import { CheckoutModal } from "@/components/CheckoutModal";
 import { MarmitaOrderForm } from "@/components/MarmitaOrderForm";
@@ -77,7 +76,7 @@ const Carrinho = () => {
       </main>
 
       {items.length > 0 && (
-        <div className="fixed bottom-16 md:bottom-0 left-0 right-0 bg-card border-t border-border p-4 shadow-float z-40">
+        <div className="fixed bottom-0 left-0 right-0 bg-card border-t border-border p-4 shadow-float z-40">
           <div className="container mx-auto max-w-2xl">
             <div className="flex items-center justify-between gap-4">
               <div>
@@ -99,7 +98,6 @@ const Carrinho = () => {
       )}
 
       <Footer />
-      <BottomNav />
 
       <CheckoutModal
         isOpen={showCheckout}

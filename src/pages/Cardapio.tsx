@@ -1,5 +1,4 @@
 import { Header } from "@/components/Header";
-import { BottomNav } from "@/components/BottomNav";
 import { MarmitaOrderForm } from "@/components/MarmitaOrderForm";
 import { useSearchParams } from "react-router-dom";
 import { marmitaSizes, dayNames, dayDisplayNames } from "@/data/menuData";
@@ -20,7 +19,6 @@ const Cardapio = () => {
         <MarmitaOrderForm />
       </main>
 
-      <BottomNav />
     </div>
   );
 };
