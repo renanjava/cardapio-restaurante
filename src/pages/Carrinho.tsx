@@ -1,15 +1,15 @@
-import { useState } from 'react';
-import { ShoppingBag, ArrowRight, Trash2 } from 'lucide-react';
-import { Link, useNavigate } from 'react-router-dom';
-import { Header } from '@/components/Header';
-import { Footer } from '@/components/Footer';
-import { BottomNav } from '@/components/BottomNav';
-import { CartItemCard } from '@/components/CartItemCard';
-import { CheckoutModal } from '@/components/CheckoutModal';
-import { MarmitaOrderForm } from '@/components/MarmitaOrderForm';
-import { Button } from '@/components/ui/button';
-import { useCart, CartItem } from '@/contexts/CartContext';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { useState } from "react";
+import { ShoppingBag, ArrowRight, Trash2 } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { Header } from "@/components/Header";
+import { Footer } from "@/components/Footer";
+import { BottomNav } from "@/components/BottomNav";
+import { CartItemCard } from "@/components/CartItemCard";
+import { CheckoutModal } from "@/components/CheckoutModal";
+import { MarmitaOrderForm } from "@/components/MarmitaOrderForm";
+import { Button } from "@/components/ui/button";
+import { useCart, CartItem } from "@/contexts/CartContext";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 
 const Carrinho = () => {
   const { items, getTotal, clearCart } = useCart();
@@ -22,7 +22,7 @@ const Carrinho = () => {
   return (
     <div className="min-h-screen flex flex-col bg-background pb-20 md:pb-0">
       <Header showBack title="Meu Carrinho" />
-      
+
       <main className="flex-1">
         <div className="container mx-auto px-4 py-4 md:py-6 max-w-2xl">
           {items.length > 0 && (
@@ -77,7 +77,7 @@ const Carrinho = () => {
       </main>
 
       {items.length > 0 && (
-        <div className="fixed bottom-16 md:bottom-0 left-0 right-0 bg-card border-t border-border p-4 shadow-float z-30">
+        <div className="fixed bottom-16 md:bottom-0 left-0 right-0 bg-card border-t border-border p-4 shadow-float z-40">
           <div className="container mx-auto max-w-2xl">
             <div className="flex items-center justify-between gap-4">
               <div>
@@ -111,7 +111,9 @@ const Carrinho = () => {
           {editingItem && (
             <div className="flex flex-col h-full">
               <div className="p-4 border-b border-border">
-                <h2 className="font-display text-lg font-bold">Editar Pedido</h2>
+                <h2 className="font-display text-lg font-bold">
+                  Editar Pedido
+                </h2>
               </div>
               <div className="flex-1 overflow-y-auto">
                 <MarmitaOrderForm
