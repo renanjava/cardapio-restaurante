@@ -33,6 +33,7 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
   const [address, setAddress] = useState({ street: "", number: "" });
   const [needsChange, setNeedsChange] = useState<boolean | null>(null);
   const [changeAmount, setChangeAmount] = useState("");
+  const [changeError, setChangeError] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const deliveryFee =
@@ -63,12 +64,7 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
 
     if (paymentMethod === "dinheiro") {
       if (needsChange === null) return false;
-      if (
-        needsChange &&
-        (!changeAmount.trim() ||
-          isNaN(Number(changeAmount)) ||
-          Number(changeAmount) <= 0)
-      ) {
+      if (needsChange && !changeAmount.trim()) {
         return false;
       }
     }
@@ -137,6 +133,17 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
   };
 
   const handleSendOrder = () => {
+    if (paymentMethod === "dinheiro" && needsChange) {
+      const changeValue = Number(changeAmount);
+      if (changeValue < total) {
+        setChangeError(true);
+        toast.error(
+          `O valor do troco (R$ ${changeValue},00) deve ser maior ou igual que o total (R$ ${total},00)`
+        );
+        return;
+      }
+    }
+
     const message = buildWhatsAppMessage();
     const whatsappUrl = `https://wa.me/${restaurantInfo.phone}?text=${message}`;
     window.open(whatsappUrl, "_blank");
@@ -351,11 +358,20 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
                     <Label htmlFor="change">Para quantos reais?</Label>
                     <Input
                       id="change"
-                      type="number"
+                      type="text"
+                      inputMode="numeric"
                       placeholder="R$"
                       value={changeAmount}
-                      onChange={(e) => setChangeAmount(e.target.value)}
-                      className="mt-1"
+                      onChange={(e) => {
+                        const value = e.target.value.replace(/\D/g, "");
+                        setChangeAmount(value);
+                        setChangeError(false);
+                      }}
+                      className={`mt-1 ${
+                        changeError
+                          ? "border-red-500 border-2 focus-visible:ring-red-500"
+                          : ""
+                      }`}
                     />
                   </div>
                 )}
