@@ -1,104 +1,22 @@
-<!DOCTYPE html>
-<html lang="ptbr">
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Restaurante da Juliana - Marmitas Caseiras</title>
+    <meta name="description" content="Marmitas caseiras feitas com carinho. Peça pelo WhatsApp e receba em casa!" />
+    <meta name="author" content="Restaurante da Juliana" />
+    <meta name="theme-color" content="#e67e22" />
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Restaurante da Juliana</title>
-    <link rel="stylesheet" href="styles/normalize.css">
-    <link rel="stylesheet" href="styles/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
-        integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <script src="script.js"></script>
-</head>
+    <meta property="og:title" content="Restaurante da Juliana - Marmitas Caseiras" />
+    <meta property="og:description" content="Comida caseira feita com amor. Faça seu pedido online!" />
+    <meta property="og:type" content="website" />
 
-<body>
-    <header>
-        <div class="cabecalho__container">
-            <h1 class="cabecalho__titulo-principal">Restaurante da Juliana</h1>
-            <div class="cabecalho__informacoes-contato">
-                <ul class="cabecalho__lista-contato">
-                    <li class="lista-contato__item">
-                        <img class="cabecalho__icone" src="assets/whatsapp.png" alt="Ícone do WhatsApp"
-                            aria-label="WhatsApp">
-                        <a class="cabecalho__texto menu__opcao"
-                            href="https://api.whatsapp.com/send/?phone=5544988129535&text=Oi%2C+gostaria+de+fazer+um+pedido">(44)
-                            988129535</a>
-                    </li>
-                    <li class="lista-contato__item">
-                        <img class="cabecalho__icone" src="assets/localizacao.png" alt="Ícone da Localização"
-                            aria-label="Localização">
-                        <p class="cabecalho__texto">Elpídio Monteiro, 21<br>Itambé-PR</p>
-                    </li>
-                </ul>
-            </div>
-        </div>
+    <link rel="canonical" href="https://restaurantedajuliana.com.br" />
+  </head>
 
-    </header>
-
-    <main>
-        <nav class="opcoes__menu">
-            <div class="opcoes__grupo">
-                <button class="menu__opcao opcao__texto" id="lanches"
-                    onclick="atualizarListaProdutos(id)">Lanches</button>
-                <button class="menu__opcao opcao__texto" id="combos"
-                    onclick="atualizarListaProdutos(id)">Combos</button>
-                <button class="menu__opcao opcao__texto active" disabled id="marmitas"
-                    onclick="atualizarListaProdutos(id)">Marmitas</button>
-            </div>
-            <a class="nav__carrinho" href="features/meu-carrinho/index.html" title="Meu Carrinho">
-                <i class="fa-solid fa-cart-shopping"></i>
-                <span id="carrinhoBadge" class="nav__carrinho-badge">0</span>
-            </a>
-        </nav>
-        <div class="container__flutuante">
-            <div class="content__flutuante">
-                <a class="icon"
-                    href="https://api.whatsapp.com/send/?phone=5544988129535&text=Oi%2C+gostaria+de+fazer+um+pedido"
-                    target="_blank">
-                    <i class="fab fa-whatsapp"></i>
-                </a>
-            </div>
-        </div>
-        <div class="container__lista">
-            <ul class="lista__produtos">
-
-            </ul>
-        </div>
-        <div class="container__section">
-            <section class="container__secundario" id="atendimento">
-                <img class="secundario__imagem" src="assets/atendimento.png" alt="Ícone de atendimento">
-                <div class="secundario__descricao">
-                    <h2 class="secundario__titulo">Horários de atendimento</h2>
-                    <p class="secundario__texto"><strong>Segunda</strong> à <strong>sábado</strong>, das
-                        <strong>10:30</strong> até <strong>14:00</strong>
-                    </p>
-                    <p class="secundario__texto"><strong>Domingo</strong>, o restaurante é fechado.
-                    </p>
-                    <p class="secundario__aviso">*Observação: os lanches devem ser consultados no WhatsApp*
-                    </p>
-                    <button class="secundario__botao" onclick="enviarMensagemWhatsApp()">Pedir no WhatsApp</button>
-                </div>
-            </section>
-            <section class="container__secundario" id="delivery">
-                <div class="secundario__descricao">
-                    <h2 class="secundario__titulo">Delivery</h2>
-                    <p class="secundario__texto"><strong>Marmitas</strong> não possui taxa de entrega</p>
-                    <p class="secundario__texto"><strong>Lanches</strong> possui taxa de entrega</p>
-                    <p class="secundario__aviso">*Observação: Sábado há taxa de entrega das marmitas,
-                        <strong>R$ 2,00</strong>*
-                    </p>
-                    <button class="secundario__botao" onclick="enviarMensagemWhatsApp()">Pedir no WhatsApp</button>
-                </div>
-                <img class="secundario__imagem" src="assets/delivery.png" alt="Ícone de delivery">
-            </section>
-        </div>
-    </main>
-
-    <footer class="rodape__container">
-        <p class="rodape__texto">Desenvolvido por Renan Geraldini Leão.</p>
-    </footer>
-</body>
-
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
 </html>
