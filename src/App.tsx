@@ -8,8 +8,11 @@ import Cardapio from "./pages/Cardapio";
 import Carrinho from "./pages/Carrinho";
 import NotFound from "./pages/NotFound";
 import { DayProvider } from "./contexts/DayContext";
+import { inject } from "@vercel/analytics";
 
 const queryClient = new QueryClient();
+
+inject();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
