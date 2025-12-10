@@ -15,6 +15,7 @@ import { useCart } from "@/contexts/CartContext";
 import { restaurantInfo, dayDisplayNames, weeklyMenu } from "@/data/menuData";
 import toast from "react-hot-toast";
 import { useDay } from "@/contexts/DayContext";
+import { track } from "@/lib/tracking";
 
 interface CheckoutModalProps {
   isOpen: boolean;
@@ -156,6 +157,16 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
         return;
       }
     }
+
+    track.pedidoCriado({
+      items: items,
+      total: total,
+      pagamento: paymentMethod,
+      entrega: deliveryMethod,
+      endereco: deliveryMethod === "entrega" ? address : null,
+      taxaEntrega: deliveryFee,
+      getItemSubtotal: getItemSubtotal,
+    });
 
     const message = buildWhatsAppMessage();
     const whatsappUrl = `https://wa.me/${restaurantInfo.phone}?text=${message}`;
