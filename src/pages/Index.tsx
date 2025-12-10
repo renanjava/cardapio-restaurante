@@ -22,7 +22,15 @@ const Index = () => {
 
       <main className="flex-1">
         <section className="relative overflow-hidden">
-          <div className="absolute inset-0 gradient-hero" />
+          <div className="absolute inset-0">
+            <img
+              src="/images/hero-bg.png"
+              alt="Imagem de uma marmita com frango a parmegiana"
+              className="w-full h-full object-cover object-[center_63%] md:object-center"
+            />
+            <div className="absolute inset-0 bg-black/50" />
+            <div className="absolute inset-0 gradient-hero mix-blend-multiply opacity-70" />
+          </div>
 
           <div className="relative container mx-auto px-4 py-10 md:py-16">
             <div className="max-w-lg animate-fade-in">
