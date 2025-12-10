@@ -51,6 +51,7 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
   const [changeAmount, setChangeAmount] = useState("");
   const [changeError, setChangeError] = useState(false);
   const [selectedDrinks, setSelectedDrinks] = useState<DrinkOrder[]>([]);
+  const [showDrinks, setShowDrinks] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const deliveryFee =
@@ -248,7 +249,7 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
     <div className="fixed inset-0 z-50 flex items-end md:items-center justify-center bg-foreground/50 backdrop-blur-sm animate-fade-in">
       <div
         className="bg-card rounded-t-3xl md:rounded-3xl w-full max-w-lg flex flex-col shadow-glow animate-slide-up"
-        style={{ maxHeight: "90vh" }}
+        style={{ maxHeight: "95vh" }}
       >
         <div className="flex items-center justify-between p-4 border-b border-border shrink-0">
           <h2 className="font-display text-xl font-bold text-foreground">
@@ -265,65 +266,101 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
         >
           {/* Order Bump - Bebidas */}
           <div className="bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-950/20 dark:to-cyan-950/20 rounded-2xl p-4 border-2 border-blue-200 dark:border-blue-800">
-            <div className="flex items-center gap-2 mb-3">
-              <Wine className="w-5 h-5 text-blue-600" />
-              <h3 className="font-display font-bold text-foreground">
-                Adicionar Bebidas? 🥤
-              </h3>
-            </div>
-            <p className="text-sm text-muted-foreground mb-4">
-              Aproveite e adicione bebidas ao seu pedido!
-            </p>
-            <div className="space-y-2">
-              {drinks.map((drink) => {
-                const quantity = getDrinkQuantity(drink.id);
-                return (
-                  <div
-                    key={drink.id}
-                    className="flex items-center justify-between bg-white dark:bg-gray-900 rounded-xl p-3"
-                  >
-                    <div className="flex-1">
-                      <p className="font-semibold text-sm">{drink.name}</p>
-                      <p className="text-primary font-bold">
-                        R$ {drink.price.toFixed(2).replace(".", ",")}
-                      </p>
-                    </div>
-                    {quantity === 0 ? (
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={() => handleAddDrink(drink)}
-                        className="h-8"
-                      >
-                        <Plus className="w-4 h-4" />
-                      </Button>
-                    ) : (
-                      <div className="flex items-center gap-2">
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={() => handleRemoveDrink(drink.id)}
-                          className="h-8 w-8 p-0"
-                        >
-                          <Minus className="w-4 h-4" />
-                        </Button>
-                        <span className="font-bold min-w-[2ch] text-center">
-                          {quantity}
-                        </span>
+            <button
+              onClick={() => setShowDrinks(!showDrinks)}
+              className="w-full flex items-center justify-between"
+            >
+              <div className="flex items-center gap-2">
+                <Wine className="w-5 h-5 text-blue-600" />
+                <h3 className="font-display font-bold text-foreground">
+                  Adicionar Bebidas? 🥤
+                </h3>
+              </div>
+              <div
+                className={`transition-transform ${
+                  showDrinks ? "rotate-180" : ""
+                }`}
+              >
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 9l-7 7-7-7"
+                  />
+                </svg>
+              </div>
+            </button>
+
+            {!showDrinks && selectedDrinks.length > 0 && (
+              <div className="mt-2 text-sm text-muted-foreground">
+                {selectedDrinks.length}{" "}
+                {selectedDrinks.length === 1
+                  ? "bebida adicionada"
+                  : "bebidas adicionadas"}
+              </div>
+            )}
+
+            {showDrinks && (
+              <div className="mt-4 space-y-2 animate-fade-in">
+                <p className="text-sm text-muted-foreground mb-3">
+                  Aproveite e adicione bebidas ao seu pedido!
+                </p>
+                {drinks.map((drink) => {
+                  const quantity = getDrinkQuantity(drink.id);
+                  return (
+                    <div
+                      key={drink.id}
+                      className="flex items-center justify-between bg-white dark:bg-gray-900 rounded-xl p-3"
+                    >
+                      <div className="flex-1">
+                        <p className="font-semibold text-sm">{drink.name}</p>
+                        <p className="text-primary font-bold">
+                          R$ {drink.price.toFixed(2).replace(".", ",")}
+                        </p>
+                      </div>
+                      {quantity === 0 ? (
                         <Button
                           size="sm"
                           variant="outline"
                           onClick={() => handleAddDrink(drink)}
-                          className="h-8 w-8 p-0"
+                          className="h-8"
                         >
                           <Plus className="w-4 h-4" />
                         </Button>
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
+                      ) : (
+                        <div className="flex items-center gap-2">
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => handleRemoveDrink(drink.id)}
+                            className="h-8 w-8 p-0"
+                          >
+                            <Minus className="w-4 h-4" />
+                          </Button>
+                          <span className="font-bold min-w-[2ch] text-center">
+                            {quantity}
+                          </span>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => handleAddDrink(drink)}
+                            className="h-8 w-8 p-0"
+                          >
+                            <Plus className="w-4 h-4" />
+                          </Button>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            )}
           </div>
 
           <div>
