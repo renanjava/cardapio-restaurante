@@ -7,12 +7,20 @@ import {
   Banknote,
   Send,
   Info,
+  Plus,
+  Minus,
+  Wine,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useCart } from "@/contexts/CartContext";
-import { restaurantInfo, dayDisplayNames, weeklyMenu } from "@/data/menuData";
+import {
+  restaurantInfo,
+  dayDisplayNames,
+  weeklyMenu,
+  drinks,
+} from "@/data/menuData";
 import toast from "react-hot-toast";
 import { useDay } from "@/contexts/DayContext";
 import { track } from "@/lib/tracking";
@@ -25,6 +33,13 @@ interface CheckoutModalProps {
 type DeliveryMethod = "balcao" | "entrega" | null;
 type PaymentMethod = "cartao" | "pix" | "dinheiro" | null;
 
+interface DrinkOrder {
+  id: string;
+  name: string;
+  price: number;
+  quantity: number;
+}
+
 export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
   const { items, getTotal, getItemSubtotal, clearCart } = useCart();
   const { isSaturday, dayKey } = useDay();
@@ -35,6 +50,7 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
   const [needsChange, setNeedsChange] = useState<boolean | null>(null);
   const [changeAmount, setChangeAmount] = useState("");
   const [changeError, setChangeError] = useState(false);
+  const [selectedDrinks, setSelectedDrinks] = useState<DrinkOrder[]>([]);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const deliveryFee =
@@ -42,7 +58,11 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
       ? restaurantInfo.deliveryFeeSaturday
       : 0;
   const subtotal = getTotal();
-  const total = subtotal + deliveryFee;
+  const drinksTotal = selectedDrinks.reduce(
+    (acc, drink) => acc + drink.price * drink.quantity,
+    0
+  );
+  const total = subtotal + deliveryFee + drinksTotal;
 
   useEffect(() => {
     if (isOpen) {
@@ -55,6 +75,34 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
       document.body.style.overflow = "unset";
     };
   }, [isOpen]);
+
+  const handleAddDrink = (drink: (typeof drinks)[0]) => {
+    setSelectedDrinks((prev) => {
+      const existing = prev.find((d) => d.id === drink.id);
+      if (existing) {
+        return prev.map((d) =>
+          d.id === drink.id ? { ...d, quantity: d.quantity + 1 } : d
+        );
+      }
+      return [...prev, { ...drink, quantity: 1 }];
+    });
+  };
+
+  const handleRemoveDrink = (drinkId: string) => {
+    setSelectedDrinks((prev) => {
+      const existing = prev.find((d) => d.id === drinkId);
+      if (existing && existing.quantity > 1) {
+        return prev.map((d) =>
+          d.id === drinkId ? { ...d, quantity: d.quantity - 1 } : d
+        );
+      }
+      return prev.filter((d) => d.id !== drinkId);
+    });
+  };
+
+  const getDrinkQuantity = (drinkId: string) => {
+    return selectedDrinks.find((d) => d.id === drinkId)?.quantity || 0;
+  };
 
   const isFormValid = () => {
     if (!deliveryMethod || !paymentMethod) return false;
@@ -111,6 +159,17 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
       }
     });
 
+    if (selectedDrinks.length > 0) {
+      message += `\n🥤 *BEBIDAS:*\n`;
+      selectedDrinks.forEach((drink) => {
+        const drinkTotal = drink.price * drink.quantity;
+        message += `${drink.name}\n`;
+        message += `   Qtd: ${drink.quantity} | R$ ${drinkTotal
+          .toFixed(2)
+          .replace(".", ",")}\n`;
+      });
+    }
+
     message += `\n📍 *RETIRADA:*\n`;
     if (deliveryMethod === "balcao") {
       message += `Balcão\n`;
@@ -141,7 +200,7 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
         break;
     }
 
-    message += `\n💰 *TOTAL: R$ ${total},00*`;
+    message += `\n💰 *TOTAL: R$ ${total.toFixed(2).replace(".", ",")}*`;
 
     return encodeURIComponent(message);
   };
@@ -152,7 +211,11 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
       if (changeValue < total) {
         setChangeError(true);
         toast.error(
-          `O valor do troco (R$ ${changeValue},00) deve ser maior ou igual que o total (R$ ${total},00)`
+          `O valor do troco (R$ ${changeValue
+            .toFixed(2)
+            .replace(".", ",")}) deve ser maior ou igual que o total (R$ ${total
+            .toFixed(2)
+            .replace(".", ",")})`
         );
         return;
       }
@@ -200,6 +263,69 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
           ref={scrollContainerRef}
           className="flex-1 overflow-y-auto p-4 space-y-6"
         >
+          {/* Order Bump - Bebidas */}
+          <div className="bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-950/20 dark:to-cyan-950/20 rounded-2xl p-4 border-2 border-blue-200 dark:border-blue-800">
+            <div className="flex items-center gap-2 mb-3">
+              <Wine className="w-5 h-5 text-blue-600" />
+              <h3 className="font-display font-bold text-foreground">
+                Adicionar Bebidas? 🥤
+              </h3>
+            </div>
+            <p className="text-sm text-muted-foreground mb-4">
+              Aproveite e adicione bebidas ao seu pedido!
+            </p>
+            <div className="space-y-2">
+              {drinks.map((drink) => {
+                const quantity = getDrinkQuantity(drink.id);
+                return (
+                  <div
+                    key={drink.id}
+                    className="flex items-center justify-between bg-white dark:bg-gray-900 rounded-xl p-3"
+                  >
+                    <div className="flex-1">
+                      <p className="font-semibold text-sm">{drink.name}</p>
+                      <p className="text-primary font-bold">
+                        R$ {drink.price.toFixed(2).replace(".", ",")}
+                      </p>
+                    </div>
+                    {quantity === 0 ? (
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => handleAddDrink(drink)}
+                        className="h-8"
+                      >
+                        <Plus className="w-4 h-4" />
+                      </Button>
+                    ) : (
+                      <div className="flex items-center gap-2">
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => handleRemoveDrink(drink.id)}
+                          className="h-8 w-8 p-0"
+                        >
+                          <Minus className="w-4 h-4" />
+                        </Button>
+                        <span className="font-bold min-w-[2ch] text-center">
+                          {quantity}
+                        </span>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => handleAddDrink(drink)}
+                          className="h-8 w-8 p-0"
+                        >
+                          <Plus className="w-4 h-4" />
+                        </Button>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
           <div>
             <h3 className="flex items-center gap-2 font-display font-bold mb-3">
               <MapPin className="w-5 h-5 text-primary" />
@@ -417,6 +543,15 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
               <span className="font-semibold">R$ {subtotal},00</span>
             </div>
 
+            {selectedDrinks.length > 0 && (
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-muted-foreground">Bebidas:</span>
+                <span className="font-semibold">
+                  R$ {drinksTotal.toFixed(2).replace(".", ",")}
+                </span>
+              </div>
+            )}
+
             {deliveryMethod === "entrega" && isSaturday && deliveryFee > 0 && (
               <div className="flex items-center justify-between text-sm">
                 <span className="text-muted-foreground">
@@ -431,7 +566,7 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
             <div className="flex items-center justify-between pt-2 border-t border-border">
               <span className="text-lg font-bold text-foreground">Total:</span>
               <span className="text-2xl font-bold text-primary">
-                R$ {total},00
+                R$ {total.toFixed(2).replace(".", ",")}
               </span>
             </div>
           </div>
