@@ -9,10 +9,12 @@ import Carrinho from "./pages/Carrinho";
 import NotFound from "./pages/NotFound";
 import { DayProvider } from "./contexts/DayContext";
 import { inject } from "@vercel/analytics";
+import { injectSpeedInsights } from "@vercel/speed-insights";
 
 const queryClient = new QueryClient();
 
 inject();
+injectSpeedInsights();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
