@@ -185,6 +185,7 @@ const Index = () => {
               </div>
             </div>
 
+            {/* Badge de endereço - apenas mobile */}
             <div className="bg-card rounded-2xl p-4 shadow-soft md:hidden">
               <div className="flex items-center gap-3 mb-3">
                 <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
@@ -204,7 +205,7 @@ const Index = () => {
           </div>
         </section>
 
-        <section className="container mx-auto px-4 py-4 md:hidden">
+        <section className="container mx-auto px-4 py-4 pb-8 md:hidden">
           <div className="text-center">
             <p className="text-xs text-muted-foreground">
               Desenvolvido por{" "}
