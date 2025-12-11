@@ -10,6 +10,7 @@ import {
   Plus,
   Minus,
   Wine,
+  ChevronDown,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -251,76 +252,63 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
         className="bg-card rounded-t-3xl md:rounded-3xl w-full max-w-lg flex flex-col shadow-glow animate-slide-up"
         style={{ maxHeight: "95vh" }}
       >
-        <div className="flex items-center justify-between p-4 border-b border-border shrink-0">
-          <h2 className="font-display text-xl font-bold text-foreground">
+        <div className="flex items-center justify-between p-3 border-b border-border shrink-0">
+          <h2 className="font-display text-lg font-bold text-foreground">
             Finalizar Pedido
           </h2>
-          <Button variant="ghost" size="icon" onClick={onClose}>
-            <X className="w-5 h-5" />
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={onClose}
+            className="h-8 w-8"
+          >
+            <X className="w-4 h-4" />
           </Button>
         </div>
 
         <div
           ref={scrollContainerRef}
-          className="flex-1 overflow-y-auto p-4 space-y-6"
+          className="flex-1 overflow-y-auto p-3 space-y-4"
         >
-          {/* Order Bump - Bebidas */}
-          <div className="bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-950/20 dark:to-cyan-950/20 rounded-2xl p-4 border-2 border-blue-200 dark:border-blue-800">
+          <div className="bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-950/20 dark:to-cyan-950/20 rounded-xl p-3 border border-blue-200 dark:border-blue-800">
             <button
               onClick={() => setShowDrinks(!showDrinks)}
               className="w-full flex items-center justify-between"
             >
               <div className="flex items-center gap-2">
-                <Wine className="w-5 h-5 text-blue-600" />
-                <h3 className="font-display font-bold text-foreground">
-                  Adicionar Bebidas? 🥤
-                </h3>
+                <Wine className="w-4 h-4 text-blue-600" />
+                <span className="font-semibold text-sm">
+                  Adicionar Bebidas?
+                </span>
               </div>
-              <div
-                className={`transition-transform ${
+              <ChevronDown
+                className={`w-4 h-4 transition-transform ${
                   showDrinks ? "rotate-180" : ""
                 }`}
-              >
-                <svg
-                  className="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M19 9l-7 7-7-7"
-                  />
-                </svg>
-              </div>
+              />
             </button>
 
             {!showDrinks && selectedDrinks.length > 0 && (
-              <div className="mt-2 text-sm text-muted-foreground">
+              <div className="mt-1 text-xs text-muted-foreground">
                 {selectedDrinks.length}{" "}
-                {selectedDrinks.length === 1
-                  ? "bebida adicionada"
-                  : "bebidas adicionadas"}
+                {selectedDrinks.length === 1 ? "bebida" : "bebidas"}
               </div>
             )}
 
             {showDrinks && (
-              <div className="mt-4 space-y-2 animate-fade-in">
-                <p className="text-sm text-muted-foreground mb-3">
-                  Aproveite e adicione bebidas ao seu pedido!
-                </p>
+              <div className="mt-3 space-y-2 animate-fade-in">
                 {drinks.map((drink) => {
                   const quantity = getDrinkQuantity(drink.id);
                   return (
                     <div
                       key={drink.id}
-                      className="flex items-center justify-between bg-white dark:bg-gray-900 rounded-xl p-3"
+                      className="flex items-center justify-between bg-white dark:bg-gray-900 rounded-lg p-2"
                     >
-                      <div className="flex-1">
-                        <p className="font-semibold text-sm">{drink.name}</p>
-                        <p className="text-primary font-bold">
+                      <div className="flex-1 min-w-0">
+                        <p className="font-semibold text-xs truncate">
+                          {drink.name}
+                        </p>
+                        <p className="text-primary font-bold text-sm">
                           R$ {drink.price.toFixed(2).replace(".", ",")}
                         </p>
                       </div>
@@ -329,30 +317,30 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
                           size="sm"
                           variant="outline"
                           onClick={() => handleAddDrink(drink)}
-                          className="h-8"
+                          className="h-7 w-7 p-0 ml-2"
                         >
-                          <Plus className="w-4 h-4" />
+                          <Plus className="w-3 h-3" />
                         </Button>
                       ) : (
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-1 ml-2">
                           <Button
                             size="sm"
                             variant="outline"
                             onClick={() => handleRemoveDrink(drink.id)}
-                            className="h-8 w-8 p-0"
+                            className="h-7 w-7 p-0"
                           >
-                            <Minus className="w-4 h-4" />
+                            <Minus className="w-3 h-3" />
                           </Button>
-                          <span className="font-bold min-w-[2ch] text-center">
+                          <span className="font-bold text-sm min-w-[1.5rem] text-center">
                             {quantity}
                           </span>
                           <Button
                             size="sm"
                             variant="outline"
                             onClick={() => handleAddDrink(drink)}
-                            className="h-8 w-8 p-0"
+                            className="h-7 w-7 p-0"
                           >
-                            <Plus className="w-4 h-4" />
+                            <Plus className="w-3 h-3" />
                           </Button>
                         </div>
                       )}
@@ -364,37 +352,39 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
           </div>
 
           <div>
-            <h3 className="flex items-center gap-2 font-display font-bold mb-3">
-              <MapPin className="w-5 h-5 text-primary" />
-              Forma de Retirada
+            <h3 className="flex items-center gap-1.5 font-semibold text-sm mb-2">
+              <MapPin className="w-4 h-4 text-primary" />
+              Retirada
             </h3>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-2 gap-2">
               <button
                 onClick={() => setDeliveryMethod("balcao")}
-                className={`p-4 rounded-2xl border-2 transition-all text-center ${
+                className={`p-2.5 rounded-lg border-2 transition-all text-sm font-medium ${
                   deliveryMethod === "balcao"
-                    ? "border-primary bg-primary/5"
+                    ? "border-primary bg-primary/10 text-primary"
                     : "border-border"
                 }`}
               >
-                <span className="font-semibold">Balcão</span>
+                Balcão
               </button>
               <button
                 onClick={() => setDeliveryMethod("entrega")}
-                className={`p-4 rounded-2xl border-2 transition-all text-center ${
+                className={`p-2.5 rounded-lg border-2 transition-all text-sm font-medium ${
                   deliveryMethod === "entrega"
-                    ? "border-primary bg-primary/5"
+                    ? "border-primary bg-primary/10 text-primary"
                     : "border-border"
                 }`}
               >
-                <span className="font-semibold">Entrega</span>
+                Entrega
               </button>
             </div>
 
             {deliveryMethod === "entrega" && (
-              <div className="mt-4 space-y-3 animate-fade-in">
+              <div className="mt-3 space-y-2 animate-fade-in">
                 <div>
-                  <Label htmlFor="street">Nome da rua</Label>
+                  <Label htmlFor="street" className="text-xs">
+                    Nome da rua
+                  </Label>
                   <Input
                     id="street"
                     placeholder="Rua..."
@@ -402,11 +392,13 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
                     onChange={(e) =>
                       setAddress({ ...address, street: e.target.value })
                     }
-                    className="mt-1"
+                    className="mt-1 h-9 text-sm"
                   />
                 </div>
                 <div>
-                  <Label htmlFor="number">Número</Label>
+                  <Label htmlFor="number" className="text-xs">
+                    Número
+                  </Label>
                   <Input
                     id="number"
                     placeholder="Número..."
@@ -415,21 +407,15 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
                     onChange={(e) =>
                       setAddress({ ...address, number: e.target.value })
                     }
-                    className="mt-1"
+                    className="mt-1 h-9 text-sm"
                   />
                 </div>
                 {isSaturday && (
-                  <div className="flex items-start gap-2 p-3 rounded-xl bg-amber-500/10 border border-amber-500/20 text-sm">
-                    <Info className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
-                    <div>
-                      <p className="font-semibold text-amber-900 dark:text-amber-100">
-                        Taxa de entrega aos sábados
-                      </p>
-                      <p className="text-amber-800 dark:text-amber-200 mt-1">
-                        Será cobrada uma taxa de <strong>R$ 2,00</strong> para
-                        entregas realizadas aos sábados.
-                      </p>
-                    </div>
+                  <div className="flex items-start gap-2 p-2 rounded-lg bg-amber-500/10 border border-amber-500/20">
+                    <Info className="w-3.5 h-3.5 text-amber-600 shrink-0 mt-0.5" />
+                    <p className="text-xs text-amber-900 dark:text-amber-100">
+                      Taxa de <strong>R$ 2,00</strong> aos sábados
+                    </p>
                   </div>
                 )}
               </div>
@@ -437,21 +423,21 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
           </div>
 
           <div>
-            <h3 className="flex items-center gap-2 font-display font-bold mb-3">
-              <CreditCard className="w-5 h-5 text-primary" />
-              Forma de Pagamento
+            <h3 className="flex items-center gap-1.5 font-semibold text-sm mb-2">
+              <CreditCard className="w-4 h-4 text-primary" />
+              Pagamento
             </h3>
             <div className="space-y-2">
               <button
                 onClick={() => setPaymentMethod("cartao")}
-                className={`w-full flex items-center gap-3 p-4 rounded-2xl border-2 transition-all ${
+                className={`w-full flex items-center gap-2 p-2.5 rounded-lg border-2 transition-all ${
                   paymentMethod === "cartao"
-                    ? "border-primary bg-primary/5"
+                    ? "border-primary bg-primary/10"
                     : "border-border"
                 }`}
               >
-                <CreditCard className="w-5 h-5 text-muted-foreground" />
-                <span className="font-semibold">Cartão</span>
+                <CreditCard className="w-4 h-4 text-muted-foreground" />
+                <span className="font-medium text-sm">Cartão</span>
               </button>
 
               <button
@@ -466,14 +452,14 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
                     }
                   }, 100);
                 }}
-                className={`w-full flex items-center gap-3 p-4 rounded-2xl border-2 transition-all ${
+                className={`w-full flex items-center gap-2 p-2.5 rounded-lg border-2 transition-all ${
                   paymentMethod === "pix"
-                    ? "border-primary bg-primary/5"
+                    ? "border-primary bg-primary/10"
                     : "border-border"
                 }`}
               >
-                <Smartphone className="w-5 h-5 text-muted-foreground" />
-                <span className="font-semibold">Pix</span>
+                <Smartphone className="w-4 h-4 text-muted-foreground" />
+                <span className="font-medium text-sm">Pix</span>
               </button>
 
               <button
@@ -488,33 +474,33 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
                     }
                   }, 100);
                 }}
-                className={`w-full flex items-center gap-3 p-4 rounded-2xl border-2 transition-all ${
+                className={`w-full flex items-center gap-2 p-2.5 rounded-lg border-2 transition-all ${
                   paymentMethod === "dinheiro"
-                    ? "border-primary bg-primary/5"
+                    ? "border-primary bg-primary/10"
                     : "border-border"
                 }`}
               >
-                <Banknote className="w-5 h-5 text-muted-foreground" />
-                <span className="font-semibold">Dinheiro</span>
+                <Banknote className="w-4 h-4 text-muted-foreground" />
+                <span className="font-medium text-sm">Dinheiro</span>
               </button>
             </div>
 
             {paymentMethod === "pix" && (
-              <div className="mt-4 p-4 rounded-2xl bg-muted animate-fade-in">
-                <p className="font-semibold text-foreground mb-1">Chave Pix:</p>
-                <p className="text-primary font-mono text-lg">
+              <div className="mt-3 p-2.5 rounded-lg bg-muted animate-fade-in">
+                <p className="font-semibold text-xs mb-1">Chave Pix:</p>
+                <p className="text-primary font-mono text-sm break-all">
                   {restaurantInfo.pixKey}
                 </p>
-                <p className="text-xs text-muted-foreground mt-2">
-                  Envie o comprovante junto com o pedido no WhatsApp
+                <p className="text-xs text-muted-foreground mt-1.5">
+                  Envie o comprovante no WhatsApp
                 </p>
               </div>
             )}
 
             {paymentMethod === "dinheiro" && (
-              <div className="mt-4 space-y-3 animate-fade-in">
-                <p className="font-medium text-foreground">Precisa de troco?</p>
-                <div className="flex gap-3">
+              <div className="mt-3 space-y-2 animate-fade-in">
+                <p className="font-medium text-xs">Precisa de troco?</p>
+                <div className="grid grid-cols-2 gap-2">
                   <button
                     onClick={() => {
                       setNeedsChange(true);
@@ -527,9 +513,9 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
                         }
                       }, 100);
                     }}
-                    className={`flex-1 p-3 rounded-xl border-2 transition-all ${
+                    className={`p-2 rounded-lg border-2 transition-all text-sm font-medium ${
                       needsChange === true
-                        ? "border-primary bg-primary/5"
+                        ? "border-primary bg-primary/10 text-primary"
                         : "border-border"
                     }`}
                   >
@@ -537,9 +523,9 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
                   </button>
                   <button
                     onClick={() => setNeedsChange(false)}
-                    className={`flex-1 p-3 rounded-xl border-2 transition-all ${
+                    className={`p-2 rounded-lg border-2 transition-all text-sm font-medium ${
                       needsChange === false
-                        ? "border-primary bg-primary/5"
+                        ? "border-primary bg-primary/10 text-primary"
                         : "border-border"
                     }`}
                   >
@@ -548,19 +534,21 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
                 </div>
                 {needsChange && (
                   <div className="animate-fade-in">
-                    <Label htmlFor="change">Para quantos reais?</Label>
+                    <Label htmlFor="change" className="text-xs">
+                      Troco para quanto?
+                    </Label>
                     <Input
                       id="change"
                       type="text"
                       inputMode="numeric"
-                      placeholder="R$"
+                      placeholder="Ex: 50"
                       value={changeAmount}
                       onChange={(e) => {
                         const value = e.target.value.replace(/\D/g, "");
                         setChangeAmount(value);
                         setChangeError(false);
                       }}
-                      className={`mt-1 ${
+                      className={`mt-1 h-9 text-sm ${
                         changeError
                           ? "border-red-500 border-2 focus-visible:ring-red-500"
                           : ""
@@ -573,15 +561,16 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
           </div>
         </div>
 
-        <div className="p-4 pb-6 md:pb-4 border-t border-border bg-muted/30 shrink-0">
-          <div className="space-y-2 mb-4">
-            <div className="flex items-center justify-between text-sm">
-              <span className="text-muted-foreground">Subtotal:</span>
+        {/* Footer Compacto com Resumo */}
+        <div className="p-3 border-t border-border bg-muted/30 shrink-0">
+          <div className="space-y-1 mb-3">
+            <div className="flex items-center justify-between text-xs">
+              <span className="text-muted-foreground">Marmitas:</span>
               <span className="font-semibold">R$ {subtotal},00</span>
             </div>
 
             {selectedDrinks.length > 0 && (
-              <div className="flex items-center justify-between text-sm">
+              <div className="flex items-center justify-between text-xs">
                 <span className="text-muted-foreground">Bebidas:</span>
                 <span className="font-semibold">
                   R$ {drinksTotal.toFixed(2).replace(".", ",")}
@@ -590,19 +579,17 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
             )}
 
             {deliveryMethod === "entrega" && isSaturday && deliveryFee > 0 && (
-              <div className="flex items-center justify-between text-sm">
-                <span className="text-muted-foreground">
-                  Taxa de entrega (sábado):
-                </span>
+              <div className="flex items-center justify-between text-xs">
+                <span className="text-muted-foreground">Taxa (sáb):</span>
                 <span className="font-semibold text-amber-600">
                   R$ {deliveryFee},00
                 </span>
               </div>
             )}
 
-            <div className="flex items-center justify-between pt-2 border-t border-border">
-              <span className="text-lg font-bold text-foreground">Total:</span>
-              <span className="text-2xl font-bold text-primary">
+            <div className="flex items-center justify-between pt-1.5 border-t border-border">
+              <span className="text-sm font-bold text-foreground">Total:</span>
+              <span className="text-xl font-bold text-primary">
                 R$ {total.toFixed(2).replace(".", ",")}
               </span>
             </div>
@@ -613,9 +600,9 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
             size="lg"
             onClick={handleSendOrder}
             disabled={!isFormValid()}
-            className="w-full"
+            className="w-full h-11"
           >
-            <Send className="w-5 h-5" />
+            <Send className="w-4 h-4" />
             Enviar Pedido
           </Button>
         </div>
