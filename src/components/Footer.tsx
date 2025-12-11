@@ -72,7 +72,12 @@ export function Footer() {
           <p>
             © {new Date().getFullYear()} {restaurantInfo.name}
           </p>
-          <p>Desenvolvido por Renan Geraldini Leão</p>
+          <p className="text-xs text-muted-foreground">
+            Desenvolvido por{" "}
+            <span className="font-medium text-foreground">
+              Renan Geraldini Leão
+            </span>
+          </p>
         </div>
       </div>
     </footer>

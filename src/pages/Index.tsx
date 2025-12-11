@@ -184,6 +184,34 @@ const Index = () => {
                 </p>
               </div>
             </div>
+
+            <div className="bg-card rounded-2xl p-4 shadow-soft md:hidden">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                  <MapPin className="w-5 h-5 text-primary" />
+                </div>
+                <h3 className="font-display font-bold text-foreground">
+                  Endereço
+                </h3>
+              </div>
+              <div className="space-y-1 text-sm text-muted-foreground">
+                <p>{restaurantInfo.address}</p>
+                <p className="text-xs text-destructive font-medium">
+                  *Indisponível aos domingos*
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="container mx-auto px-4 py-4 md:hidden">
+          <div className="text-center">
+            <p className="text-xs text-muted-foreground">
+              Desenvolvido por{" "}
+              <span className="font-medium text-foreground">
+                Renan Geraldini Leão
+              </span>
+            </p>
           </div>
         </section>
       </main>
