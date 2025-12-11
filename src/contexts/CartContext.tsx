@@ -85,11 +85,47 @@ export function CartProvider({ children }: { children: ReactNode }) {
   }, [items, dayKey, initialized]);
 
   const addItem = (item: Omit<CartItem, "id">) => {
-    const newItem: CartItem = {
-      ...item,
-      id: Date.now().toString(),
-    };
-    setItems((prev) => [...prev, newItem]);
+    setItems((prev) => {
+      const existingItemIndex = prev.findIndex((cartItem) => {
+        const sameSize = cartItem.tamanhoMarmita === item.tamanhoMarmita;
+        const sameMeat = cartItem.carne === item.carne;
+        const samePrice = cartItem.preco === item.preco;
+        const sameExtraCharge = cartItem.extraCharge === item.extraCharge;
+
+        const sameAddedItems =
+          cartItem.adicionarItens.length === item.adicionarItens.length &&
+          cartItem.adicionarItens.every((i) => item.adicionarItens.includes(i));
+
+        const sameRemovedItems =
+          cartItem.removerItens.length === item.removerItens.length &&
+          cartItem.removerItens.every((i) => item.removerItens.includes(i));
+
+        return (
+          sameSize &&
+          sameMeat &&
+          samePrice &&
+          sameExtraCharge &&
+          sameAddedItems &&
+          sameRemovedItems
+        );
+      });
+
+      if (existingItemIndex !== -1) {
+        const updatedItems = [...prev];
+        updatedItems[existingItemIndex] = {
+          ...updatedItems[existingItemIndex],
+          quantidade:
+            updatedItems[existingItemIndex].quantidade + item.quantidade,
+        };
+        return updatedItems;
+      } else {
+        const newItem: CartItem = {
+          ...item,
+          id: Date.now().toString(),
+        };
+        return [...prev, newItem];
+      }
+    });
   };
 
   const updateItem = (id: string, updates: Omit<CartItem, "id">) => {
