@@ -1,4 +1,11 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from "react";
+import { useDay } from "./DayContext";
 
 export interface CartItem {
   id: string;
@@ -13,8 +20,8 @@ export interface CartItem {
 
 interface CartContextType {
   items: CartItem[];
-  addItem: (item: Omit<CartItem, 'id'>) => void;
-  updateItem: (id: string, item: Omit<CartItem, 'id'>) => void;
+  addItem: (item: Omit<CartItem, "id">) => void;
+  updateItem: (id: string, item: Omit<CartItem, "id">) => void;
   removeItem: (id: string) => void;
   updateQuantity: (id: string, delta: number) => void;
   clearCart: () => void;
@@ -23,24 +30,61 @@ interface CartContextType {
   getItemSubtotal: (item: CartItem) => number;
 }
 
+interface CartStorage {
+  dayKey: string;
+  items: CartItem[];
+}
+
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
-const CART_STORAGE_KEY = 'pedidos';
+const CART_STORAGE_KEY = "pedidos";
 
 export function CartProvider({ children }: { children: ReactNode }) {
-  const [items, setItems] = useState<CartItem[]>(() => {
-    if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem(CART_STORAGE_KEY);
-      return saved ? JSON.parse(saved) : [];
-    }
-    return [];
-  });
+  const { dayKey } = useDay();
+  const [items, setItems] = useState<CartItem[]>([]);
+  const [initialized, setInitialized] = useState(false);
 
   useEffect(() => {
-    localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(items));
-  }, [items]);
+    if (typeof window !== "undefined" && dayKey && !initialized) {
+      const saved = localStorage.getItem(CART_STORAGE_KEY);
 
-  const addItem = (item: Omit<CartItem, 'id'>) => {
+      if (saved) {
+        try {
+          const cartStorage: CartStorage = JSON.parse(saved);
+
+          if (cartStorage.dayKey !== dayKey) {
+            setItems([]);
+            localStorage.setItem(
+              CART_STORAGE_KEY,
+              JSON.stringify({
+                dayKey,
+                items: [],
+              })
+            );
+          } else {
+            setItems(cartStorage.items || []);
+          }
+        } catch (error) {
+          console.error("Erro ao carregar carrinho:", error);
+          setItems([]);
+        }
+      }
+
+      setInitialized(true);
+    }
+  }, [dayKey, initialized]);
+
+  useEffect(() => {
+    if (initialized && dayKey) {
+      const cartStorage: CartStorage = {
+        dayKey,
+        items,
+      };
+      localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cartStorage));
+    }
+  }, [items, dayKey, initialized]);
+
+  const addItem = (item: Omit<CartItem, "id">) => {
     const newItem: CartItem = {
       ...item,
       id: Date.now().toString(),
@@ -48,7 +92,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
     setItems((prev) => [...prev, newItem]);
   };
 
-  const updateItem = (id: string, updates: Omit<CartItem, 'id'>) => {
+  const updateItem = (id: string, updates: Omit<CartItem, "id">) => {
     setItems((prev) =>
       prev.map((item) => (item.id === id ? { ...updates, id } : item))
     );
@@ -59,15 +103,18 @@ export function CartProvider({ children }: { children: ReactNode }) {
   };
 
   const updateQuantity = (id: string, delta: number) => {
-    setItems((prev) =>
-      prev.map((item) => {
-        if (item.id === id) {
-          const newQty = item.quantidade + delta;
-          if (newQty <= 0) return null;
-          return { ...item, quantidade: newQty };
-        }
-        return item;
-      }).filter(Boolean) as CartItem[]
+    setItems(
+      (prev) =>
+        prev
+          .map((item) => {
+            if (item.id === id) {
+              const newQty = item.quantidade + delta;
+              if (newQty <= 0) return null;
+              return { ...item, quantidade: newQty };
+            }
+            return item;
+          })
+          .filter(Boolean) as CartItem[]
     );
   };
 
@@ -109,7 +156,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
 export function useCart() {
   const context = useContext(CartContext);
   if (!context) {
-    throw new Error('useCart must be used within a CartProvider');
+    throw new Error("useCart must be used within a CartProvider");
   }
   return context;
 }
