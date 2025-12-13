@@ -270,7 +270,7 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
           ref={scrollContainerRef}
           className="flex-1 overflow-y-auto p-3 space-y-4"
         >
-          <div className="bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-950/20 dark:to-cyan-950/20 rounded-xl p-3 border border-blue-200 dark:border-blue-800">
+          {/*<div className="bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-950/20 dark:to-cyan-950/20 rounded-xl p-3 border border-blue-200 dark:border-blue-800">
             <button
               onClick={() => setShowDrinks(!showDrinks)}
               className="w-full flex items-center justify-between"
@@ -349,7 +349,7 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
                 })}
               </div>
             )}
-          </div>
+          </div>*/}
 
           <div>
             <h3 className="flex items-center gap-1.5 font-semibold text-sm mb-2">
