@@ -16,6 +16,28 @@ import { useDay } from "@/contexts/DayContext";
 const Index = () => {
   const { dayKey, isSunday } = useDay();
 
+  const handlePedidoInteligente = async () => {
+    try {
+      const res = await fetch("/api/intelligent-order", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          orders: {
+            segunda: ["marmita grande", "suco"],
+            terça: ["marmita média"],
+          },
+        }),
+      });
+
+      const data = await res.json();
+      console.log("Pedido inteligente salvo:", data);
+    } catch (err) {
+      console.error("Erro ao salvar pedido inteligente", err);
+    }
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-background pb-20 md:pb-0">
       <Header />
@@ -54,6 +76,13 @@ const Index = () => {
               <p className="text-primary-foreground/80 mb-6 text-sm md:text-base">
                 Marmitas, lanches e combos fresquinhos. Faça seu pedido!
               </p>
+
+              <button
+                onClick={handlePedidoInteligente}
+                className="mt-6 inline-flex items-center justify-center rounded-xl bg-primary px-6 py-3 font-bold text-primary-foreground shadow-soft transition hover:opacity-90"
+              >
+                Pedido Inteligente
+              </button>
 
               <div className="flex gap-4 text-xs md:text-sm text-primary-foreground/80">
                 <div className="flex items-center gap-1">
