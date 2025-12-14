@@ -6,7 +6,7 @@ import {
   Sandwich,
   Package,
 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { BottomNav } from "@/components/BottomNav";
@@ -15,27 +15,10 @@ import { useDay } from "@/contexts/DayContext";
 
 const Index = () => {
   const { dayKey, isSunday } = useDay();
+  const navigate = useNavigate();
 
-  const handlePedidoInteligente = async () => {
-    try {
-      const res = await fetch("/api/intelligent-order", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          orders: {
-            segunda: ["marmita grande", "suco"],
-            terça: ["marmita média"],
-          },
-        }),
-      });
-
-      const data = await res.json();
-      console.log("Pedido inteligente salvo:", data);
-    } catch (err) {
-      console.error("Erro ao salvar pedido inteligente", err);
-    }
+  const handlePedidoInteligente = () => {
+    navigate("/pedido-inteligente");
   };
 
   return (

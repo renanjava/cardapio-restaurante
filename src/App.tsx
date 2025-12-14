@@ -10,6 +10,7 @@ import NotFound from "./pages/NotFound";
 import { DayProvider } from "./contexts/DayContext";
 import { inject } from "@vercel/analytics";
 import { injectSpeedInsights } from "@vercel/speed-insights";
+import PedidoInteligente from "./pages/PedidoInteligente";
 
 const queryClient = new QueryClient();
 
@@ -26,6 +27,10 @@ const App = () => (
               <Route path="/" element={<Index />} />
               <Route path="/cardapio" element={<Cardapio />} />
               <Route path="/carrinho" element={<Carrinho />} />
+              <Route
+                path="/pedido-inteligente"
+                element={<PedidoInteligente />}
+              />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>
