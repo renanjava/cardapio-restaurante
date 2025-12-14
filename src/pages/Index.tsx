@@ -12,6 +12,12 @@ import { Footer } from "@/components/Footer";
 import { BottomNav } from "@/components/BottomNav";
 import { marmitaSizes, restaurantInfo, dayDisplayNames } from "@/data/menuData";
 import { useDay } from "@/contexts/DayContext";
+import {
+  UserButton,
+  SignInButton,
+  SignedOut,
+  SignedIn,
+} from "@clerk/clerk-react";
 
 const Index = () => {
   const { dayKey, isSunday } = useDay();
@@ -66,6 +72,23 @@ const Index = () => {
               >
                 Pedido Inteligente
               </button>
+
+              <SignedOut>
+                <SignInButton mode="modal">
+                  <button className="inline-flex items-center justify-center rounded-xl border border-primary px-6 py-3 font-bold text-primary shadow-soft transition hover:bg-primary/10">
+                    Realizar Login
+                  </button>
+                </SignInButton>
+              </SignedOut>
+
+              <SignedIn>
+                <div className="flex items-center gap-2">
+                  <span className="text-primary-foreground/90 font-medium">
+                    Meu Perfil:
+                  </span>
+                  <UserButton afterSignOutUrl="/" />
+                </div>
+              </SignedIn>
 
               <div className="flex gap-4 text-xs md:text-sm text-primary-foreground/80">
                 <div className="flex items-center gap-1">
@@ -197,7 +220,6 @@ const Index = () => {
               </div>
             </div>
 
-            {/* Badge de endereço - apenas mobile */}
             <div className="bg-card rounded-2xl p-4 shadow-soft md:hidden">
               <div className="flex items-center gap-3 mb-3">
                 <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">

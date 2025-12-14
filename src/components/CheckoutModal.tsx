@@ -561,7 +561,6 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
           </div>
         </div>
 
-        {/* Footer Compacto com Resumo */}
         <div className="p-3 border-t border-border bg-muted/30 shrink-0">
           <div className="space-y-1 mb-3">
             <div className="flex items-center justify-between text-xs">

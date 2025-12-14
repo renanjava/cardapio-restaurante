@@ -347,7 +347,6 @@ const PedidoInteligente = () => {
           const link = buildWhatsAppLink(day, order);
           whatsappOrders[dayNum] = link;
 
-          // mantém no estado local para o botão "Enviar no WhatsApp"
           order.whatsappLink = link;
         }
       });
@@ -416,7 +415,6 @@ const PedidoInteligente = () => {
       <Header showBack title="Pedido Inteligente" />
 
       <main className="flex-1 pb-40" ref={scrollContainerRef}>
-        {/* Indicador de progresso */}
         <div className="sticky top-16 z-30 bg-card border-b border-border shadow-sm">
           <div className="container mx-auto px-4 py-4">
             <div className="flex items-center justify-between mb-3">
@@ -472,7 +470,6 @@ const PedidoInteligente = () => {
           </div>
         </div>
 
-        {/* Alerta se não estiver completo */}
         {!isCurrentDayComplete && (
           <div className="container mx-auto px-4 pt-4">
             <div className="flex items-start gap-2 p-3 rounded-xl bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800">
@@ -490,7 +487,6 @@ const PedidoInteligente = () => {
         )}
 
         <div className="container mx-auto px-4 py-6 max-w-2xl space-y-6">
-          {/* Tamanho */}
           <div>
             <h3 className="font-display text-lg font-bold mb-3 text-foreground flex items-center gap-2">
               <span className="w-7 h-7 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-bold">
@@ -527,7 +523,6 @@ const PedidoInteligente = () => {
             </div>
           </div>
 
-          {/* Acompanhamentos */}
           <div>
             <h3 className="font-display text-lg font-bold mb-3 text-foreground flex items-center gap-2">
               <span className="w-7 h-7 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-bold">
@@ -574,7 +569,6 @@ const PedidoInteligente = () => {
             </div>
           </div>
 
-          {/* Carnes */}
           <div>
             <h3 className="font-display text-lg font-bold mb-3 text-foreground flex items-center gap-2">
               <span className="w-7 h-7 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-bold">
@@ -631,7 +625,6 @@ const PedidoInteligente = () => {
             </div>
           </div>
 
-          {/* Retirada */}
           <div>
             <h3 className="font-display text-lg font-bold mb-3 text-foreground flex items-center gap-2">
               <span className="w-7 h-7 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-bold">
@@ -705,7 +698,6 @@ const PedidoInteligente = () => {
             )}
           </div>
 
-          {/* Pagamento */}
           <div>
             <h3 className="font-display text-lg font-bold mb-3 text-foreground flex items-center gap-2">
               <span className="w-7 h-7 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-bold">
@@ -799,10 +791,8 @@ const PedidoInteligente = () => {
         <CustomToaster />
       </main>
 
-      {/* Footer fixo com navegação */}
       <div className="fixed bottom-0 left-0 right-0 bg-card border-t border-border shadow-float z-40">
         <div className="container mx-auto max-w-2xl p-4 space-y-3">
-          {/* Navegação entre dias */}
           <div className="flex gap-2">
             <Button
               variant="outline"
@@ -844,7 +834,6 @@ const PedidoInteligente = () => {
             )}
           </div>
 
-          {/* Botão de enviar WhatsApp (apenas se já salvou) */}
           {allDaysComplete &&
             orders[dayKeyToNumber[currentDay] as keyof IntelligentOrders] &&
             (
