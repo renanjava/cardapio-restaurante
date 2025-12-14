@@ -1,13 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Header } from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import {
   ChevronRight,
   Check,
   Save,
-  Calendar,
   Loader2,
   ExternalLink,
+  ChevronLeft,
+  AlertCircle,
 } from "lucide-react";
 import {
   weeklyMenu,
@@ -19,6 +20,7 @@ import {
 } from "@/data/menuData";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { CustomToaster } from "@/components/CustomToaster";
 
 type DayKey =
   | "segunda"
@@ -65,7 +67,8 @@ const dayKeyToNumber: Record<DayKey, number> = {
 
 const PedidoInteligente = () => {
   const navigate = useNavigate();
-  const [currentDay, setCurrentDay] = useState<DayKey>("segunda");
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const [currentDayIndex, setCurrentDayIndex] = useState(0);
   const [orders, setOrders] = useState<IntelligentOrders>({
     0: null,
     1: null,
@@ -87,6 +90,10 @@ const PedidoInteligente = () => {
     "sabado",
   ];
 
+  const currentDay = days[currentDayIndex];
+  const isLastDay = currentDayIndex === days.length - 1;
+  const isFirstDay = currentDayIndex === 0;
+
   useEffect(() => {
     loadOrders();
   }, []);
@@ -96,7 +103,16 @@ const PedidoInteligente = () => {
       const res = await fetch("/api/intelligent-order");
       const data = await res.json();
       if (data.orders) {
-        setOrders(JSON.parse(data.orders));
+        setOrders(data.orders);
+
+        const firstIncomplete = days.findIndex((day) => {
+          const dayNum = dayKeyToNumber[day];
+          return !isDayCompleteByNum(dayNum, data.orders);
+        });
+
+        if (firstIncomplete !== -1) {
+          setCurrentDayIndex(firstIncomplete);
+        }
       }
     } catch (err) {
       console.error("Erro ao carregar pedidos:", err);
@@ -162,13 +178,23 @@ const PedidoInteligente = () => {
     updateCurrentDay({ items: newItems });
   };
 
+  const scrollToBottom = () => {
+    setTimeout(() => {
+      window.scrollTo({
+        top: document.documentElement.scrollHeight,
+        behavior: "smooth",
+      });
+    }, 100);
+  };
+
   const buildWhatsAppLink = (day: DayKey, order: DayOrder): string => {
     if (!order.size || !order.meat || !order.delivery || !order.payment) {
       return "";
     }
 
-    let message = `🍽️ *PEDIDO INTELIGENTE - ${restaurantInfo.name}*\n\n`;
-    message += `📅 *DIA: ${dayDisplayNames[day]}*\n\n`;
+    let message = `🍽️ *NOVO PEDIDO - ${restaurantInfo.name}*\n\n`;
+    message += `🤖 *PEDIDO INTELIGENTE*\n\n`;
+    message += `📅 *CARDÁPIO - ${dayDisplayNames[day]}*\n`;
 
     const dayMenuData = weeklyMenu[day];
     if (dayMenuData && dayMenuData.items) {
@@ -178,9 +204,9 @@ const PedidoInteligente = () => {
       message += `${accompaniments}\n\n`;
     }
 
-    message += `📋 *MEU PEDIDO:*\n\n`;
+    message += `📋 *ITENS DO PEDIDO:*\n\n`;
     message += `*${order.size.name}* - ${order.meat.name}\n`;
-    message += `Preço: R$ ${order.size.price},00\n`;
+    message += `   Qtd: 1 | R$ ${order.size.price},00\n`;
 
     const extraCharge =
       order.size.id === "mini" &&
@@ -190,7 +216,7 @@ const PedidoInteligente = () => {
         : 0;
 
     if (extraCharge > 0) {
-      message += `⚠️ Acréscimo: +R$ ${extraCharge},00\n`;
+      message += `   ⚠️ Acréscimo: +R$ ${extraCharge},00\n`;
     }
 
     const removedItems = dayMenuData.items
@@ -198,16 +224,16 @@ const PedidoInteligente = () => {
       .map((item) => item.name);
 
     if (removedItems.length > 0) {
-      message += `✗ Sem: ${removedItems.join(", ")}\n`;
+      message += `   ✗ Sem: ${removedItems.join(", ")}\n`;
 
       if (day === "sabado") {
         const hasFeijaoPreto = order.items["feijao-preto"];
         const hasFeijaoCarioca = order.items["feijao-carioca"];
 
         if (hasFeijaoPreto) {
-          message += `🫘 Feijão: Feijão preto com pernil de porco e calabresa\n`;
+          message += `   🫘 Feijão: Feijão preto com pernil de porco e calabresa\n`;
         } else if (hasFeijaoCarioca) {
-          message += `🫘 Feijão: Feijão carioca\n`;
+          message += `   🫘 Feijão: Feijão carioca\n`;
         }
       }
     }
@@ -221,7 +247,7 @@ const PedidoInteligente = () => {
         message += `${order.address.street}, ${order.address.number}\n`;
       }
       if (day === "sabado") {
-        message += `⚠️ Taxa de entrega: R$ ${restaurantInfo.deliveryFeeSaturday},00 (sábado)\n`;
+        message += `⚠️ Este pedido possui taxa de entrega de R$ ${restaurantInfo.deliveryFeeSaturday},00 (sábado)\n`;
       }
     }
 
@@ -257,9 +283,13 @@ const PedidoInteligente = () => {
     )}`;
   };
 
-  const isDayComplete = (day: DayKey): boolean => {
-    const dayNum = dayKeyToNumber[day];
-    const order = orders[dayNum as keyof IntelligentOrders] as DayOrder | null;
+  const isDayCompleteByNum = (
+    dayNum: number,
+    ordersData: IntelligentOrders
+  ): boolean => {
+    const order = ordersData[
+      dayNum as keyof IntelligentOrders
+    ] as DayOrder | null;
 
     if (!order) return false;
     if (!order.size || !order.meat || !order.delivery || !order.payment)
@@ -278,7 +308,21 @@ const PedidoInteligente = () => {
     return true;
   };
 
-  const saveOrders = async () => {
+  const isDayComplete = (day: DayKey): boolean => {
+    const dayNum = dayKeyToNumber[day];
+    return isDayCompleteByNum(dayNum, orders);
+  };
+
+  const isCurrentDayComplete = isDayComplete(currentDay);
+
+  const allDaysComplete = days.every((d) => isDayComplete(d));
+
+  const saveAllOrders = async () => {
+    if (!allDaysComplete) {
+      toast.error("Configure todos os dias antes de salvar!");
+      return;
+    }
+
     setSaving(true);
     try {
       const ordersWithLinks: IntelligentOrders = { ...orders };
@@ -294,23 +338,52 @@ const PedidoInteligente = () => {
         }
       });
 
+      console.log("Enviando para API:", ordersWithLinks);
+
       const res = await fetch("/api/intelligent-order", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ orders: JSON.stringify(ordersWithLinks) }),
+        body: JSON.stringify({ orders: ordersWithLinks }),
       });
 
+      const responseData = await res.json();
+      console.log("Resposta da API:", responseData);
+
       if (res.ok) {
-        toast.success("Pedido inteligente salvo com sucesso!");
+        toast.success("Pedido inteligente salvo com sucesso! 🎉");
         setOrders(ordersWithLinks);
       } else {
-        toast.error("Erro ao salvar pedido inteligente");
+        console.error("Erro do servidor:", responseData);
+        toast.error(
+          `Erro ao salvar: ${responseData.error || "Erro desconhecido"}`
+        );
       }
     } catch (err) {
-      console.error(err);
+      console.error("Erro na requisição:", err);
       toast.error("Erro ao salvar pedido inteligente");
     } finally {
       setSaving(false);
+    }
+  };
+
+  const goToNextDay = () => {
+    if (!isCurrentDayComplete) {
+      toast.error("Complete todos os campos antes de avançar!");
+      return;
+    }
+
+    toast.success(`✅ ${dayDisplayNames[currentDay]} configurado!`);
+
+    if (!isLastDay) {
+      setCurrentDayIndex((prev) => prev + 1);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
+
+  const goToPreviousDay = () => {
+    if (!isFirstDay) {
+      setCurrentDayIndex((prev) => prev - 1);
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
   };
 
@@ -320,6 +393,8 @@ const PedidoInteligente = () => {
 
     if (order?.whatsappLink) {
       window.open(order.whatsappLink, "_blank");
+    } else {
+      toast.error("Salve os pedidos primeiro!");
     }
   };
 
@@ -331,44 +406,91 @@ const PedidoInteligente = () => {
     );
   }
 
-  const isCurrentDayComplete = isDayComplete(currentDay);
-
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <Header showBack title="Pedido Inteligente" />
 
-      <main className="flex-1 pb-32">
-        <div className="sticky top-16 z-30 bg-card border-b border-border">
-          <div className="container mx-auto px-4">
-            <div className="flex gap-2 overflow-x-auto py-3 scrollbar-hide">
-              {days.map((day) => {
+      <main className="flex-1 pb-40" ref={scrollContainerRef}>
+        {/* Indicador de progresso */}
+        <div className="sticky top-16 z-30 bg-card border-b border-border shadow-sm">
+          <div className="container mx-auto px-4 py-4">
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="font-bold text-sm text-muted-foreground">
+                Progresso
+              </h3>
+              <span className="text-sm font-bold text-primary">
+                {days.filter((d) => isDayComplete(d)).length}/{days.length}
+              </span>
+            </div>
+            <div className="flex gap-1.5">
+              {days.map((day, index) => {
                 const isComplete = isDayComplete(day);
-                const isCurrent = day === currentDay;
+                const isCurrent = index === currentDayIndex;
 
                 return (
                   <button
                     key={day}
-                    onClick={() => setCurrentDay(day)}
-                    className={`px-4 py-2 rounded-full whitespace-nowrap text-sm font-medium transition-all flex items-center gap-2 ${
+                    onClick={() => {
+                      if (
+                        index < currentDayIndex ||
+                        (index === currentDayIndex + 1 && isCurrentDayComplete)
+                      ) {
+                        setCurrentDayIndex(index);
+                        window.scrollTo({ top: 0, behavior: "smooth" });
+                      }
+                    }}
+                    disabled={
+                      index > currentDayIndex &&
+                      (!isCurrentDayComplete || index > currentDayIndex + 1)
+                    }
+                    className={`flex-1 h-2 rounded-full transition-all ${
                       isCurrent
-                        ? "bg-primary text-primary-foreground"
+                        ? "bg-primary scale-110"
                         : isComplete
-                        ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300"
-                        : "bg-muted text-muted-foreground"
+                        ? "bg-green-500"
+                        : "bg-muted"
                     }`}
-                  >
-                    {dayDisplayNames[day].split("-")[0]}
-                    {isComplete && <Check className="w-4 h-4" />}
-                  </button>
+                  />
                 );
               })}
+            </div>
+            <div className="mt-3 flex items-center justify-center gap-2">
+              <div
+                className={`w-2 h-2 rounded-full ${
+                  isCurrentDayComplete ? "bg-green-500" : "bg-amber-500"
+                } animate-pulse`}
+              />
+              <p className="text-sm font-bold text-foreground">
+                {dayDisplayNames[currentDay]}
+              </p>
             </div>
           </div>
         </div>
 
+        {/* Alerta se não estiver completo */}
+        {!isCurrentDayComplete && (
+          <div className="container mx-auto px-4 pt-4">
+            <div className="flex items-start gap-2 p-3 rounded-xl bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800">
+              <AlertCircle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
+              <div>
+                <p className="text-sm font-semibold text-amber-900 dark:text-amber-100">
+                  Complete todos os campos
+                </p>
+                <p className="text-xs text-amber-700 dark:text-amber-200 mt-0.5">
+                  Preencha todas as informações para avançar
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+
         <div className="container mx-auto px-4 py-6 max-w-2xl space-y-6">
+          {/* Tamanho */}
           <div>
-            <h3 className="font-display text-lg font-bold mb-3 text-foreground">
+            <h3 className="font-display text-lg font-bold mb-3 text-foreground flex items-center gap-2">
+              <span className="w-7 h-7 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-bold">
+                1
+              </span>
               Tamanho
             </h3>
             <div className="grid grid-cols-1 gap-3">
@@ -378,8 +500,8 @@ const PedidoInteligente = () => {
                   onClick={() => updateCurrentDay({ size })}
                   className={`p-4 rounded-2xl border-2 transition-all text-left ${
                     currentDayOrder.size?.id === size.id
-                      ? "border-primary bg-primary/5"
-                      : "border-border bg-card"
+                      ? "border-primary bg-primary/5 shadow-md"
+                      : "border-border bg-card hover:border-primary/30"
                   }`}
                 >
                   <div className="flex items-center justify-between">
@@ -400,8 +522,12 @@ const PedidoInteligente = () => {
             </div>
           </div>
 
+          {/* Acompanhamentos */}
           <div>
-            <h3 className="font-display text-lg font-bold mb-3 text-foreground">
+            <h3 className="font-display text-lg font-bold mb-3 text-foreground flex items-center gap-2">
+              <span className="w-7 h-7 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-bold">
+                2
+              </span>
               Acompanhamentos
             </h3>
             <div className="grid grid-cols-2 gap-2">
@@ -443,8 +569,12 @@ const PedidoInteligente = () => {
             </div>
           </div>
 
+          {/* Carnes */}
           <div>
-            <h3 className="font-display text-lg font-bold mb-3 text-foreground">
+            <h3 className="font-display text-lg font-bold mb-3 text-foreground flex items-center gap-2">
+              <span className="w-7 h-7 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-bold">
+                3
+              </span>
               Carne
             </h3>
             <div className="space-y-2">
@@ -461,8 +591,8 @@ const PedidoInteligente = () => {
                     onClick={() => updateCurrentDay({ meat })}
                     className={`w-full flex items-center gap-3 p-4 rounded-2xl border-2 transition-all text-left ${
                       isSelected
-                        ? "border-primary bg-primary/5"
-                        : "border-border bg-card"
+                        ? "border-primary bg-primary/5 shadow-md"
+                        : "border-border bg-card hover:border-primary/30"
                     }`}
                   >
                     <div
@@ -496,8 +626,12 @@ const PedidoInteligente = () => {
             </div>
           </div>
 
+          {/* Retirada */}
           <div>
-            <h3 className="font-display text-lg font-bold mb-3 text-foreground">
+            <h3 className="font-display text-lg font-bold mb-3 text-foreground flex items-center gap-2">
+              <span className="w-7 h-7 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-bold">
+                4
+              </span>
               Retirada
             </h3>
             <div className="grid grid-cols-2 gap-3">
@@ -506,7 +640,7 @@ const PedidoInteligente = () => {
                 className={`p-4 rounded-xl border-2 transition-all font-medium ${
                   currentDayOrder.delivery === "balcao"
                     ? "border-primary bg-primary/10 text-primary"
-                    : "border-border"
+                    : "border-border hover:border-primary/30"
                 }`}
               >
                 Balcão
@@ -516,7 +650,7 @@ const PedidoInteligente = () => {
                 className={`p-4 rounded-xl border-2 transition-all font-medium ${
                   currentDayOrder.delivery === "entrega"
                     ? "border-primary bg-primary/10 text-primary"
-                    : "border-border"
+                    : "border-border hover:border-primary/30"
                 }`}
               >
                 Entrega
@@ -537,7 +671,7 @@ const PedidoInteligente = () => {
                       },
                     })
                   }
-                  className="w-full p-3 rounded-xl border-2 border-border bg-card text-foreground"
+                  className="w-full p-3 rounded-xl border-2 border-border bg-card text-foreground focus:border-primary focus:outline-none"
                 />
                 <input
                   type="text"
@@ -552,14 +686,26 @@ const PedidoInteligente = () => {
                       },
                     })
                   }
-                  className="w-full p-3 rounded-xl border-2 border-border bg-card text-foreground"
+                  className="w-full p-3 rounded-xl border-2 border-border bg-card text-foreground focus:border-primary focus:outline-none"
                 />
+                {currentDay === "sabado" && (
+                  <div className="flex items-start gap-2 p-2.5 rounded-lg bg-amber-500/10 border border-amber-500/20">
+                    <AlertCircle className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
+                    <p className="text-xs text-amber-900 dark:text-amber-100">
+                      Taxa de <strong>R$ 2,00</strong> aos sábados
+                    </p>
+                  </div>
+                )}
               </div>
             )}
           </div>
 
+          {/* Pagamento */}
           <div>
-            <h3 className="font-display text-lg font-bold mb-3 text-foreground">
+            <h3 className="font-display text-lg font-bold mb-3 text-foreground flex items-center gap-2">
+              <span className="w-7 h-7 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-bold">
+                5
+              </span>
               Pagamento
             </h3>
             <div className="space-y-2">
@@ -568,7 +714,7 @@ const PedidoInteligente = () => {
                 className={`w-full p-4 rounded-xl border-2 transition-all text-left font-medium ${
                   currentDayOrder.payment === "cartao"
                     ? "border-primary bg-primary/10"
-                    : "border-border"
+                    : "border-border hover:border-primary/30"
                 }`}
               >
                 Cartão
@@ -578,17 +724,20 @@ const PedidoInteligente = () => {
                 className={`w-full p-4 rounded-xl border-2 transition-all text-left font-medium ${
                   currentDayOrder.payment === "pix"
                     ? "border-primary bg-primary/10"
-                    : "border-border"
+                    : "border-border hover:border-primary/30"
                 }`}
               >
                 Pix
               </button>
               <button
-                onClick={() => updateCurrentDay({ payment: "dinheiro" })}
+                onClick={() => {
+                  updateCurrentDay({ payment: "dinheiro" });
+                  scrollToBottom();
+                }}
                 className={`w-full p-4 rounded-xl border-2 transition-all text-left font-medium ${
                   currentDayOrder.payment === "dinheiro"
                     ? "border-primary bg-primary/10"
-                    : "border-border"
+                    : "border-border hover:border-primary/30"
                 }`}
               >
                 Dinheiro
@@ -600,7 +749,10 @@ const PedidoInteligente = () => {
                 <p className="font-medium text-sm">Precisa de troco?</p>
                 <div className="grid grid-cols-2 gap-2">
                   <button
-                    onClick={() => updateCurrentDay({ needsChange: true })}
+                    onClick={() => {
+                      updateCurrentDay({ needsChange: true });
+                      scrollToBottom();
+                    }}
                     className={`p-3 rounded-xl border-2 transition-all font-medium ${
                       currentDayOrder.needsChange === true
                         ? "border-primary bg-primary/10 text-primary"
@@ -631,51 +783,80 @@ const PedidoInteligente = () => {
                         changeAmount: e.target.value.replace(/\D/g, ""),
                       })
                     }
-                    className="w-full p-3 rounded-xl border-2 border-border bg-card text-foreground"
+                    className="w-full p-3 rounded-xl border-2 border-border bg-card text-foreground focus:border-primary focus:outline-none"
                   />
                 )}
               </div>
             )}
           </div>
         </div>
+
+        <CustomToaster />
       </main>
 
-      <div className="fixed bottom-0 left-0 right-0 bg-card border-t border-border p-4 shadow-float z-40">
-        <div className="container mx-auto max-w-2xl space-y-2">
-          <div className="flex items-center justify-between text-sm">
-            <span className="text-muted-foreground">Dias configurados:</span>
-            <span className="font-bold text-foreground">
-              {days.filter((d) => isDayComplete(d)).length}/6
-            </span>
-          </div>
-
-          <div className="grid grid-cols-2 gap-2">
+      {/* Footer fixo com navegação */}
+      <div className="fixed bottom-0 left-0 right-0 bg-card border-t border-border shadow-float z-40">
+        <div className="container mx-auto max-w-2xl p-4 space-y-3">
+          {/* Navegação entre dias */}
+          <div className="flex gap-2">
             <Button
               variant="outline"
               size="lg"
-              onClick={saveOrders}
-              disabled={saving || days.every((d) => !isDayComplete(d))}
+              onClick={goToPreviousDay}
+              disabled={isFirstDay}
+              className="flex-1"
             >
-              {saving ? (
-                <Loader2 className="w-5 h-5 animate-spin" />
-              ) : (
-                <Save className="w-5 h-5" />
-              )}
-              Salvar Tudo
+              <ChevronLeft className="w-5 h-5" />
+              Anterior
             </Button>
-            <Button
-              variant="warm"
-              size="lg"
-              onClick={() => openWhatsApp(currentDay)}
-              disabled={
-                !isCurrentDayComplete ||
-                !orders[dayKeyToNumber[currentDay] as keyof IntelligentOrders]
-              }
-            >
-              <ExternalLink className="w-5 h-5" />
-              Enviar {dayDisplayNames[currentDay].split("-")[0]}
-            </Button>
+
+            {!isLastDay ? (
+              <Button
+                variant="default"
+                size="lg"
+                onClick={goToNextDay}
+                disabled={!isCurrentDayComplete}
+                className="flex-1"
+              >
+                Próximo
+                <ChevronRight className="w-5 h-5" />
+              </Button>
+            ) : (
+              <Button
+                variant="warm"
+                size="lg"
+                onClick={saveAllOrders}
+                disabled={!allDaysComplete || saving}
+                className="flex-1"
+              >
+                {saving ? (
+                  <Loader2 className="w-5 h-5 animate-spin" />
+                ) : (
+                  <Save className="w-5 h-5" />
+                )}
+                Salvar Tudo
+              </Button>
+            )}
           </div>
+
+          {/* Botão de enviar WhatsApp (apenas se já salvou) */}
+          {allDaysComplete &&
+            orders[dayKeyToNumber[currentDay] as keyof IntelligentOrders] &&
+            (
+              orders[
+                dayKeyToNumber[currentDay] as keyof IntelligentOrders
+              ] as DayOrder
+            )?.whatsappLink && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => openWhatsApp(currentDay)}
+                className="w-full"
+              >
+                <ExternalLink className="w-4 h-4" />
+                Enviar {dayDisplayNames[currentDay].split("-")[0]} no WhatsApp
+              </Button>
+            )}
         </div>
       </div>
     </div>
