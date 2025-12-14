@@ -541,7 +541,7 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
                       id="change"
                       type="text"
                       inputMode="numeric"
-                      placeholder="Ex: 50"
+                      placeholder="R$"
                       value={changeAmount}
                       onChange={(e) => {
                         const value = e.target.value.replace(/\D/g, "");
