@@ -11,6 +11,7 @@ import { inject } from "@vercel/analytics";
 import { injectSpeedInsights } from "@vercel/speed-insights";
 import PedidoInteligente from "./pages/PedidoInteligente";
 import { ClerkProvider } from "@clerk/clerk-react";
+import { ptBR } from "@clerk/localizations";
 
 const queryClient = new QueryClient();
 
@@ -25,7 +26,7 @@ if (!PUBLISHABLE_KEY) {
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
+    <ClerkProvider publishableKey={PUBLISHABLE_KEY} localization={ptBR}>
       <DayProvider>
         <CartProvider>
           <TooltipProvider>
