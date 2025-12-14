@@ -33,6 +33,8 @@ type DayKey =
 type DeliveryMethod = "balcao" | "entrega";
 type PaymentMethod = "cartao" | "pix" | "dinheiro";
 
+type SavedWhatsAppOrders = Record<number, string>;
+
 interface DayOrder {
   size: MarmitaSize | null;
   meat: MeatOption | null;
@@ -102,20 +104,29 @@ const PedidoInteligente = () => {
     try {
       const res = await fetch("/api/intelligent-order");
       const data = await res.json();
+
       if (data.orders) {
-        setOrders(data.orders);
+        setOrders((prev) => {
+          const updated = { ...prev };
 
-        const firstIncomplete = days.findIndex((day) => {
-          const dayNum = dayKeyToNumber[day];
-          return !isDayCompleteByNum(dayNum, data.orders);
+          Object.entries(data.orders as SavedWhatsAppOrders).forEach(
+            ([day, link]) => {
+              const dayNum = Number(day);
+
+              if (updated[dayNum]) {
+                updated[dayNum] = {
+                  ...updated[dayNum],
+                  whatsappLink: link,
+                };
+              }
+            }
+          );
+
+          return updated;
         });
-
-        if (firstIncomplete !== -1) {
-          setCurrentDayIndex(firstIncomplete);
-        }
       }
     } catch (err) {
-      console.error("Erro ao carregar pedidos:", err);
+      console.error("Erro ao carregar links:", err);
     } finally {
       setLoading(false);
     }
@@ -324,42 +335,36 @@ const PedidoInteligente = () => {
     }
 
     setSaving(true);
-    try {
-      const ordersWithLinks: IntelligentOrders = { ...orders };
 
-      // Gerar links do WhatsApp para cada dia
+    try {
+      const whatsappOrders: SavedWhatsAppOrders = {};
+
       days.forEach((day) => {
         const dayNum = dayKeyToNumber[day];
-        const order = ordersWithLinks[
-          dayNum as keyof IntelligentOrders
-        ] as DayOrder | null;
+        const order = orders[dayNum as keyof IntelligentOrders];
+
         if (order && isDayComplete(day)) {
-          order.whatsappLink = buildWhatsAppLink(day, order);
+          const link = buildWhatsAppLink(day, order);
+          whatsappOrders[dayNum] = link;
+
+          // mantém no estado local para o botão "Enviar no WhatsApp"
+          order.whatsappLink = link;
         }
       });
-
-      console.log("Enviando para API:", ordersWithLinks);
 
       const res = await fetch("/api/intelligent-order", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ orders: ordersWithLinks }),
+        body: JSON.stringify({ orders: whatsappOrders }),
       });
 
-      const responseData = await res.json();
-      console.log("Resposta da API:", responseData);
-
-      if (res.ok) {
-        toast.success("Pedido inteligente salvo com sucesso! 🎉");
-        setOrders(ordersWithLinks);
-      } else {
-        console.error("Erro do servidor:", responseData);
-        toast.error(
-          `Erro ao salvar: ${responseData.error || "Erro desconhecido"}`
-        );
+      if (!res.ok) {
+        throw new Error("Erro ao salvar");
       }
+
+      toast.success("Pedido inteligente salvo com sucesso! 🎉");
     } catch (err) {
-      console.error("Erro na requisição:", err);
+      console.error(err);
       toast.error("Erro ao salvar pedido inteligente");
     } finally {
       setSaving(false);

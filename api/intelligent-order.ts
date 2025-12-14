@@ -9,6 +9,24 @@ const pool = new Pool({
 // ⚠️ USER FIXO APENAS PARA TESTE
 const TEST_USER_ID = "test_user";
 
+const isValidWhatsAppOrders = (
+  orders: unknown
+): orders is Record<string, string> => {
+  if (typeof orders !== "object" || orders === null) return false;
+
+  return Object.entries(orders).every(([day, link]) => {
+    const dayNum = Number(day);
+
+    return (
+      Number.isInteger(dayNum) &&
+      dayNum >= 0 &&
+      dayNum <= 6 &&
+      typeof link === "string" &&
+      link.startsWith("https://wa.me/")
+    );
+  });
+};
+
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   try {
     // 🔹 GET
@@ -27,9 +45,17 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     if (req.method === "POST") {
       const { orders } = req.body;
 
-      if (!orders || typeof orders !== "object") {
-        return res.status(400).json({ error: "Invalid orders" });
+      if (!isValidWhatsAppOrders(orders)) {
+        return res.status(400).json({
+          error: "Orders must be an object { dayNumber: wa.me link }",
+        });
       }
+
+      const cleanedOrders: Record<number, string> = {};
+
+      Object.entries(orders).forEach(([day, link]) => {
+        cleanedOrders[Number(day)] = link.trim();
+      });
 
       const result = await pool.query(
         `INSERT INTO intelligent_orders (user_id, orders, updated_at)
