@@ -15,7 +15,7 @@ interface DayProviderProps {
 }
 
 export function DayProvider({ children }: DayProviderProps) {
-  const today = 1;
+  const today = new Date().getDay();
 
   const dayKey = dayNames[today];
   const isSunday = today === 0;
