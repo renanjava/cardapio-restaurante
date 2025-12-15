@@ -8,6 +8,8 @@ import {
   Sparkles,
   X,
   Loader2,
+  Zap,
+  CalendarCheck,
 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { Header } from "@/components/Header";
@@ -245,25 +247,6 @@ const Index = () => {
                 </div>
               </SignedIn>
 
-              {/* Botão Pedido Inteligente */}
-              <button
-                onClick={handlePedidoInteligente}
-                disabled={isLoading}
-                className="inline-flex items-center gap-2 text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors underline decoration-dotted underline-offset-4 disabled:opacity-50 disabled:cursor-not-allowed mb-6"
-              >
-                {isLoading ? (
-                  <>
-                    <Loader2 className="w-4 h-4 animate-spin" />
-                    Carregando...
-                  </>
-                ) : (
-                  <>
-                    <Sparkles className="w-4 h-4" />
-                    Pedido Inteligente
-                  </>
-                )}
-              </button>
-
               {/* Botão de Login - Apenas quando não logado */}
               <SignedOut>
                 <SignInButton mode="modal">
@@ -283,6 +266,59 @@ const Index = () => {
                   <span>Itambé-PR</span>
                 </div>
               </div>
+            </div>
+          </div>
+        </section>
+        <section className="container mx-auto px-4 py-4">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="font-display text-xl md:text-2xl font-bold text-foreground">
+              Funcionalidades
+            </h2>
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            {/* Pedido Inteligente */}
+            <button
+              onClick={handlePedidoInteligente}
+              disabled={isLoading}
+              className="bg-card rounded-2xl p-4 shadow-soft card-hover text-left relative overflow-hidden disabled:opacity-50"
+            >
+              <div className="absolute top-2 right-2">
+                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary/10 text-primary text-[10px] font-bold">
+                  <Zap className="w-3 h-3" />
+                  NOVO
+                </span>
+              </div>
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center mb-3">
+                {isLoading ? (
+                  <Loader2 className="w-6 h-6 text-primary animate-spin" />
+                ) : (
+                  <Sparkles className="w-6 h-6 text-primary" />
+                )}
+              </div>
+              <h3 className="font-display font-bold text-foreground text-sm">
+                Pedido Inteligente
+              </h3>
+              <p className="text-xs text-muted-foreground">
+                Configure e peça com 1 clique
+              </p>
+            </button>
+
+            {/* Planos Semanais */}
+            <div className="bg-card rounded-2xl p-4 shadow-soft opacity-50 relative">
+              <div className="absolute top-2 right-2">
+                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-muted text-muted-foreground text-[10px] font-bold">
+                  EM BREVE
+                </span>
+              </div>
+              <div className="w-12 h-12 rounded-xl bg-muted flex items-center justify-center mb-3">
+                <CalendarCheck className="w-6 h-6 text-muted-foreground" />
+              </div>
+              <h3 className="font-display font-bold text-foreground text-sm">
+                Planos Semanais
+              </h3>
+              <p className="text-xs text-muted-foreground">
+                Economize com pacotes
+              </p>
             </div>
           </div>
         </section>
@@ -338,6 +374,7 @@ const Index = () => {
           </div>
 
           <div className="grid grid-cols-2 gap-3">
+            {/* Lanches */}
             <div className="bg-card rounded-2xl p-4 shadow-soft opacity-50">
               <div className="w-12 h-12 rounded-xl bg-muted flex items-center justify-center mb-3">
                 <Sandwich className="w-6 h-6 text-muted-foreground" />
@@ -348,6 +385,7 @@ const Index = () => {
               <p className="text-xs text-muted-foreground">Em breve</p>
             </div>
 
+            {/* Combos */}
             <div className="bg-card rounded-2xl p-4 shadow-soft opacity-50">
               <div className="w-12 h-12 rounded-xl bg-muted flex items-center justify-center mb-3">
                 <Package className="w-6 h-6 text-muted-foreground" />
