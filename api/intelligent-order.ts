@@ -6,9 +6,6 @@ const pool = new Pool({
   ssl: { rejectUnauthorized: false },
 });
 
-// ⚠️ USER FIXO APENAS PARA TESTE
-const TEST_USER_ID = "test_user";
-
 const isValidWhatsAppOrders = (
   orders: unknown
 ): orders is Record<string, string> => {
@@ -29,11 +26,19 @@ const isValidWhatsAppOrders = (
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   try {
-    // 🔹 GET
+    // 🔹 GET - Buscar pedidos do usuário
     if (req.method === "GET") {
+      const userId = req.query.userId as string;
+
+      if (!userId) {
+        return res.status(400).json({
+          error: "userId is required",
+        });
+      }
+
       const result = await pool.query(
         "SELECT orders FROM intelligent_orders WHERE user_id = $1",
-        [TEST_USER_ID]
+        [userId]
       );
 
       return res.status(200).json({
@@ -41,9 +46,15 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       });
     }
 
-    // 🔹 POST
+    // 🔹 POST - Salvar/Atualizar pedidos do usuário
     if (req.method === "POST") {
-      const { orders } = req.body;
+      const { userId, orders } = req.body;
+
+      if (!userId) {
+        return res.status(400).json({
+          error: "userId is required",
+        });
+      }
 
       if (!isValidWhatsAppOrders(orders)) {
         return res.status(400).json({
@@ -63,7 +74,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
          ON CONFLICT (user_id)
          DO UPDATE SET orders = $2, updated_at = NOW()
          RETURNING *`,
-        [TEST_USER_ID, JSON.stringify(orders)]
+        [userId, JSON.stringify(orders)]
       );
 
       return res.status(200).json({

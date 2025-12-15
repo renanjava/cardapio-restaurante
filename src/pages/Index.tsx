@@ -5,6 +5,9 @@ import {
   ChevronRight,
   Sandwich,
   Package,
+  Sparkles,
+  X,
+  Loader2,
 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { Header } from "@/components/Header";
@@ -17,19 +20,175 @@ import {
   SignInButton,
   SignedOut,
   SignedIn,
+  useUser,
 } from "@clerk/clerk-react";
+import { useState } from "react";
 
 const Index = () => {
   const { dayKey, isSunday } = useDay();
   const navigate = useNavigate();
+  const { isSignedIn, user } = useUser();
+  const [showModalNotSignedIn, setShowModalNotSignedIn] = useState(false);
+  const [showModalExplanation, setShowModalExplanation] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handlePedidoInteligente = () => {
-    navigate("/pedido-inteligente");
+  const handlePedidoInteligente = async () => {
+    // Se não estiver logado, mostrar modal explicativo
+    if (!isSignedIn) {
+      setShowModalNotSignedIn(true);
+      return;
+    }
+
+    // Se estiver logado, buscar dados no banco
+    setIsLoading(true);
+    try {
+      const response = await fetch(`/api/intelligent-order?userId=${user?.id}`);
+      const data = await response.json();
+
+      if (data.orders && Object.keys(data.orders).length > 0) {
+        // Pegar o link do dia atual
+        const currentDayKey = new Date().getDay();
+        const whatsappLink = data.orders[currentDayKey];
+
+        if (whatsappLink) {
+          window.open(whatsappLink, "_blank");
+        } else {
+          // Se não tiver link para hoje, mostrar modal explicativo
+          setShowModalExplanation(true);
+        }
+      } else {
+        // Se não tiver pedidos configurados, mostrar modal explicativo
+        setShowModalExplanation(true);
+      }
+    } catch (error) {
+      console.error("Erro ao buscar pedido inteligente:", error);
+      setShowModalExplanation(true);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
     <div className="min-h-screen flex flex-col bg-background pb-20 md:pb-0">
       <Header />
+
+      {/* Modal - Usuário não logado */}
+      {showModalNotSignedIn && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+          <div className="bg-card rounded-2xl shadow-xl max-w-md w-full p-6 animate-fade-in">
+            <div className="flex items-start justify-between mb-4">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                  <Sparkles className="w-5 h-5 text-primary" />
+                </div>
+                <h3 className="font-display font-bold text-foreground text-lg">
+                  Pedido Inteligente
+                </h3>
+              </div>
+              <button
+                onClick={() => setShowModalNotSignedIn(false)}
+                className="text-muted-foreground hover:text-foreground transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="space-y-4">
+              <p className="text-sm text-muted-foreground">
+                O{" "}
+                <strong className="text-foreground">Pedido Inteligente</strong>{" "}
+                permite que você configure suas marmitas personalizadas para
+                cada dia da semana. Ao clicar no botão, seu pedido será enviado
+                automaticamente via WhatsApp!
+              </p>
+
+              <div className="bg-muted/50 rounded-xl p-4 space-y-2">
+                <p className="text-xs text-muted-foreground">
+                  <strong className="text-foreground">Benefícios:</strong>
+                </p>
+                <ul className="text-xs text-muted-foreground space-y-1 ml-4 list-disc">
+                  <li>Pedido com apenas 1 clique</li>
+                  <li>Configure uma vez, use sempre</li>
+                  <li>Economize tempo todos os dias</li>
+                </ul>
+              </div>
+
+              <p className="text-sm text-muted-foreground">
+                Para usar essa funcionalidade, você precisa fazer login.
+              </p>
+
+              <div className="flex gap-3">
+                <SignInButton mode="modal">
+                  <button className="flex-1 inline-flex items-center justify-center rounded-xl bg-primary px-4 py-3 font-bold text-primary-foreground shadow-soft transition hover:opacity-90">
+                    Fazer Login
+                  </button>
+                </SignInButton>
+                <button
+                  onClick={() => {
+                    setShowModalNotSignedIn(false);
+                    navigate("/cardapio");
+                  }}
+                  className="flex-1 inline-flex items-center justify-center rounded-xl border border-primary px-4 py-3 font-bold text-primary transition hover:bg-primary/10"
+                >
+                  Pedido Normal
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal - Explicação para configurar */}
+      {showModalExplanation && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+          <div className="bg-card rounded-2xl shadow-xl max-w-md w-full p-6 animate-fade-in">
+            <div className="flex items-start justify-between mb-4">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                  <Sparkles className="w-5 h-5 text-primary" />
+                </div>
+                <h3 className="font-display font-bold text-foreground text-lg">
+                  Configure seu Pedido Inteligente
+                </h3>
+              </div>
+              <button
+                onClick={() => setShowModalExplanation(false)}
+                className="text-muted-foreground hover:text-foreground transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="space-y-4">
+              <p className="text-sm text-muted-foreground">
+                Você ainda não configurou seus pedidos automáticos. Configure
+                agora para começar a fazer pedidos com apenas 1 clique!
+              </p>
+
+              <div className="bg-muted/50 rounded-xl p-4 space-y-2">
+                <p className="text-xs text-muted-foreground">
+                  <strong className="text-foreground">Como funciona:</strong>
+                </p>
+                <ol className="text-xs text-muted-foreground space-y-1 ml-4 list-decimal">
+                  <li>Personalize sua marmita para cada dia</li>
+                  <li>Salve suas preferências</li>
+                  <li>Faça pedidos automáticos com 1 clique!</li>
+                </ol>
+              </div>
+
+              <button
+                onClick={() => {
+                  setShowModalExplanation(false);
+                  navigate("/pedido-inteligente");
+                }}
+                className="w-full inline-flex items-center justify-center rounded-xl bg-primary px-4 py-3 font-bold text-primary-foreground shadow-soft transition hover:opacity-90"
+              >
+                Continuar para Configuração
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <main className="flex-1">
         <section className="relative overflow-hidden">
@@ -66,29 +225,53 @@ const Index = () => {
                 Marmitas, lanches e combos fresquinhos. Faça seu pedido!
               </p>
 
+              {/* Saudação e UserButton - Apenas quando logado */}
+              <SignedIn>
+                <div className="flex items-center gap-3 mb-4 bg-primary-foreground/10 backdrop-blur-sm rounded-xl px-4 py-3">
+                  <UserButton
+                    afterSignOutUrl="/"
+                    appearance={{
+                      elements: {
+                        avatarBox: "w-10 h-10",
+                      },
+                    }}
+                  />
+                  <div className="flex-1">
+                    <p className="text-sm text-primary-foreground/70">Olá,</p>
+                    <p className="font-bold text-primary-foreground">
+                      {user?.firstName || user?.username || "Usuário"}
+                    </p>
+                  </div>
+                </div>
+              </SignedIn>
+
+              {/* Botão Pedido Inteligente */}
               <button
                 onClick={handlePedidoInteligente}
-                className="mt-6 inline-flex items-center justify-center rounded-xl bg-primary px-6 py-3 font-bold text-primary-foreground shadow-soft transition hover:opacity-90"
+                disabled={isLoading}
+                className="inline-flex items-center gap-2 text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors underline decoration-dotted underline-offset-4 disabled:opacity-50 disabled:cursor-not-allowed mb-6"
               >
-                Pedido Inteligente
+                {isLoading ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    Carregando...
+                  </>
+                ) : (
+                  <>
+                    <Sparkles className="w-4 h-4" />
+                    Pedido Inteligente
+                  </>
+                )}
               </button>
 
+              {/* Botão de Login - Apenas quando não logado */}
               <SignedOut>
                 <SignInButton mode="modal">
-                  <button className="inline-flex items-center justify-center rounded-xl border border-primary px-6 py-3 font-bold text-primary shadow-soft transition hover:bg-primary/10">
-                    Realizar Login
+                  <button className="inline-flex items-center justify-center rounded-xl border border-primary-foreground/30 px-6 py-3 font-bold text-primary-foreground shadow-soft transition hover:bg-primary-foreground/10 mb-6">
+                    Fazer Login
                   </button>
                 </SignInButton>
               </SignedOut>
-
-              <SignedIn>
-                <div className="flex items-center gap-2">
-                  <span className="text-primary-foreground/90 font-medium">
-                    Meu Perfil:
-                  </span>
-                  <UserButton afterSignOutUrl="/" />
-                </div>
-              </SignedIn>
 
               <div className="flex gap-4 text-xs md:text-sm text-primary-foreground/80">
                 <div className="flex items-center gap-1">
