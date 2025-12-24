@@ -143,19 +143,18 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
       }
       if (item.removerItens.length > 0) {
         message += `   ✗ Sem: ${item.removerItens.join(", ")}\n`;
+      }
 
-        if (isSaturday) {
-          const hasFeijaoPreto = item.adicionarItens.includes(
-            "Feijão preto com pernil de porco e calabresa"
-          );
-          const hasFeijaoCarioca =
-            item.adicionarItens.includes("Feijão carioca");
+      if (isSaturday) {
+        const hasFeijaoPreto = item.adicionarItens.includes(
+          "Feijão preto com pernil de porco e calabresa"
+        );
+        const hasFeijaoCarioca = item.adicionarItens.includes("Feijão carioca");
 
-          if (hasFeijaoPreto) {
-            message += `   🫘 Feijão: Feijão preto com pernil de porco e calabresa\n`;
-          } else if (hasFeijaoCarioca) {
-            message += `   🫘 Feijão: Feijão carioca\n`;
-          }
+        if (hasFeijaoPreto) {
+          message += `   🫘 Feijão: Feijão preto com pernil de porco e calabresa\n`;
+        } else if (hasFeijaoCarioca) {
+          message += `   🫘 Feijão: Feijão carioca\n`;
         }
       }
     });
@@ -271,87 +270,6 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
           ref={scrollContainerRef}
           className="flex-1 overflow-y-auto p-3 space-y-4"
         >
-          {/*<div className="bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-950/20 dark:to-cyan-950/20 rounded-xl p-3 border border-blue-200 dark:border-blue-800">
-            <button
-              onClick={() => setShowDrinks(!showDrinks)}
-              className="w-full flex items-center justify-between"
-            >
-              <div className="flex items-center gap-2">
-                <Wine className="w-4 h-4 text-blue-600" />
-                <span className="font-semibold text-sm">
-                  Adicionar Bebidas?
-                </span>
-              </div>
-              <ChevronDown
-                className={`w-4 h-4 transition-transform ${
-                  showDrinks ? "rotate-180" : ""
-                }`}
-              />
-            </button>
-
-            {!showDrinks && selectedDrinks.length > 0 && (
-              <div className="mt-1 text-xs text-muted-foreground">
-                {selectedDrinks.length}{" "}
-                {selectedDrinks.length === 1 ? "bebida" : "bebidas"}
-              </div>
-            )}
-
-            {showDrinks && (
-              <div className="mt-3 space-y-2 animate-fade-in">
-                {drinks.map((drink) => {
-                  const quantity = getDrinkQuantity(drink.id);
-                  return (
-                    <div
-                      key={drink.id}
-                      className="flex items-center justify-between bg-white dark:bg-gray-900 rounded-lg p-2"
-                    >
-                      <div className="flex-1 min-w-0">
-                        <p className="font-semibold text-xs truncate">
-                          {drink.name}
-                        </p>
-                        <p className="text-primary font-bold text-sm">
-                          R$ {drink.price.toFixed(2).replace(".", ",")}
-                        </p>
-                      </div>
-                      {quantity === 0 ? (
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={() => handleAddDrink(drink)}
-                          className="h-7 w-7 p-0 ml-2"
-                        >
-                          <Plus className="w-3 h-3" />
-                        </Button>
-                      ) : (
-                        <div className="flex items-center gap-1 ml-2">
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            onClick={() => handleRemoveDrink(drink.id)}
-                            className="h-7 w-7 p-0"
-                          >
-                            <Minus className="w-3 h-3" />
-                          </Button>
-                          <span className="font-bold text-sm min-w-[1.5rem] text-center">
-                            {quantity}
-                          </span>
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            onClick={() => handleAddDrink(drink)}
-                            className="h-7 w-7 p-0"
-                          >
-                            <Plus className="w-3 h-3" />
-                          </Button>
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-            )}
-          </div>*/}
-
           <div>
             <h3 className="flex items-center gap-1.5 font-semibold text-sm mb-2">
               <MapPin className="w-4 h-4 text-primary" />

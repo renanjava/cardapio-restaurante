@@ -176,8 +176,8 @@ const Index = () => {
               </div>
               <div className="space-y-1 text-sm text-muted-foreground">
                 <p>
-                  <strong className="text-foreground">Marmitas:</strong> taxa de entrega:
-                  R$ 2,00
+                  <strong className="text-foreground">Marmitas:</strong> taxa de
+                  entrega R$ 2,00
                 </p>
               </div>
             </div>
