@@ -52,13 +52,12 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
   const [changeAmount, setChangeAmount] = useState("");
   const [changeError, setChangeError] = useState(false);
   const [selectedDrinks, setSelectedDrinks] = useState<DrinkOrder[]>([]);
-  const [showDrinks, setShowDrinks] = useState(false);
+  //const [showDrinks, setShowDrinks] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const deliveryFee =
-    deliveryMethod === "entrega" && isSaturday
-      ? restaurantInfo.deliveryFeeSaturday
-      : 0;
+    deliveryMethod === "entrega" ? restaurantInfo.deliveryFee : 0;
+
   const subtotal = getTotal();
   const drinksTotal = selectedDrinks.reduce(
     (acc, drink) => acc + drink.price * drink.quantity,
@@ -178,8 +177,10 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
     } else {
       message += `Entrega\n`;
       message += `${address.street}, ${address.number}\n`;
-      if (isSaturday && deliveryFee > 0) {
-        message += `⚠️ Este pedido possui taxa de entrega de R$ ${deliveryFee},00 (sábado)\n`;
+      if (deliveryFee > 0) {
+        message += `⚠️ Este pedido possui taxa de entrega de R$ ${deliveryFee
+          .toFixed(2)
+          .replace(".", ",")}\n`;
       }
     }
 
@@ -410,11 +411,14 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
                     className="mt-1 h-9 text-sm"
                   />
                 </div>
-                {isSaturday && (
+                {deliveryFee > 0 && (
                   <div className="flex items-start gap-2 p-2 rounded-lg bg-amber-500/10 border border-amber-500/20">
                     <Info className="w-3.5 h-3.5 text-amber-600 shrink-0 mt-0.5" />
                     <p className="text-xs text-amber-900 dark:text-amber-100">
-                      Taxa de <strong>R$ 2,00</strong> aos sábados
+                      Taxa de entrega:{" "}
+                      <strong>
+                        R$ {deliveryFee.toFixed(2).replace(".", ",")}
+                      </strong>
                     </p>
                   </div>
                 )}
@@ -578,11 +582,11 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
               </div>
             )}
 
-            {deliveryMethod === "entrega" && isSaturday && deliveryFee > 0 && (
+            {deliveryMethod === "entrega" && deliveryFee > 0 && (
               <div className="flex items-center justify-between text-xs">
-                <span className="text-muted-foreground">Taxa (sáb):</span>
+                <span className="text-muted-foreground">Taxa de entrega:</span>
                 <span className="font-semibold text-amber-600">
-                  R$ {deliveryFee},00
+                  R$ {deliveryFee.toFixed(2).replace(".", ",")}
                 </span>
               </div>
             )}
