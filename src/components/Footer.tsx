@@ -60,10 +60,6 @@ export function Footer() {
                   WhatsApp
                 </a>
               </li>
-              <li className="flex items-center gap-2 mt-2">
-                <Truck className="w-4 h-4" />
-                <span>Taxa de entrega aos sábados: R$ 2,00</span>
-              </li>
             </ul>
           </div>
         </div>
