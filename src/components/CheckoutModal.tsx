@@ -52,9 +52,10 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
   const [changeAmount, setChangeAmount] = useState("");
   const [changeError, setChangeError] = useState(false);
   const [selectedDrinks, setSelectedDrinks] = useState<DrinkOrder[]>([]);
-  //const [showDrinks, setShowDrinks] = useState(false);
+  const [showDrinks, setShowDrinks] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
+  // Taxa de entrega aplicada para todos os dias
   const deliveryFee =
     deliveryMethod === "entrega" ? restaurantInfo.deliveryFee : 0;
 
@@ -142,7 +143,10 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
         message += `   ⚠️ Acréscimo: +R$ ${item.extraCharge},00\n`;
       }
       if (item.removerItens.length > 0) {
-        message += `   ✗ Sem: ${item.removerItens.join(", ")}\n`;
+        const simplifiedItems = item.removerItens.map(
+          (item) => item.split(" ")[0]
+        );
+        message += `   ✗ Sem: ${simplifiedItems.join(", ")}\n`;
       }
 
       if (isSaturday) {
@@ -311,7 +315,8 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
                     onChange={(e) =>
                       setAddress({ ...address, street: e.target.value })
                     }
-                    className="mt-1 h-9 text-sm"
+                    className="mt-1 h-9"
+                    style={{ fontSize: "16px" }}
                   />
                 </div>
                 <div>
@@ -326,7 +331,8 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
                     onChange={(e) =>
                       setAddress({ ...address, number: e.target.value })
                     }
-                    className="mt-1 h-9 text-sm"
+                    className="mt-1 h-9"
+                    style={{ fontSize: "16px" }}
                   />
                 </div>
                 {deliveryFee > 0 && (
@@ -470,11 +476,12 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
                         setChangeAmount(value);
                         setChangeError(false);
                       }}
-                      className={`mt-1 h-9 text-sm ${
+                      className={`mt-1 h-9 ${
                         changeError
                           ? "border-red-500 border-2 focus-visible:ring-red-500"
                           : ""
                       }`}
+                      style={{ fontSize: "16px" }}
                     />
                   </div>
                 )}
