@@ -14,7 +14,7 @@ import { marmitaSizes, restaurantInfo, dayDisplayNames } from "@/data/menuData";
 import { useDay } from "@/contexts/DayContext";
 
 const Index = () => {
-  const { dayKey, isSunday } = useDay();
+  const { dayKey, isSunday, isOpen } = useDay();
 
   return (
     <div className="min-h-screen flex flex-col bg-background pb-20 md:pb-0">
@@ -34,15 +34,34 @@ const Index = () => {
 
           <div className="relative container mx-auto px-4 py-10 md:py-16">
             <div className="max-w-lg animate-fade-in">
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary-foreground/10 backdrop-blur-sm mb-4">
-                <span
-                  className={`w-2 h-2 rounded-full ${
-                    isSunday ? "bg-destructive" : "bg-accent"
-                  } animate-pulse`}
-                />
-                <span className="text-sm text-primary-foreground/90 font-medium">
-                  {isSunday ? "Fechado hoje" : dayDisplayNames[dayKey]}
-                </span>
+              <div className="flex flex-wrap items-center gap-3 mb-4">
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary-foreground/10 backdrop-blur-sm">
+                  <span
+                    className={`w-2 h-2 rounded-full ${
+                      isSunday ? "bg-destructive" : "bg-accent"
+                    } animate-pulse`}
+                  />
+                  <span className="text-sm text-primary-foreground/90 font-medium">
+                    {isSunday ? "Fechado hoje" : dayDisplayNames[dayKey]}
+                  </span>
+                </div>
+
+                <div
+                  className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full backdrop-blur-sm border ${
+                    isOpen
+                      ? "bg-emerald-500/20 border-emerald-500/30 text-emerald-50"
+                      : "bg-red-500/20 border-red-500/30 text-red-50"
+                  }`}
+                >
+                  <span
+                    className={`w-2 h-2 rounded-full animate-pulse ${
+                      isOpen ? "bg-emerald-400" : "bg-red-400"
+                    }`}
+                  />
+                  <span className="text-sm font-medium">
+                    {isOpen ? "Aberto agora" : "Fechado"}
+                  </span>
+                </div>
               </div>
 
               <h1 className="font-display text-3xl md:text-5xl font-bold text-primary-foreground mb-4 leading-tight">
