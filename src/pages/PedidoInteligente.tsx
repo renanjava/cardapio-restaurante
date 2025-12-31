@@ -21,6 +21,7 @@ import {
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { CustomToaster } from "@/components/CustomToaster";
+import { useUser } from "@/lib/safe-auth";
 
 type DayKey =
   | "segunda"
@@ -69,6 +70,7 @@ const dayKeyToNumber: Record<DayKey, number> = {
 
 const PedidoInteligente = () => {
   const navigate = useNavigate();
+  const { user } = useUser();
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [currentDayIndex, setCurrentDayIndex] = useState(0);
   const [orders, setOrders] = useState<IntelligentOrders>({
@@ -97,12 +99,17 @@ const PedidoInteligente = () => {
   const isFirstDay = currentDayIndex === 0;
 
   useEffect(() => {
-    loadOrders();
-  }, []);
+    if (user?.id) {
+      loadOrders();
+    } else {
+      setLoading(false);
+    }
+  }, [user?.id]);
 
   const loadOrders = async () => {
+    if (!user?.id) return;
     try {
-      const res = await fetch("/api/intelligent-order");
+      const res = await fetch(`/api/intelligent-order?userId=${user.id}`);
       const data = await res.json();
 
       if (data.orders) {
@@ -354,7 +361,7 @@ const PedidoInteligente = () => {
       const res = await fetch("/api/intelligent-order", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ orders: whatsappOrders }),
+        body: JSON.stringify({ userId: user?.id, orders: whatsappOrders }),
       });
 
       if (!res.ok) {
