@@ -10,14 +10,21 @@ import { Button } from "@/components/ui/button";
 import { useCart, CartItem } from "@/contexts/CartContext";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { CustomToaster } from "@/components/CustomToaster";
+import { useDay } from "@/contexts/DayContext";
+import { ServiceClosed } from "@/components/ServiceClosed";
 
 const Carrinho = () => {
   const { items, getTotal, clearCart } = useCart();
   const navigate = useNavigate();
   const [showCheckout, setShowCheckout] = useState(false);
   const [editingItem, setEditingItem] = useState<CartItem | null>(null);
+  const { isOpen } = useDay();
 
   const total = getTotal();
+
+  if (!isOpen) {
+    return <ServiceClosed />;
+  }
 
   return (
     <div className="min-h-screen flex flex-col bg-background pb-20 md:pb-0">
