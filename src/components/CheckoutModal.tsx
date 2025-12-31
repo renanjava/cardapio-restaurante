@@ -55,7 +55,6 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
   const [showDrinks, setShowDrinks] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
-  // Taxa de entrega aplicada para todos os dias
   const deliveryFee =
     deliveryMethod === "entrega" ? restaurantInfo.deliveryFee : 0;
 

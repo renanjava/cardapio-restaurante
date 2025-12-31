@@ -26,7 +26,6 @@ const isValidWhatsAppOrders = (
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   try {
-    // 🔹 GET - Buscar pedidos do usuário
     if (req.method === "GET") {
       const userId = req.query.userId as string;
 
@@ -46,7 +45,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       });
     }
 
-    // 🔹 POST - Salvar/Atualizar pedidos do usuário
     if (req.method === "POST") {
       const { userId, orders } = req.body;
 

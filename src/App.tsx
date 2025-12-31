@@ -8,25 +8,19 @@ import Carrinho from "./pages/Carrinho";
 import NotFound from "./pages/NotFound";
 import { DayProvider } from "./contexts/DayContext";
 import { inject } from "@vercel/analytics";
+import { ClerkProvider } from "@/lib/safe-auth";
+import { ptBR } from "@clerk/localizations";
 import { injectSpeedInsights } from "@vercel/speed-insights";
 import PedidoInteligente from "./pages/PedidoInteligente";
-import { ClerkProvider } from "@clerk/clerk-react";
-import { ptBR } from "@clerk/localizations";
 
 const queryClient = new QueryClient();
 
 inject();
 injectSpeedInsights();
 
-const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
-
-if (!PUBLISHABLE_KEY) {
-  throw new Error("Missing Publishable Key");
-}
-
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <ClerkProvider publishableKey={PUBLISHABLE_KEY} localization={ptBR}>
+    <ClerkProvider localization={ptBR}>
       <DayProvider>
         <CartProvider>
           <TooltipProvider>

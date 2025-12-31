@@ -23,7 +23,7 @@ import {
   SignedOut,
   SignedIn,
   useUser,
-} from "@clerk/clerk-react";
+} from "@/lib/safe-auth";
 import { useState } from "react";
 
 const Index = () => {
@@ -35,31 +35,26 @@ const Index = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const handlePedidoInteligente = async () => {
-    // Se não estiver logado, mostrar modal explicativo
     if (!isSignedIn) {
       setShowModalNotSignedIn(true);
       return;
     }
 
-    // Se estiver logado, buscar dados no banco
     setIsLoading(true);
     try {
       const response = await fetch(`/api/intelligent-order?userId=${user?.id}`);
       const data = await response.json();
 
       if (data.orders && Object.keys(data.orders).length > 0) {
-        // Pegar o link do dia atual
         const currentDayKey = new Date().getDay();
         const whatsappLink = data.orders[currentDayKey];
 
         if (whatsappLink) {
           window.open(whatsappLink, "_blank");
         } else {
-          // Se não tiver link para hoje, mostrar modal explicativo
           setShowModalExplanation(true);
         }
       } else {
-        // Se não tiver pedidos configurados, mostrar modal explicativo
         setShowModalExplanation(true);
       }
     } catch (error) {
@@ -74,7 +69,6 @@ const Index = () => {
     <div className="min-h-screen flex flex-col bg-background pb-20 md:pb-0">
       <Header />
 
-      {/* Modal - Usuário não logado */}
       {showModalNotSignedIn && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
           <div className="bg-card rounded-2xl shadow-xl max-w-md w-full p-6 animate-fade-in">
