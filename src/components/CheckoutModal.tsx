@@ -55,10 +55,10 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
   const [showDrinks, setShowDrinks] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
+  // Taxa de entrega aplicada para todos os dias
   const deliveryFee =
-    deliveryMethod === "entrega" && isSaturday
-      ? restaurantInfo.deliveryFeeSaturday
-      : 0;
+    deliveryMethod === "entrega" ? restaurantInfo.deliveryFee : 0;
+
   const subtotal = getTotal();
   const drinksTotal = selectedDrinks.reduce(
     (acc, drink) => acc + drink.price * drink.quantity,
@@ -143,20 +143,22 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
         message += `   ⚠️ Acréscimo: +R$ ${item.extraCharge},00\n`;
       }
       if (item.removerItens.length > 0) {
-        message += `   ✗ Sem: ${item.removerItens.join(", ")}\n`;
+        const simplifiedItems = item.removerItens.map(
+          (item) => item.split(" ")[0]
+        );
+        message += `   ✗ Sem: ${simplifiedItems.join(", ")}\n`;
+      }
 
-        if (isSaturday) {
-          const hasFeijaoPreto = item.adicionarItens.includes(
-            "Feijão preto com pernil de porco e calabresa"
-          );
-          const hasFeijaoCarioca =
-            item.adicionarItens.includes("Feijão carioca");
+      if (isSaturday) {
+        const hasFeijaoPreto = item.adicionarItens.includes(
+          "Feijão preto com pernil de porco e calabresa"
+        );
+        const hasFeijaoCarioca = item.adicionarItens.includes("Feijão carioca");
 
-          if (hasFeijaoPreto) {
-            message += `   🫘 Feijão: Feijão preto com pernil de porco e calabresa\n`;
-          } else if (hasFeijaoCarioca) {
-            message += `   🫘 Feijão: Feijão carioca\n`;
-          }
+        if (hasFeijaoPreto) {
+          message += `   🫘 Feijão: Feijão preto com pernil de porco e calabresa\n`;
+        } else if (hasFeijaoCarioca) {
+          message += `   🫘 Feijão: Feijão carioca\n`;
         }
       }
     });
@@ -178,8 +180,10 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
     } else {
       message += `Entrega\n`;
       message += `${address.street}, ${address.number}\n`;
-      if (isSaturday && deliveryFee > 0) {
-        message += `⚠️ Este pedido possui taxa de entrega de R$ ${deliveryFee},00 (sábado)\n`;
+      if (deliveryFee > 0) {
+        message += `⚠️ Este pedido possui taxa de entrega de R$ ${deliveryFee
+          .toFixed(2)
+          .replace(".", ",")}\n`;
       }
     }
 
@@ -270,87 +274,6 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
           ref={scrollContainerRef}
           className="flex-1 overflow-y-auto p-3 space-y-4"
         >
-          {/*<div className="bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-950/20 dark:to-cyan-950/20 rounded-xl p-3 border border-blue-200 dark:border-blue-800">
-            <button
-              onClick={() => setShowDrinks(!showDrinks)}
-              className="w-full flex items-center justify-between"
-            >
-              <div className="flex items-center gap-2">
-                <Wine className="w-4 h-4 text-blue-600" />
-                <span className="font-semibold text-sm">
-                  Adicionar Bebidas?
-                </span>
-              </div>
-              <ChevronDown
-                className={`w-4 h-4 transition-transform ${
-                  showDrinks ? "rotate-180" : ""
-                }`}
-              />
-            </button>
-
-            {!showDrinks && selectedDrinks.length > 0 && (
-              <div className="mt-1 text-xs text-muted-foreground">
-                {selectedDrinks.length}{" "}
-                {selectedDrinks.length === 1 ? "bebida" : "bebidas"}
-              </div>
-            )}
-
-            {showDrinks && (
-              <div className="mt-3 space-y-2 animate-fade-in">
-                {drinks.map((drink) => {
-                  const quantity = getDrinkQuantity(drink.id);
-                  return (
-                    <div
-                      key={drink.id}
-                      className="flex items-center justify-between bg-white dark:bg-gray-900 rounded-lg p-2"
-                    >
-                      <div className="flex-1 min-w-0">
-                        <p className="font-semibold text-xs truncate">
-                          {drink.name}
-                        </p>
-                        <p className="text-primary font-bold text-sm">
-                          R$ {drink.price.toFixed(2).replace(".", ",")}
-                        </p>
-                      </div>
-                      {quantity === 0 ? (
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={() => handleAddDrink(drink)}
-                          className="h-7 w-7 p-0 ml-2"
-                        >
-                          <Plus className="w-3 h-3" />
-                        </Button>
-                      ) : (
-                        <div className="flex items-center gap-1 ml-2">
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            onClick={() => handleRemoveDrink(drink.id)}
-                            className="h-7 w-7 p-0"
-                          >
-                            <Minus className="w-3 h-3" />
-                          </Button>
-                          <span className="font-bold text-sm min-w-[1.5rem] text-center">
-                            {quantity}
-                          </span>
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            onClick={() => handleAddDrink(drink)}
-                            className="h-7 w-7 p-0"
-                          >
-                            <Plus className="w-3 h-3" />
-                          </Button>
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-            )}
-          </div>*/}
-
           <div>
             <h3 className="flex items-center gap-1.5 font-semibold text-sm mb-2">
               <MapPin className="w-4 h-4 text-primary" />
@@ -392,7 +315,8 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
                     onChange={(e) =>
                       setAddress({ ...address, street: e.target.value })
                     }
-                    className="mt-1 h-9 text-sm"
+                    className="mt-1 h-9"
+                    style={{ fontSize: "16px" }}
                   />
                 </div>
                 <div>
@@ -407,14 +331,18 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
                     onChange={(e) =>
                       setAddress({ ...address, number: e.target.value })
                     }
-                    className="mt-1 h-9 text-sm"
+                    className="mt-1 h-9"
+                    style={{ fontSize: "16px" }}
                   />
                 </div>
-                {isSaturday && (
+                {deliveryFee > 0 && (
                   <div className="flex items-start gap-2 p-2 rounded-lg bg-amber-500/10 border border-amber-500/20">
                     <Info className="w-3.5 h-3.5 text-amber-600 shrink-0 mt-0.5" />
                     <p className="text-xs text-amber-900 dark:text-amber-100">
-                      Taxa de <strong>R$ 2,00</strong> aos sábados
+                      Taxa de entrega:{" "}
+                      <strong>
+                        R$ {deliveryFee.toFixed(2).replace(".", ",")}
+                      </strong>
                     </p>
                   </div>
                 )}
@@ -548,11 +476,12 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
                         setChangeAmount(value);
                         setChangeError(false);
                       }}
-                      className={`mt-1 h-9 text-sm ${
+                      className={`mt-1 h-9 ${
                         changeError
                           ? "border-red-500 border-2 focus-visible:ring-red-500"
                           : ""
                       }`}
+                      style={{ fontSize: "16px" }}
                     />
                   </div>
                 )}
@@ -577,11 +506,11 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
               </div>
             )}
 
-            {deliveryMethod === "entrega" && isSaturday && deliveryFee > 0 && (
+            {deliveryMethod === "entrega" && deliveryFee > 0 && (
               <div className="flex items-center justify-between text-xs">
-                <span className="text-muted-foreground">Taxa (sáb):</span>
+                <span className="text-muted-foreground">Taxa de entrega:</span>
                 <span className="font-semibold text-amber-600">
-                  R$ {deliveryFee},00
+                  R$ {deliveryFee.toFixed(2).replace(".", ",")}
                 </span>
               </div>
             )}

@@ -1,7 +1,6 @@
 import { Plus, Minus, Trash2, Edit2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { CartItem, useCart } from "@/contexts/CartContext";
-import toast from "react-hot-toast";
 
 interface CartItemCardProps {
   item: CartItem;
@@ -29,15 +28,7 @@ export function CartItemCard({ item, onEdit }: CartItemCardProps) {
                 variant="ghost"
                 size="icon"
                 className="h-8 w-8 text-muted-foreground hover:text-foreground"
-                onClick={() => {
-                  toast("Funcionalidade em desenvolvimento.", {
-                    icon: "⚠️",
-                    style: {
-                      background: "#f8db38",
-                      color: "#000",
-                    },
-                  }); /*onEdit(item)*/
-                }}
+                onClick={() => onEdit(item)}
               >
                 <Edit2 className="w-4 h-4" />
               </Button>

@@ -5,19 +5,26 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { CartItemCard } from "@/components/CartItemCard";
 import { CheckoutModal } from "@/components/CheckoutModal";
-import { MarmitaOrderForm } from "@/components/MarmitaOrderForm";
 import { Button } from "@/components/ui/button";
 import { useCart, CartItem } from "@/contexts/CartContext";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { CustomToaster } from "@/components/CustomToaster";
+import { useDay } from "@/contexts/DayContext";
+import { ServiceClosed } from "@/components/ServiceClosed";
 
 const Carrinho = () => {
   const { items, getTotal, clearCart } = useCart();
   const navigate = useNavigate();
   const [showCheckout, setShowCheckout] = useState(false);
-  const [editingItem, setEditingItem] = useState<CartItem | null>(null);
+  const handleEdit = (item: CartItem) => {
+    navigate("/cardapio", { state: { editingItem: item } });
+  };
+  const { isOpen } = useDay();
 
   const total = getTotal();
+
+  if (!isOpen) {
+    return <ServiceClosed />;
+  }
 
   return (
     <div className="min-h-screen flex flex-col bg-background pb-20 md:pb-0">
@@ -67,7 +74,7 @@ const Carrinho = () => {
                   <CartItemCard
                     key={item.id}
                     item={item}
-                    onEdit={setEditingItem}
+                    onEdit={handleEdit}
                   />
                 ))}
               </div>
@@ -107,25 +114,7 @@ const Carrinho = () => {
         onClose={() => setShowCheckout(false)}
       />
 
-      {/* <Dialog open={!!editingItem} onOpenChange={() => setEditingItem(null)}>
-        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto p-0">
-          {editingItem && (
-            <div className="flex flex-col h-full">
-              <div className="p-4 border-b border-border">
-                <h2 className="font-display text-lg font-bold">
-                  Editar Pedido
-                </h2>
-              </div>
-              <div className="flex-1 overflow-y-auto">
-                <MarmitaOrderForm
-                  editingItem={editingItem}
-                  onComplete={() => setEditingItem(null)}
-                />
-              </div>
-            </div>
-          )}
-        </DialogContent>
-      </Dialog> */}
+
     </div>
   );
 };
