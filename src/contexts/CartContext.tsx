@@ -84,31 +84,38 @@ export function CartProvider({ children }: { children: ReactNode }) {
     }
   }, [items, dayKey, initialized]);
 
+  const areItemsEqual = (
+    item1: Omit<CartItem, "id" | "quantidade">,
+    item2: Omit<CartItem, "id" | "quantidade">
+  ) => {
+    const sameSize = item1.tamanhoMarmita === item2.tamanhoMarmita;
+    const sameMeat = item1.carne === item2.carne;
+    const samePrice = item1.preco === item2.preco;
+    const sameExtraCharge = item1.extraCharge === item2.extraCharge;
+
+    const sameAddedItems =
+      item1.adicionarItens.length === item2.adicionarItens.length &&
+      item1.adicionarItens.every((i) => item2.adicionarItens.includes(i));
+
+    const sameRemovedItems =
+      item1.removerItens.length === item2.removerItens.length &&
+      item1.removerItens.every((i) => item2.removerItens.includes(i));
+
+    return (
+      sameSize &&
+      sameMeat &&
+      samePrice &&
+      sameExtraCharge &&
+      sameAddedItems &&
+      sameRemovedItems
+    );
+  };
+
   const addItem = (item: Omit<CartItem, "id">) => {
     setItems((prev) => {
-      const existingItemIndex = prev.findIndex((cartItem) => {
-        const sameSize = cartItem.tamanhoMarmita === item.tamanhoMarmita;
-        const sameMeat = cartItem.carne === item.carne;
-        const samePrice = cartItem.preco === item.preco;
-        const sameExtraCharge = cartItem.extraCharge === item.extraCharge;
-
-        const sameAddedItems =
-          cartItem.adicionarItens.length === item.adicionarItens.length &&
-          cartItem.adicionarItens.every((i) => item.adicionarItens.includes(i));
-
-        const sameRemovedItems =
-          cartItem.removerItens.length === item.removerItens.length &&
-          cartItem.removerItens.every((i) => item.removerItens.includes(i));
-
-        return (
-          sameSize &&
-          sameMeat &&
-          samePrice &&
-          sameExtraCharge &&
-          sameAddedItems &&
-          sameRemovedItems
-        );
-      });
+      const existingItemIndex = prev.findIndex((cartItem) =>
+        areItemsEqual(cartItem, item)
+      );
 
       if (existingItemIndex !== -1) {
         const updatedItems = [...prev];
@@ -129,9 +136,29 @@ export function CartProvider({ children }: { children: ReactNode }) {
   };
 
   const updateItem = (id: string, updates: Omit<CartItem, "id">) => {
-    setItems((prev) =>
-      prev.map((item) => (item.id === id ? { ...updates, id } : item))
-    );
+    setItems((prev) => {
+      // Check if there's another item (not the one we're editing) that matches the new state
+      const existingMatchIndex = prev.findIndex(
+        (item) => item.id !== id && areItemsEqual(item, updates)
+      );
+
+      if (existingMatchIndex !== -1) {
+        // Merge with existing item
+        const newItems = [...prev];
+        const existingItem = newItems[existingMatchIndex];
+        
+        newItems[existingMatchIndex] = {
+          ...existingItem,
+          quantidade: existingItem.quantidade + updates.quantidade,
+        };
+        
+        // Remove the item being edited since it was merged
+        return newItems.filter((item) => item.id !== id);
+      }
+
+      // No match, just update in place
+      return prev.map((item) => (item.id === id ? { ...updates, id } : item));
+    });
   };
 
   const removeItem = (id: string) => {

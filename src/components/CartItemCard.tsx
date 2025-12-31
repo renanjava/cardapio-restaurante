@@ -29,15 +29,7 @@ export function CartItemCard({ item, onEdit }: CartItemCardProps) {
                 variant="ghost"
                 size="icon"
                 className="h-8 w-8 text-muted-foreground hover:text-foreground"
-                onClick={() => {
-                  toast("Funcionalidade em desenvolvimento.", {
-                    icon: "⚠️",
-                    style: {
-                      background: "#f8db38",
-                      color: "#000",
-                    },
-                  }); /*onEdit(item)*/
-                }}
+                onClick={() => onEdit(item)}
               >
                 <Edit2 className="w-4 h-4" />
               </Button>
