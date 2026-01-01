@@ -1,10 +1,8 @@
-import { useState } from "react";
 import { ShoppingBag, ArrowRight, Trash2 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { CartItemCard } from "@/components/CartItemCard";
-import { CheckoutModal } from "@/components/CheckoutModal";
 import { Button } from "@/components/ui/button";
 import { useCart, CartItem } from "@/contexts/CartContext";
 import { CustomToaster } from "@/components/CustomToaster";
@@ -14,7 +12,6 @@ import { ServiceClosed } from "@/components/ServiceClosed";
 const Carrinho = () => {
   const { items, getTotal, clearCart } = useCart();
   const navigate = useNavigate();
-  const [showCheckout, setShowCheckout] = useState(false);
   const handleEdit = (item: CartItem) => {
     navigate("/cardapio", { state: { editingItem: item } });
   };
@@ -94,7 +91,7 @@ const Carrinho = () => {
               <Button
                 variant="warm"
                 size="lg"
-                onClick={() => setShowCheckout(true)}
+                onClick={() => navigate("/checkout")}
                 className="flex-1 max-w-xs"
               >
                 Continuar
@@ -104,17 +101,8 @@ const Carrinho = () => {
           </div>
         </div>
       )}
-
       <Footer />
-
       <CustomToaster />
-
-      <CheckoutModal
-        isOpen={showCheckout}
-        onClose={() => setShowCheckout(false)}
-      />
-
-
     </div>
   );
 };
