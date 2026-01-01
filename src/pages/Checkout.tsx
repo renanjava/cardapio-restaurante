@@ -25,6 +25,7 @@ import { DeliveryMethod, isOrderValid, PaymentMethod } from "@/utils/order-valid
 import { Header } from "@/components/Header";
 import { useNavigate } from "react-router-dom";
 import { CustomToaster } from "@/components/CustomToaster";
+import { ServiceClosed } from "@/components/ServiceClosed";
 
 export interface DrinkOrder {
   id: string;
@@ -36,7 +37,18 @@ export interface DrinkOrder {
 const Checkout = () => {
   const navigate = useNavigate();
   const { items, getTotal, getItemSubtotal, clearCart } = useCart();
-  const { isSaturday, dayKey } = useDay();
+  const { isSaturday, dayKey, isOpen } = useDay();
+
+  if (!isOpen) {
+    return (
+      <div className="min-h-screen flex flex-col bg-background">
+        <Header showBack title="Finalizar Pedido" />
+        <main className="flex-1 flex flex-col mt-20">
+          <ServiceClosed />
+        </main>
+      </div>
+    );
+  }
 
   const [deliveryMethod, setDeliveryMethod] = useState<DeliveryMethod>(null);
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>(null);

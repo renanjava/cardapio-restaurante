@@ -85,7 +85,7 @@ test.describe('Marmita Ordering Flow', () => {
 
   test('should show change options for cash payment', async ({ page }) => {
     await page.goto('/');
-    const isClosed = await page.getByText(/Fechado hoje/i).isVisible();
+    const isClosed = await page.getByText(/Atendimento encerrado/i).isVisible();
     if (isClosed) return;
 
     await page.getByRole('link', { name: /Marmita Média/i }).click();

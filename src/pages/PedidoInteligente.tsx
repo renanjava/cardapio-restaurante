@@ -25,6 +25,9 @@ import { ToppingsSelector } from "@/components/order/ToppingsSelector";
 import { calculateDeliveryFee, calculateMeatExtra } from "@/utils/order-calculations";
 import { buildWhatsAppMessage } from "@/utils/whatsapp-builder";
 import { Address, DeliveryMethod, isOrderValid, PaymentMethod } from "@/utils/order-validation";
+import { useDay } from "@/contexts/DayContext";
+import { ServiceClosed } from "@/components/ServiceClosed";
+import { ENV } from "@/config";
 
 type SavedWhatsAppOrders = Record<number, string>;
 
@@ -63,6 +66,7 @@ const dayKeyToNumber: Record<DayKey, number> = {
 const PedidoInteligente = () => {
   const navigate = useNavigate();
   const { user } = useUser();
+  const { isOpen } = useDay();
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [currentDayIndex, setCurrentDayIndex] = useState(0);
   const [orders, setOrders] = useState<IntelligentOrders>({
@@ -394,6 +398,10 @@ const PedidoInteligente = () => {
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
   };
+
+  if (!isOpen || !ENV.ENABLE_INTELLIGENT_ORDER) {
+    return <ServiceClosed />;
+  }
 
   if (loading) {
     return (

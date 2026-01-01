@@ -37,7 +37,7 @@ const Index = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [preFetchedWhatsAppLink, setPreFetchedWhatsAppLink] = useState<string | null>(null);
 
-  const intelligentOrderEnabled = ENV.ENABLE_INTELLIGENT_ORDER;
+  const intelligentOrderEnabled = ENV.ENABLE_INTELLIGENT_ORDER && isOpen;
 
   const [showModalSuccess, setShowModalSuccess] = useState(false);
   const location = useLocation();
@@ -293,22 +293,24 @@ const Index = () => {
                   </span>
                 </div>
 
-                <div
-                  className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full backdrop-blur-sm border ${
-                    isOpen
-                      ? "bg-emerald-500/20 border-emerald-500/30 text-emerald-50"
-                      : "bg-red-500/20 border-red-500/30 text-red-50"
-                  }`}
-                >
-                  <span
-                    className={`w-2 h-2 rounded-full animate-pulse ${
-                      isOpen ? "bg-emerald-400" : "bg-red-400"
+                {!isSunday && (
+                  <div
+                    className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full backdrop-blur-sm border ${
+                      isOpen
+                        ? "bg-emerald-500/20 border-emerald-500/30 text-emerald-50"
+                        : "bg-red-500/20 border-red-500/30 text-red-50"
                     }`}
-                  />
-                  <span className="text-sm font-medium">
-                    {isOpen ? "Aberto agora" : "Fechado"}
-                  </span>
-                </div>
+                  >
+                    <span
+                      className={`w-2 h-2 rounded-full animate-pulse ${
+                        isOpen ? "bg-emerald-400" : "bg-red-400"
+                      }`}
+                    />
+                    <span className="text-sm font-medium">
+                      {isOpen ? "Aberto agora" : "Atendimento encerrado"}
+                    </span>
+                  </div>
+                )}
               </div>
 
               <h1 className="font-display text-3xl md:text-5xl font-bold text-primary-foreground mb-4 leading-tight">
@@ -321,7 +323,7 @@ const Index = () => {
                 Marmitas, lanches e combos fresquinhos. Faça seu pedido!
               </p>
 
-              {intelligentOrderEnabled && (
+              {intelligentOrderEnabled && isOpen && (
                 <SignedIn>
                   <div className="flex items-center gap-3 mb-4 bg-primary-foreground/10 backdrop-blur-sm rounded-xl px-4 py-3">
                     <UserButton
@@ -342,7 +344,7 @@ const Index = () => {
                 </SignedIn>
               )}
 
-              {intelligentOrderEnabled && (
+              {intelligentOrderEnabled && isOpen && (
                 <SignedOut>
                   <SignInButton mode="modal">
                     <button className="inline-flex items-center justify-center rounded-xl border border-primary-foreground/30 px-6 py-3 font-bold text-primary-foreground shadow-soft transition hover:bg-primary-foreground/10 mb-6">
@@ -446,9 +448,9 @@ const Index = () => {
             {marmitaSizes.map((size, index) => (
               <Link
                 key={size.id}
-                to={isSunday ? "#" : `/cardapio?size=${size.id}`}
+                to={!isOpen ? "#" : `/cardapio?size=${size.id}`}
                 className={`block animate-fade-in ${
-                  isSunday ? "pointer-events-none opacity-50" : ""
+                  !isOpen ? "pointer-events-none opacity-50" : ""
                 }`}
                 style={{ animationDelay: `${index * 100}ms` }}
               >
@@ -468,7 +470,7 @@ const Index = () => {
                     <p className="font-bold text-primary text-lg">
                       R$ {size.price},00
                     </p>
-                    {!isSunday && (
+                    {isOpen && (
                       <ChevronRight className="w-5 h-5 text-muted-foreground ml-auto" />
                     )}
                   </div>

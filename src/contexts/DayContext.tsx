@@ -25,13 +25,14 @@ export function DayProvider({ children }: DayProviderProps) {
   const openTimeInMinutes = 7 * 60;
   const closeTimeInMinutes = 14 * 60;
 
-  const isOpen =
-    currentTimeInMinutes >= openTimeInMinutes &&
-    currentTimeInMinutes < closeTimeInMinutes;
-
   const dayKey = DAY_NAMES[today];
   const isSunday = today === 0;
   const isSaturday = today === 6;
+
+  const isOpen =
+    !isSunday &&
+    currentTimeInMinutes >= openTimeInMinutes &&
+    currentTimeInMinutes < closeTimeInMinutes;
 
   return (
     <DayContext.Provider value={{ today, dayKey, isSunday, isSaturday, isOpen }}>
