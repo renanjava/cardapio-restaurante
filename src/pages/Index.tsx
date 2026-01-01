@@ -35,6 +35,7 @@ const Index = () => {
   const [showModalNotSignedIn, setShowModalNotSignedIn] = useState(false);
   const [showModalExplanation, setShowModalExplanation] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [preFetchedWhatsAppLink, setPreFetchedWhatsAppLink] = useState<string | null>(null);
 
   const intelligentOrderEnabled = ENV.ENABLE_INTELLIGENT_ORDER;
 
@@ -48,11 +49,40 @@ const Index = () => {
     }
   }, [location]);
 
+  useEffect(() => {
+    const fetchIntelligentOrder = async () => {
+      if (!intelligentOrderEnabled || !isSignedIn || !user?.id) return;
+
+      try {
+        const response = await fetch(`/api/intelligent-order?userId=${user.id}`);
+        const data = await response.json();
+
+        if (data.orders && Object.keys(data.orders).length > 0) {
+          const currentDayKey = new Date().getDay();
+          const whatsappLink = data.orders[currentDayKey];
+          if (whatsappLink) {
+            setPreFetchedWhatsAppLink(whatsappLink);
+          }
+        }
+      } catch (error) {
+        console.error("Erro ao pré-carregar pedido inteligente:", error);
+      }
+    };
+
+    fetchIntelligentOrder();
+  }, [isSignedIn, user?.id, intelligentOrderEnabled]);
+
   const handlePedidoInteligente = async () => {
     if (!intelligentOrderEnabled) return;
     
     if (!isSignedIn) {
       setShowModalNotSignedIn(true);
+      return;
+    }
+
+    if (preFetchedWhatsAppLink) {
+      console.log({intelligentOrder: preFetchedWhatsAppLink});
+      redirectToWhatsApp(preFetchedWhatsAppLink);
       return;
     }
 
@@ -67,7 +97,8 @@ const Index = () => {
 
         if (whatsappLink) {
           console.log({intelligentOrder: whatsappLink});
-          redirectToWhatsApp(whatsappLink)
+          setPreFetchedWhatsAppLink(whatsappLink);
+          redirectToWhatsApp(whatsappLink);
         } else {
           setShowModalExplanation(true);
         }
