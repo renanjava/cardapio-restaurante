@@ -167,6 +167,8 @@ const Checkout = () => {
 
     const whatsappUrl = message;
 
+    console.log({checkoutUrl: whatsappUrl});
+
     redirectToWhatsApp(whatsappUrl);
 
     toast.success(

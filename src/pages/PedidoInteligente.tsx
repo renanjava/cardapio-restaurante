@@ -412,24 +412,6 @@ const PedidoInteligente = () => {
     }
   };
 
-  const openWhatsApp = (day: DayKey) => {
-    const dayNum = dayKeyToNumber[day];
-    const order = orders[dayNum as keyof IntelligentOrders] as DayOrder | null;
-
-    if (!order) {
-       toast.error("Pedido não encontrado para este dia.");
-       return;
-    }
-
-    const link = generateWhatsAppLink(day, order);
-
-    if (link) {
-      redirectToWhatsApp(link);
-    } else {
-      toast.error("Preencha todos os campos obrigatórios primeiro!");
-    }
-  };
-
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">

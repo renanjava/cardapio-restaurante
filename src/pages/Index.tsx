@@ -25,6 +25,7 @@ import {
   useUser,
 } from "@/lib/safe-auth";
 import { useEffect, useState } from "react";
+import { redirectToWhatsApp } from "@/utils/whatsapp-redirect";
 
 const Index = () => {
   const { dayKey, isSunday, isOpen } = useDay();
@@ -64,7 +65,8 @@ const Index = () => {
         const whatsappLink = data.orders[currentDayKey];
 
         if (whatsappLink) {
-          window.open(whatsappLink, "_blank");
+          console.log({intelligentOrder: whatsappLink});
+          redirectToWhatsApp(whatsappLink)
         } else {
           setShowModalExplanation(true);
         }
