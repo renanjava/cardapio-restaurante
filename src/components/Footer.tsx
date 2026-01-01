@@ -1,5 +1,5 @@
 import { Clock, MapPin, Phone, Truck } from "lucide-react";
-import { restaurantInfo } from "@/data/menuData";
+import { RESTAURANT_INFO } from "@/config";
 
 export function Footer() {
   return (
@@ -14,7 +14,7 @@ export function Footer() {
                 </span>
               </div>
               <span className="font-display font-bold text-xl text-foreground">
-                {restaurantInfo.name}
+                {RESTAURANT_INFO.name}
               </span>
             </div>
             <p className="text-muted-foreground text-sm">
@@ -31,13 +31,13 @@ export function Footer() {
             <ul className="space-y-2 text-sm text-muted-foreground">
               <li>
                 <strong>Marmitas:</strong>{" "}
-                {restaurantInfo.openingHours.marmitas}
+                {RESTAURANT_INFO.openingHours.marmitas}
               </li>
               <li>
-                <strong>Lanches:</strong> {restaurantInfo.openingHours.lanches}
+                <strong>Lanches:</strong> {RESTAURANT_INFO.openingHours.lanches}
               </li>
               <li className="text-destructive">
-                {restaurantInfo.openingHours.sunday}
+                {RESTAURANT_INFO.openingHours.sunday}
               </li>
             </ul>
           </div>
@@ -48,11 +48,11 @@ export function Footer() {
               Contato
             </h4>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              <li>{restaurantInfo.address}</li>
+              <li>{RESTAURANT_INFO .address}</li>
               <li className="flex items-center gap-2">
                 <Phone className="w-4 h-4" />
                 <a
-                  href={`https://wa.me/${restaurantInfo.phone}`}
+                  href={`https://wa.me/${RESTAURANT_INFO.phone}`}
                   className="text-fresh-green hover:underline font-semibold"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -66,7 +66,7 @@ export function Footer() {
 
         <div className="mt-8 pt-8 border-t border-border text-center text-sm text-muted-foreground">
           <p>
-            © {new Date().getFullYear()} {restaurantInfo.name}
+            © {new Date().getFullYear()} {RESTAURANT_INFO.name}
           </p>
           <p className="text-xs text-muted-foreground">
             Desenvolvido por{" "}

@@ -1,8 +1,9 @@
 import { useEffect } from "react";
 import { X, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { weeklyMenu, dayDisplayNames } from "@/data/menuData";
+import { DAY_DISPLAY_NAMES } from "@/config";
 import { useDay } from "@/contexts/DayContext";
+import { weeklyMenu } from "@/data/menuData";
 
 interface WeeklyMenuModalProps {
   isOpen: boolean;
@@ -75,7 +76,7 @@ export function WeeklyMenuModal({ isOpen, onClose }: WeeklyMenuModalProps) {
                 >
                   <div className="flex items-center gap-2 mb-3">
                     <h3 className="font-display font-bold text-foreground">
-                      {dayDisplayNames[day]}
+                      {DAY_DISPLAY_NAMES[day]}
                     </h3>
                     {isToday && (
                       <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-primary text-primary-foreground">

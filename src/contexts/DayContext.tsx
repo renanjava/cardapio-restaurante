@@ -1,5 +1,5 @@
 import { createContext, useContext, ReactNode } from "react";
-import { dayNames } from "@/data/menuData";
+import { DAY_NAMES } from "@/config";
 
 interface DayContextType {
   today: number;
@@ -29,7 +29,7 @@ export function DayProvider({ children }: DayProviderProps) {
     currentTimeInMinutes >= openTimeInMinutes &&
     currentTimeInMinutes < closeTimeInMinutes;
 
-  const dayKey = dayNames[today];
+  const dayKey = DAY_NAMES[today];
   const isSunday = today === 0;
   const isSaturday = today === 6;
 

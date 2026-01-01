@@ -8,7 +8,9 @@ import {
 } from "@clerk/clerk-react";
 import React from "react";
 
-const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
+import { ENV } from "@/config";
+
+const PUBLISHABLE_KEY = ENV.CLERK_PUBLISHABLE_KEY;
 
 export const ClerkProvider = (props: any) => {
   if (PUBLISHABLE_KEY) {

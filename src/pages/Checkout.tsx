@@ -12,10 +12,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useCart } from "@/contexts/CartContext";
 import {
-  restaurantInfo,
   weeklyMenu,
   drinks,
 } from "@/data/menuData";
+import { RESTAURANT_INFO } from "@/config";
 import toast from "react-hot-toast";
 import { useDay } from "@/contexts/DayContext";
 import { track } from "@/lib/tracking";
@@ -26,7 +26,7 @@ import { Header } from "@/components/Header";
 import { useNavigate } from "react-router-dom";
 import { CustomToaster } from "@/components/CustomToaster";
 
-interface DrinkOrder {
+export interface DrinkOrder {
   id: string;
   name: string;
   price: number;
@@ -48,7 +48,7 @@ const Checkout = () => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const deliveryFee =
-    deliveryMethod === "entrega" ? restaurantInfo.deliveryFee : 0;
+    deliveryMethod === "entrega" ? RESTAURANT_INFO.deliveryFee : 0;
 
   const subtotal = getTotal();
   const drinksTotal = selectedDrinks.reduce(
@@ -322,7 +322,7 @@ const Checkout = () => {
               <div className="mt-4 p-4 rounded-xl bg-muted animate-fade-in">
                 <p className="font-semibold text-sm mb-1.5">Chave Pix:</p>
                 <p className="text-primary font-mono text-base break-all select-all">
-                  {restaurantInfo.pixKey}
+                  {RESTAURANT_INFO.pixKey}
                 </p>
                 <p className="text-sm text-muted-foreground mt-2">
                   Envie o comprovante no WhatsApp

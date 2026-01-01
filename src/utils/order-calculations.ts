@@ -1,4 +1,5 @@
-import { MeatOption, restaurantInfo, MarmitaSize } from "@/data/menuData";
+import { MeatOption, MarmitaSize } from "@/data/menuData";
+import { RESTAURANT_INFO } from "@/config";
 import { DeliveryMethod } from "./order-validation";
 
 export const calculateMeatExtra = (
@@ -20,7 +21,7 @@ export const calculateDeliveryFee = (
 ): number => {
   if (deliveryMethod !== "entrega") return 0;
   
-  return restaurantInfo.deliveryFee;
+  return RESTAURANT_INFO.deliveryFee;
 };
 
 export const calculateItemPrice = (

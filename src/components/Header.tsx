@@ -1,7 +1,7 @@
 import { ShoppingCart, Phone, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useCart } from '@/contexts/CartContext';
-import { restaurantInfo } from '@/data/menuData';
+import { RESTAURANT_INFO } from '@/config';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { redirectToWhatsApp } from '@/utils/whatsapp-redirect';
 
@@ -18,7 +18,7 @@ export function Header({ showBack, title }: HeaderProps) {
 
   const handleWhatsAppContact = () => {
     const message = encodeURIComponent('Oi, gostaria de fazer um pedido');
-    const url = `https://wa.me/${restaurantInfo.phone}?text=${message}`
+    const url = `https://wa.me/${RESTAURANT_INFO.phone}?text=${message}`
     redirectToWhatsApp(url);
   };
 
@@ -43,7 +43,7 @@ export function Header({ showBack, title }: HeaderProps) {
                 <span className="text-primary-foreground font-bold text-base md:text-lg">J</span>
               </div>
               <span className="font-display font-bold text-base md:text-xl text-foreground hidden sm:block">
-                {title || restaurantInfo.name}
+                {title || RESTAURANT_INFO.name}
               </span>
             </Link>
           </div>

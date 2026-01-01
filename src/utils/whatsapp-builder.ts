@@ -1,4 +1,7 @@
-import { DayKey, dayDisplayNames, restaurantInfo, weeklyMenu } from "@/data/menuData";
+import { DAY_DISPLAY_NAMES, RESTAURANT_INFO, DayKey } from "@/config";
+import { Address, DeliveryMethod, PaymentMethod } from "./order-validation";
+import { DrinkOrder } from "@/pages/Checkout";
+import { weeklyMenu } from "@/data/menuData";
 
 interface OrderItem {
   sizeName: string;
@@ -12,28 +15,27 @@ interface OrderItem {
 }
 
 interface OrderDetails {
-  customerName?: string;
   dayKey?: DayKey;
-  deliveryMethod: "balcao" | "entrega";
-  address?: { street: string; number: string };
-  paymentMethod: "cartao" | "pix" | "dinheiro";
+  deliveryMethod: DeliveryMethod;
+  address?: Address;
+  paymentMethod: PaymentMethod;
   changeAmount?: string;
   items: OrderItem[];
-  drinks?: { name: string; qty: number; price: number }[];
+  drinks?: DrinkOrder[];
   deliveryFee: number;
   total: number;
   isIntelligentOrder?: boolean;
 }
 
 export const buildWhatsAppMessage = (order: OrderDetails): string => {
-  let message = `🍽️ *NOVO PEDIDO - ${restaurantInfo.name}*\n\n`;
+  let message = `🍽️ *NOVO PEDIDO - ${RESTAURANT_INFO.name}*\n\n`;
 
   if (order.isIntelligentOrder) {
     message += `🤖 *PEDIDO INTELIGENTE*\n\n`;
   }
   
   if (order.dayKey) {
-    message += `📅 *CARDÁPIO - ${dayDisplayNames[order.dayKey]}*\n`;
+    message += `📅 *CARDÁPIO - ${DAY_DISPLAY_NAMES[order.dayKey]}*\n`;
     const dayMenu = weeklyMenu[order.dayKey];
     if (dayMenu && dayMenu.items) {
       const accompaniments = dayMenu.items.map((item) => item.name).join(", ");
@@ -92,7 +94,7 @@ export const buildWhatsAppMessage = (order: OrderDetails): string => {
       break;
     case "pix":
       message += `Pix\n`;
-      message += `Chave: ${restaurantInfo.pixKey}\n`;
+      message += `Chave: ${RESTAURANT_INFO.pixKey}\n`;
       break;
     case "dinheiro":
       message += `Dinheiro\n`;
@@ -106,7 +108,7 @@ export const buildWhatsAppMessage = (order: OrderDetails): string => {
 
   message += `\n💰 *TOTAL: R$ ${order.total.toFixed(2).replace(".", ",")}*`;
 
-  return `https://wa.me/${restaurantInfo.phone}?text=${encodeURIComponent(
+  return `https://wa.me/${RESTAURANT_INFO.phone}?text=${encodeURIComponent(
     message
   )}`;
 };

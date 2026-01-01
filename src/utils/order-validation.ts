@@ -1,10 +1,11 @@
 export type DeliveryMethod = "balcao" | "entrega" | null;
 export type PaymentMethod = "cartao" | "pix" | "dinheiro" | null;
+export type Address = { street: string; number: string };
 
 export interface OrderValidationDetails {
   deliveryMethod: DeliveryMethod;
   paymentMethod: PaymentMethod;
-  address?: { street: string; number: string };
+  address?: Address;
   needsChange?: boolean | null;
   changeAmount?: string;
   hasItems?: boolean;

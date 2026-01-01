@@ -15,7 +15,8 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { BottomNav } from "@/components/BottomNav";
-import { marmitaSizes, restaurantInfo, dayDisplayNames } from "@/data/menuData";
+import { marmitaSizes } from "@/data/menuData";
+import { RESTAURANT_INFO, DAY_DISPLAY_NAMES, ENV } from "@/config";
 import { useDay } from "@/contexts/DayContext";
 import {
   UserButton,
@@ -35,7 +36,7 @@ const Index = () => {
   const [showModalExplanation, setShowModalExplanation] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const intelligentOrderEnabled = import.meta.env.VITE_ENABLE_INTELLIGENT_ORDER === "true";
+  const intelligentOrderEnabled = ENV.ENABLE_INTELLIGENT_ORDER;
 
   const [showModalSuccess, setShowModalSuccess] = useState(false);
   const location = useLocation();
@@ -257,7 +258,7 @@ const Index = () => {
                     } animate-pulse`}
                   />
                   <span className="text-sm text-primary-foreground/90 font-medium">
-                    {isSunday ? "Fechado hoje" : dayDisplayNames[dayKey]}
+                    {isSunday ? "Fechado hoje" : DAY_DISPLAY_NAMES[dayKey]}
                   </span>
                 </div>
 
@@ -323,7 +324,7 @@ const Index = () => {
               <div className="flex gap-4 text-xs md:text-sm text-primary-foreground/80">
                 <div className="flex items-center gap-1">
                   <Clock className="w-4 h-4" />
-                  <span>{restaurantInfo.openingHours.openingTime} - {restaurantInfo.openingHours.closingTime}</span>
+                  <span>{RESTAURANT_INFO.openingHours.openingTime} - {RESTAURANT_INFO.openingHours.closingTime}</span>
                 </div>
                 <div className="flex items-center gap-1">
                   <MapPin className="w-4 h-4" />
@@ -490,11 +491,11 @@ const Index = () => {
               <div className="space-y-1 text-sm text-muted-foreground">
                 <p>
                   <strong className="text-foreground">Marmitas:</strong>{" "}
-                  {restaurantInfo.openingHours.marmitas}
+                  {RESTAURANT_INFO.openingHours.marmitas}
                 </p>
                 <p>
                   <strong className="text-foreground">Lanches:</strong>{" "}
-                  {restaurantInfo.openingHours.lanches}
+                  {RESTAURANT_INFO.openingHours.lanches}
                 </p>
               </div>
             </div>
@@ -526,7 +527,7 @@ const Index = () => {
                 </h3>
               </div>
               <div className="space-y-1 text-sm text-muted-foreground">
-                <p>{restaurantInfo.address}</p>
+                <p>{RESTAURANT_INFO.address}</p>
                 <p className="text-xs text-destructive font-medium">
                   *Indisponível aos domingos*
                 </p>

@@ -11,10 +11,10 @@ import { Button } from "@/components/ui/button";
 import {
   marmitaSizes,
   weeklyMenu,
-  dayDisplayNames,
   MarmitaSize,
   MeatOption,
 } from "@/data/menuData";
+import { DAY_DISPLAY_NAMES, DayKey } from "@/config";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { CustomToaster } from "@/components/CustomToaster";
@@ -24,18 +24,7 @@ import { MeatSelector } from "@/components/order/MeatSelector";
 import { ToppingsSelector } from "@/components/order/ToppingsSelector";
 import { calculateDeliveryFee, calculateMeatExtra } from "@/utils/order-calculations";
 import { buildWhatsAppMessage } from "@/utils/whatsapp-builder";
-import { isOrderValid } from "@/utils/order-validation";
-
-type DayKey =
-  | "segunda"
-  | "terca"
-  | "quarta"
-  | "quinta"
-  | "sexta"
-  | "sabado"
-  | "domingo";
-type DeliveryMethod = "balcao" | "entrega";
-type PaymentMethod = "cartao" | "pix" | "dinheiro";
+import { Address, DeliveryMethod, isOrderValid, PaymentMethod } from "@/utils/order-validation";
 
 type SavedWhatsAppOrders = Record<number, string>;
 
@@ -43,9 +32,9 @@ interface DayOrder {
   size: MarmitaSize | null;
   meat: MeatOption | null;
   items: Record<string, boolean>;
-  delivery: DeliveryMethod | null;
-  payment: PaymentMethod | null;
-  address?: { street: string; number: string };
+  delivery: DeliveryMethod;
+  payment: PaymentMethod;
+  address?: Address;
   needsChange?: boolean;
   changeAmount?: string;
   whatsappLink?: string;
@@ -247,7 +236,6 @@ const PedidoInteligente = () => {
     const total = itemPrice + deliveryFee; 
 
     return buildWhatsAppMessage({
-        customerName: user?.fullName || user?.firstName || undefined,
         dayKey: day,
         deliveryMethod: order.delivery,
         address: order.address,
@@ -363,7 +351,7 @@ const PedidoInteligente = () => {
       return;
     }
 
-    toast.success(`✅ ${dayDisplayNames[currentDay]} configurado!`);
+    toast.success(`${DAY_DISPLAY_NAMES[currentDay]} configurado!`);
 
     if (!isLastDay) {
       const nextIndex = currentDayIndex + 1;
@@ -469,7 +457,7 @@ const PedidoInteligente = () => {
                 } animate-pulse`}
               />
               <p className="text-sm font-bold text-foreground">
-                {dayDisplayNames[currentDay]}
+                {DAY_DISPLAY_NAMES[currentDay]}
               </p>
             </div>
           </div>
