@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { useCart } from '@/contexts/CartContext';
 import { restaurantInfo } from '@/data/menuData';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { redirectToWhatsApp } from '@/utils/whatsapp-redirect';
 
 interface HeaderProps {
   showBack?: boolean;
@@ -17,7 +18,8 @@ export function Header({ showBack, title }: HeaderProps) {
 
   const handleWhatsAppContact = () => {
     const message = encodeURIComponent('Oi, gostaria de fazer um pedido');
-    window.open(`https://wa.me/${restaurantInfo.phone}?text=${message}`, '_blank');
+    const url = `https://wa.me/${restaurantInfo.phone}?text=${message}`
+    redirectToWhatsApp(url);
   };
 
   return (

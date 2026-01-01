@@ -265,7 +265,7 @@ export const drinks = [
   {
     id: "ouro-verde-2lt",
     name: "Ouro Verde 2L",
-    price: 10.0,
+    price: 12.0,
   },
   {
     id: "caculinha",
@@ -301,7 +301,9 @@ export const restaurantInfo = {
   address: "Elpídio Monteiro, 21 - Itambé-PR",
   deliveryFee: 2.0,
   openingHours: {
-    marmitas: "Segunda a Sábado, 07:00 - 14:00",
+    openingTime: "07:00",
+    closingTime: "14:00",
+    marmitas: "Segunda a Sábado",
     lanches: "Consultar no WhatsApp",
     sunday: "Fechado aos domingos",
   },

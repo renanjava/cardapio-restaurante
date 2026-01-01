@@ -51,9 +51,6 @@ export const buildWhatsAppMessage = (order: OrderDetails): string => {
       message += `   ⚠️ Acréscimo: +R$ ${item.extraCharge.toFixed(2).replace('.', ',')}\n`;
     }
 
-    if (item.addedItems && item.addedItems.length > 0) {
-    }
-
     if (item.removedItems && item.removedItems.length > 0) {
        message += `   ✗ Sem: ${item.removedItems.join(", ")}\n`;
     }

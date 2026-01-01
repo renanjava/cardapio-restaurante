@@ -1,5 +1,6 @@
 import { Clock, Phone } from "lucide-react";
 import { Button } from "./ui/button";
+import { restaurantInfo } from "@/data/menuData";
 
 export const ServiceClosed = () => {
   return (
@@ -13,7 +14,7 @@ export const ServiceClosed = () => {
       </h1>
 
       <p className="text-muted-foreground max-w-md mx-auto mb-8 text-lg">
-        Nosso horário de funcionamento é das <span className="font-semibold text-primary">07:00</span> às <span className="font-semibold text-primary">14:00</span>.
+        Nosso horário de funcionamento é das <span className="font-semibold text-primary">{restaurantInfo.openingHours.openingTime}</span> às <span className="font-semibold text-primary">{restaurantInfo.openingHours.closingTime}</span>.
         <br />
         Por favor, retorne durante este período para fazer seu pedido.
       </p>

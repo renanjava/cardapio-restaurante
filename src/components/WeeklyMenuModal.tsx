@@ -115,12 +115,6 @@ export function WeeklyMenuModal({ isOpen, onClose }: WeeklyMenuModalProps) {
                       ))}
                     </div>
                   </div>
-
-                  {day === "sabado" && (
-                    <p className="mt-2 text-xs text-muted-foreground italic">
-                      * Apenas um tipo de feijão disponível
-                    </p>
-                  )}
                 </div>
               );
             })}

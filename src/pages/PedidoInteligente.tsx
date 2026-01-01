@@ -5,18 +5,15 @@ import {
   Loader2,
   ChevronLeft,
   ChevronRight,
-  ExternalLink,
 } from "lucide-react";
 import { Header } from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import {
   marmitaSizes,
   weeklyMenu,
-  restaurantInfo,
   dayDisplayNames,
   MarmitaSize,
   MeatOption,
-  MenuItem,
 } from "@/data/menuData";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
@@ -27,7 +24,6 @@ import { MeatSelector } from "@/components/order/MeatSelector";
 import { ToppingsSelector } from "@/components/order/ToppingsSelector";
 import { calculateDeliveryFee, calculateMeatExtra } from "@/utils/order-calculations";
 import { buildWhatsAppMessage } from "@/utils/whatsapp-builder";
-import { redirectToWhatsApp } from "@/utils/whatsapp-redirect";
 import { isOrderValid } from "@/utils/order-validation";
 
 type DayKey =
@@ -237,7 +233,7 @@ const PedidoInteligente = () => {
        if (hasFeijaoPreto) {
          finalAdded = finalAdded.filter((i) => i !== "Feijão carioca");
          finalRemoved = finalRemoved.filter((i) => i !== "Feijão carioca");
-         customMessage = "🫘 Feijão: Feijão preto com pernil de porco e calabresa";
+         customMessage = "🫘 Feijão: Feijão preto";
        } else if (hasFeijaoCarioca) {
          finalAdded = finalAdded.filter((i) => i !== "Feijão preto com pernil de porco e calabresa");
          finalRemoved = finalRemoved.filter((i) => i !== "Feijão preto com pernil de porco e calabresa");
@@ -246,7 +242,7 @@ const PedidoInteligente = () => {
     }
 
     const extraCharge = calculateMeatExtra(order.size.id, order.meat);
-    const deliveryFee = calculateDeliveryFee(order.delivery, day);
+    const deliveryFee = calculateDeliveryFee(order.delivery);
     const itemPrice = order.size.price + extraCharge; 
     const total = itemPrice + deliveryFee; 
 
@@ -383,7 +379,6 @@ const PedidoInteligente = () => {
                  baseItems[item.id] = item.checked;
              });
 
-             // Validate meat for next day
              const nextDayMeats = weeklyMenu[nextDay].meats;
              const isMeatAvailable = currentDayOrder.meat && nextDayMeats.some(m => m.id === currentDayOrder.meat?.id);
 

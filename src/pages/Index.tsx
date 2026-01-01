@@ -323,7 +323,7 @@ const Index = () => {
               <div className="flex gap-4 text-xs md:text-sm text-primary-foreground/80">
                 <div className="flex items-center gap-1">
                   <Clock className="w-4 h-4" />
-                  <span>07:00 - 14:00</span>
+                  <span>{restaurantInfo.openingHours.openingTime} - {restaurantInfo.openingHours.closingTime}</span>
                 </div>
                 <div className="flex items-center gap-1">
                   <MapPin className="w-4 h-4" />

@@ -1,4 +1,5 @@
 import { MeatOption, restaurantInfo, MarmitaSize } from "@/data/menuData";
+import { DeliveryMethod } from "./order-validation";
 
 export const calculateMeatExtra = (
   sizeId: string | undefined,
@@ -15,7 +16,7 @@ export const calculateMeatExtra = (
 };
 
 export const calculateDeliveryFee = (
-  deliveryMethod: "balcao" | "entrega" | null,
+  deliveryMethod: DeliveryMethod,
 ): number => {
   if (deliveryMethod !== "entrega") return 0;
   

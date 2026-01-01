@@ -21,13 +21,10 @@ import { useDay } from "@/contexts/DayContext";
 import { track } from "@/lib/tracking";
 import { buildWhatsAppMessage } from "@/utils/whatsapp-builder";
 import { redirectToWhatsApp } from "@/utils/whatsapp-redirect";
-import { isOrderValid } from "@/utils/order-validation";
+import { DeliveryMethod, isOrderValid, PaymentMethod } from "@/utils/order-validation";
 import { Header } from "@/components/Header";
 import { useNavigate } from "react-router-dom";
 import { CustomToaster } from "@/components/CustomToaster";
-
-type DeliveryMethod = "balcao" | "entrega" | null;
-type PaymentMethod = "cartao" | "pix" | "dinheiro" | null;
 
 interface DrinkOrder {
   id: string;
