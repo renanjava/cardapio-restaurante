@@ -11,7 +11,7 @@ import {
   Zap,
   CalendarCheck,
 } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { BottomNav } from "@/components/BottomNav";
@@ -24,7 +24,7 @@ import {
   SignedIn,
   useUser,
 } from "@/lib/safe-auth";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const Index = () => {
   const { dayKey, isSunday, isOpen } = useDay();
@@ -35,6 +35,16 @@ const Index = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const intelligentOrderEnabled = import.meta.env.VITE_ENABLE_INTELLIGENT_ORDER === "true";
+
+  const [showModalSuccess, setShowModalSuccess] = useState(false);
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.state?.intelligentOrderConfigured) {
+      setShowModalSuccess(true);
+      window.history.replaceState({}, document.title);
+    }
+  }, [location]);
 
   const handlePedidoInteligente = async () => {
     if (!intelligentOrderEnabled) return;
@@ -185,6 +195,40 @@ const Index = () => {
                 Continuar para Configuração
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {showModalSuccess && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+          <div className="bg-card rounded-2xl shadow-xl max-w-md w-full p-6 animate-fade-in">
+             <div className="flex flex-col items-center text-center space-y-4">
+                 <div className="w-16 h-16 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
+                    <Sparkles className="w-8 h-8 text-green-600 dark:text-green-400" />
+                 </div>
+                 
+                 <h2 className="font-display text-2xl font-bold text-foreground">
+                     Configuração Concluída!
+                 </h2>
+                 
+                 <p className="text-muted-foreground">
+                     Seu Pedido Inteligente foi salvo com sucesso.
+                 </p>
+                 
+                 <div className="bg-muted/50 rounded-xl p-4 text-sm">
+                     <p className="text-foreground font-medium mb-1">Como usar:</p>
+                     <p className="text-muted-foreground">
+                         Agora, basta clicar no botão <strong>"Pedido Inteligente"</strong> aqui na tela inicial sempre que quiser fazer seu pedido do dia!
+                     </p>
+                 </div>
+                 
+                 <button
+                   onClick={() => setShowModalSuccess(false)}
+                   className="w-full inline-flex items-center justify-center rounded-xl bg-primary px-4 py-3 font-bold text-primary-foreground shadow-soft transition hover:opacity-90 mt-2"
+                 >
+                   Entendi
+                 </button>
+             </div>
           </div>
         </div>
       )}

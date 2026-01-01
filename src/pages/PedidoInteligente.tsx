@@ -28,6 +28,7 @@ import { ToppingsSelector } from "@/components/order/ToppingsSelector";
 import { calculateDeliveryFee, calculateMeatExtra } from "@/utils/order-calculations";
 import { buildWhatsAppMessage } from "@/utils/whatsapp-builder";
 import { redirectToWhatsApp } from "@/utils/whatsapp-redirect";
+import { isOrderValid } from "@/utils/order-validation";
 
 type DayKey =
   | "segunda"
@@ -297,20 +298,16 @@ const PedidoInteligente = () => {
     ] as DayOrder | null;
 
     if (!order) return false;
-    if (!order.size || !order.meat || !order.delivery || !order.payment)
-      return false;
 
-    if (order.delivery === "entrega") {
-      if (!order.address?.street || !order.address?.number) return false;
-    }
-
-    if (order.payment === "dinheiro") {
-      if (order.needsChange === null || order.needsChange === undefined)
-        return false;
-      if (order.needsChange && !order.changeAmount) return false;
-    }
-
-    return true;
+    return isOrderValid({
+        deliveryMethod: order.delivery,
+        paymentMethod: order.payment,
+        address: order.address,
+        needsChange: order.needsChange,
+        changeAmount: order.changeAmount,
+        hasSize: !!order.size,
+        hasMeat: !!order.meat
+    });
   };
 
   const isDayComplete = (day: DayKey): boolean => {
@@ -355,7 +352,7 @@ const PedidoInteligente = () => {
         throw new Error("Erro ao salvar");
       }
 
-      toast.success("Pedido inteligente salvo com sucesso! 🎉");
+      navigate("/", { state: { intelligentOrderConfigured: true } });
     } catch (err) {
       console.error(err);
       toast.error("Erro ao salvar pedido inteligente");
@@ -373,7 +370,37 @@ const PedidoInteligente = () => {
     toast.success(`✅ ${dayDisplayNames[currentDay]} configurado!`);
 
     if (!isLastDay) {
-      setCurrentDayIndex((prev) => prev + 1);
+      const nextIndex = currentDayIndex + 1;
+      const nextDay = days[nextIndex];
+      const nextDayNum = dayKeyToNumber[nextDay];
+      
+      setOrders(prev => {
+          const nextOrder = prev[nextDayNum as keyof IntelligentOrders];
+          
+          if (!nextOrder || (!nextOrder.size && !nextOrder.meat)) {
+             const baseItems: Record<string, boolean> = {};
+             weeklyMenu[nextDay].items.forEach(item => {
+                 baseItems[item.id] = item.checked;
+             });
+
+             // Validate meat for next day
+             const nextDayMeats = weeklyMenu[nextDay].meats;
+             const isMeatAvailable = currentDayOrder.meat && nextDayMeats.some(m => m.id === currentDayOrder.meat?.id);
+
+             return {
+                 ...prev,
+                 [nextDayNum]: {
+                     ...currentDayOrder,
+                     meat: isMeatAvailable ? currentDayOrder.meat : null,
+                     items: baseItems,
+                     whatsappLink: undefined
+                 }
+             };
+          }
+          return prev;
+      });
+
+      setCurrentDayIndex(nextIndex);
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
   };
@@ -731,24 +758,6 @@ const PedidoInteligente = () => {
               </Button>
             )}
           </div>
-
-          {allDaysComplete &&
-            orders[dayKeyToNumber[currentDay] as keyof IntelligentOrders] &&
-            (
-              orders[
-                dayKeyToNumber[currentDay] as keyof IntelligentOrders
-              ] as DayOrder
-            )?.whatsappLink && (
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => openWhatsApp(currentDay)}
-                className="w-full"
-              >
-                <ExternalLink className="w-4 h-4" />
-                Enviar {dayDisplayNames[currentDay].split("-")[0]} no WhatsApp
-              </Button>
-            )}
         </div>
       </div>
     </div>

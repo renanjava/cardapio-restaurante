@@ -29,7 +29,7 @@ export const buildWhatsAppMessage = (order: OrderDetails): string => {
   let message = `🍽️ *NOVO PEDIDO - ${restaurantInfo.name}*\n\n`;
 
   if (order.isIntelligentOrder) {
-    message += `🤖 *PEDIDO INTELIGENTE*\n`;
+    message += `🤖 *PEDIDO INTELIGENTE*\n\n`;
   }
   
   if (order.dayKey) {
@@ -39,10 +39,6 @@ export const buildWhatsAppMessage = (order: OrderDetails): string => {
       const accompaniments = dayMenu.items.map((item) => item.name).join(", ");
       message += `${accompaniments}\n\n`;
     }
-  }
-
-  if (order.customerName) {
-     message += `👤 Cliente: ${order.customerName}\n\n`;
   }
 
   message += `📋 *ITENS DO PEDIDO:*\n\n`;

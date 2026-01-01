@@ -21,6 +21,7 @@ import { useDay } from "@/contexts/DayContext";
 import { track } from "@/lib/tracking";
 import { buildWhatsAppMessage } from "@/utils/whatsapp-builder";
 import { redirectToWhatsApp } from "@/utils/whatsapp-redirect";
+import { isOrderValid } from "@/utils/order-validation";
 import { Header } from "@/components/Header";
 import { useNavigate } from "react-router-dom";
 import { CustomToaster } from "@/components/CustomToaster";
@@ -84,20 +85,14 @@ const Checkout = () => {
   };
 
   const isFormValid = () => {
-    if (!deliveryMethod || !paymentMethod) return false;
-
-    if (deliveryMethod === "entrega") {
-      if (!address.street.trim() || !address.number.trim()) return false;
-    }
-
-    if (paymentMethod === "dinheiro") {
-      if (needsChange === null) return false;
-      if (needsChange && !changeAmount.trim()) {
-        return false;
-      }
-    }
-
-    return items.length > 0;
+    return isOrderValid({
+        deliveryMethod,
+        paymentMethod,
+        address,
+        needsChange,
+        changeAmount,
+        hasItems: items.length > 0
+    });
   };
 
   const handleSendOrder = () => {
