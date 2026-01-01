@@ -137,13 +137,11 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const updateItem = (id: string, updates: Omit<CartItem, "id">) => {
     setItems((prev) => {
-      // Check if there's another item (not the one we're editing) that matches the new state
       const existingMatchIndex = prev.findIndex(
         (item) => item.id !== id && areItemsEqual(item, updates)
       );
 
       if (existingMatchIndex !== -1) {
-        // Merge with existing item
         const newItems = [...prev];
         const existingItem = newItems[existingMatchIndex];
         
@@ -152,11 +150,9 @@ export function CartProvider({ children }: { children: ReactNode }) {
           quantidade: existingItem.quantidade + updates.quantidade,
         };
         
-        // Remove the item being edited since it was merged
         return newItems.filter((item) => item.id !== id);
       }
 
-      // No match, just update in place
       return prev.map((item) => (item.id === id ? { ...updates, id } : item));
     });
   };

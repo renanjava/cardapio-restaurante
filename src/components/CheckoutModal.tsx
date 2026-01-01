@@ -25,6 +25,8 @@ import {
 import toast from "react-hot-toast";
 import { useDay } from "@/contexts/DayContext";
 import { track } from "@/lib/tracking";
+import { buildWhatsAppMessage } from "@/utils/whatsapp-builder";
+import { redirectToWhatsApp } from "@/utils/whatsapp-redirect";
 
 interface CheckoutModalProps {
   isOpen: boolean;
@@ -55,7 +57,6 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
   const [showDrinks, setShowDrinks] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
-  // Taxa de entrega aplicada para todos os dias
   const deliveryFee =
     deliveryMethod === "entrega" ? restaurantInfo.deliveryFee : 0;
 
@@ -123,94 +124,6 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
     return items.length > 0;
   };
 
-  const buildWhatsAppMessage = () => {
-    let message = `🍽️ *NOVO PEDIDO - ${restaurantInfo.name}*\n\n`;
-
-    message += `📅 *CARDÁPIO - ${dayDisplayNames[dayKey] || "Hoje"}*\n`;
-    const dayMenu = weeklyMenu[dayKey];
-    if (dayMenu && dayMenu.items) {
-      const accompaniments = dayMenu.items.map((item) => item.name).join(", ");
-      message += `${accompaniments}\n\n`;
-    }
-
-    message += `📋 *ITENS DO PEDIDO:*\n`;
-    items.forEach((item, index) => {
-      message += `\n*${item.tamanhoMarmita}* - ${item.carne}\n`;
-      message += `   Qtd: ${item.quantidade} | R$ ${getItemSubtotal(
-        item
-      )},00\n`;
-      if (item.extraCharge > 0) {
-        message += `   ⚠️ Acréscimo: +R$ ${item.extraCharge},00\n`;
-      }
-      if (item.removerItens.length > 0) {
-        const simplifiedItems = item.removerItens.map(
-          (item) => item.split(" ")[0]
-        );
-        message += `   ✗ Sem: ${simplifiedItems.join(", ")}\n`;
-      }
-
-      if (isSaturday) {
-        const hasFeijaoPreto = item.adicionarItens.includes(
-          "Feijão preto com pernil de porco e calabresa"
-        );
-        const hasFeijaoCarioca = item.adicionarItens.includes("Feijão carioca");
-
-        if (hasFeijaoPreto) {
-          message += `   🫘 Feijão: Feijão preto com pernil de porco e calabresa\n`;
-        } else if (hasFeijaoCarioca) {
-          message += `   🫘 Feijão: Feijão carioca\n`;
-        }
-      }
-    });
-
-    if (selectedDrinks.length > 0) {
-      message += `\n🥤 *BEBIDAS:*\n`;
-      selectedDrinks.forEach((drink) => {
-        const drinkTotal = drink.price * drink.quantity;
-        message += `${drink.name}\n`;
-        message += `   Qtd: ${drink.quantity} | R$ ${drinkTotal
-          .toFixed(2)
-          .replace(".", ",")}\n`;
-      });
-    }
-
-    message += `\n📍 *RETIRADA:*\n`;
-    if (deliveryMethod === "balcao") {
-      message += `Balcão\n`;
-    } else {
-      message += `Entrega\n`;
-      message += `${address.street}, ${address.number}\n`;
-      if (deliveryFee > 0) {
-        message += `⚠️ Este pedido possui taxa de entrega de R$ ${deliveryFee
-          .toFixed(2)
-          .replace(".", ",")}\n`;
-      }
-    }
-
-    message += `\n💳 *PAGAMENTO:*\n`;
-    switch (paymentMethod) {
-      case "cartao":
-        message += `Cartão\n`;
-        break;
-      case "pix":
-        message += `Pix\n`;
-        message += `Chave: ${restaurantInfo.pixKey}\n`;
-        break;
-      case "dinheiro":
-        message += `Dinheiro\n`;
-        if (needsChange) {
-          message += `💵 Troco para: R$ ${changeAmount}\n`;
-        } else {
-          message += `Sem troco\n`;
-        }
-        break;
-    }
-
-    message += `\n💰 *TOTAL: R$ ${total.toFixed(2).replace(".", ",")}*`;
-
-    return encodeURIComponent(message);
-  };
-
   const handleSendOrder = () => {
     if (paymentMethod === "dinheiro" && needsChange) {
       const changeValue = Number(changeAmount);
@@ -237,10 +150,51 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
       getItemSubtotal: getItemSubtotal,
     });
 
-    const message = buildWhatsAppMessage();
-    const whatsappUrl = `https://wa.me/${restaurantInfo.phone}?text=${message}`;
-    window.open(whatsappUrl, "_blank");
+    const orderItems = items.map((item) => {
+        let customMessage = "";
+        if (isSaturday) {
+             const hasFeijaoPreto = item.adicionarItens.includes("Feijão preto com pernil de porco e calabresa");
+             const hasFeijaoCarioca = item.adicionarItens.includes("Feijão carioca");
+             if (hasFeijaoPreto) {
+                 customMessage = "🫘 Feijão: Feijão preto com pernil de porco e calabresa";
+             } else if (hasFeijaoCarioca) {
+                 customMessage = "🫘 Feijão: Feijão carioca";
+             }
+        }
+        
+        return {
+            sizeName: item.tamanhoMarmita,
+            meatName: item.carne,
+            price: getItemSubtotal(item),
+            qty: item.quantidade,
+            extraCharge: item.extraCharge,
+            removedItems: item.removerItens.map((i) => i.split(" ")[0]),
+            customMessage
+        };
+    });
 
+    const drinksForMsg = selectedDrinks.map((d) => ({
+        name: d.name,
+        qty: d.quantity,
+        price: d.price * d.quantity
+    }));
+
+     const message = buildWhatsAppMessage({
+        dayKey: dayKey,
+        deliveryMethod: deliveryMethod!,
+        paymentMethod: paymentMethod!,
+        address: deliveryMethod === "entrega" ? address : undefined,
+        changeAmount: needsChange ? changeAmount : undefined,
+        deliveryFee: deliveryFee,
+        total: total,
+        items: orderItems,
+        drinks: drinksForMsg
+    });
+
+    const whatsappUrl = message; 
+
+    redirectToWhatsApp(whatsappUrl);
+    
     toast.success(
       "Você será redirecionado para o WhatsApp com o pedido pronto para enviar!"
     );
@@ -490,7 +444,6 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
           </div>
         </div>
 
-        {/* Footer Compacto com Resumo */}
         <div className="p-3 border-t border-border bg-muted/30 shrink-0">
           <div className="space-y-1 mb-3">
             <div className="flex items-center justify-between text-xs">
