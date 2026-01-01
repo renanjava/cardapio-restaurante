@@ -4,3 +4,5 @@ node_modules
 .vercel
 .env*.local
 .vercel
+test-results
+playwright-report
