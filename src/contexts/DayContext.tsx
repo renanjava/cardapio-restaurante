@@ -18,8 +18,8 @@ interface DayProviderProps {
 export function DayProvider({ children }: DayProviderProps) {
   const today = new Date().getDay();
   const now = new Date();
-  const currentHour = now.getHours();
-  const currentMinute = now.getMinutes();
+  const currentHour = 7;
+  const currentMinute = 0;
 
   const currentTimeInMinutes = currentHour * 60 + currentMinute;
   const openTimeInMinutes = 7 * 60;

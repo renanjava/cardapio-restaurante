@@ -301,7 +301,7 @@ export const restaurantInfo = {
   address: "Elpídio Monteiro, 21 - Itambé-PR",
   deliveryFee: 2.0,
   openingHours: {
-    marmitas: "Segunda a Sábado, 10:30 - 14:00",
+    marmitas: "Segunda a Sábado, 07:00 - 14:00",
     lanches: "Consultar no WhatsApp",
     sunday: "Fechado aos domingos",
   },
