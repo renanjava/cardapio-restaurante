@@ -1,21 +1,15 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
-  Check,
   ShoppingCart,
   AlertCircle,
   Ban,
   Calendar,
-  Info,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useCart, CartItem } from "@/contexts/CartContext";
 import {
   marmitaSizes,
   weeklyMenu,
-  dayNames,
-  dayDisplayNames,
   MarmitaSize,
   MeatOption,
 } from "@/data/menuData";
@@ -24,6 +18,10 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { WeeklyMenuModal } from "./WeeklyMenuModal";
 import { useDay } from "@/contexts/DayContext";
 import { CustomToaster } from "./CustomToaster";
+import { SizeSelector } from "@/components/order/SizeSelector";
+import { MeatSelector } from "@/components/order/MeatSelector";
+import { ToppingsSelector } from "@/components/order/ToppingsSelector";
+import { calculateMeatExtra } from "@/utils/order-calculations";
 
 interface MarmitaOrderFormProps {
   editingItem?: CartItem;
@@ -91,17 +89,7 @@ export function MarmitaOrderForm({
     setCheckedItems((prev) => ({ ...prev, [itemId]: !prev[itemId] }));
   };
 
-  const calculateExtraCharge = () => {
-    if (!selectedSize || !selectedMeat) return 0;
-    if (
-      selectedSize.id === "mini" &&
-      selectedMeat.extraForMini &&
-      selectedMeat.extraPrice
-    ) {
-      return selectedMeat.extraPrice;
-    }
-    return 0;
-  };
+  const extraCharge = calculateMeatExtra(selectedSize?.id, selectedMeat);
 
   const handleAddToCart = () => {
     if (!selectedSize) {
@@ -148,7 +136,7 @@ export function MarmitaOrderForm({
       adicionarItens: addedItems,
       removerItens: removedItems,
       quantidade: editingItem?.quantidade || 1,
-      extraCharge: calculateExtraCharge(),
+      extraCharge: extraCharge,
     };
 
     if (editingItem) {
@@ -181,7 +169,7 @@ export function MarmitaOrderForm({
   }
 
   const totalPrice = selectedSize
-    ? selectedSize.price + calculateExtraCharge()
+    ? selectedSize.price + extraCharge
     : 0;
 
   return (
@@ -215,130 +203,34 @@ export function MarmitaOrderForm({
             <h3 className="font-display text-lg font-bold mb-3 text-foreground">
               Escolha o Tamanho
             </h3>
-            <div className="grid grid-cols-1 gap-3">
-              {marmitaSizes.map((size) => (
-                <button
-                  key={size.id}
-                  onClick={() => setSelectedSize(size)}
-                  className={`p-4 rounded-2xl border-2 transition-all duration-200 text-left ${
-                    selectedSize?.id === size.id
-                      ? "border-primary bg-primary/5 shadow-soft"
-                      : "border-border bg-card hover:border-primary/50"
-                  }`}
-                >
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <span className="font-bold text-foreground">
-                        {size.name}
-                      </span>
-                      <p className="text-sm text-muted-foreground">
-                        {size.description}
-                      </p>
-                    </div>
-                    <span className="text-primary font-bold text-lg">
-                      R$ {size.price},00
-                    </span>
-                  </div>
-                </button>
-              ))}
-            </div>
+            <SizeSelector 
+                sizes={marmitaSizes} 
+                selectedSize={selectedSize} 
+                onSelect={setSelectedSize} 
+            />
           </div>
 
           <div className="mb-6">
             <h3 className="font-display text-lg font-bold mb-3 text-foreground">
               Escolha os acompanhamentos
             </h3>
-            <div className="grid grid-cols-2 gap-2">
-              {dayMenu.items.map((item) => {
-                const isChecked = checkedItems[item.id];
-
-                return (
-                  <button
-                    key={item.id}
-                    onClick={() => toggleItem(item.id)}
-                    className={`flex items-center gap-2 p-3 rounded-xl border-2 transition-all duration-200 text-left ${
-                      isChecked
-                        ? "border-primary bg-primary/5"
-                        : "border-border bg-card opacity-60"
-                    }`}
-                  >
-                    <div
-                      className={`w-5 h-5 rounded-md border-2 flex items-center justify-center transition-all ${
-                        isChecked
-                          ? "bg-primary border-primary"
-                          : "border-muted-foreground"
-                      }`}
-                    >
-                      {isChecked && (
-                        <Check className="w-3 h-3 text-primary-foreground" />
-                      )}
-                    </div>
-                    <span
-                      className={`text-sm font-medium ${
-                        isChecked
-                          ? "text-foreground"
-                          : "text-muted-foreground line-through"
-                      }`}
-                    >
-                      {item.name}
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
+            <ToppingsSelector 
+                items={dayMenu.items}
+                checkedItems={checkedItems}
+                onToggle={toggleItem}
+            />
           </div>
 
           <div className="mb-6">
             <h3 className="font-display text-lg font-bold mb-3 text-foreground">
               Escolha a Carne
             </h3>
-            <div className="space-y-2">
-              {dayMenu.meats.map((meat) => {
-                const showExtra =
-                  meat.extraForMini &&
-                  meat.extraPrice &&
-                  selectedSize?.id === "mini";
-                const isSelected = selectedMeat?.id === meat.id;
-
-                return (
-                  <button
-                    key={meat.id}
-                    onClick={() => setSelectedMeat(meat)}
-                    className={`w-full flex items-center gap-3 p-4 rounded-2xl border-2 transition-all duration-200 text-left ${
-                      isSelected
-                        ? "border-primary bg-primary/5 shadow-soft"
-                        : "border-border bg-card hover:border-primary/50"
-                    }`}
-                  >
-                    <div
-                      className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
-                        isSelected
-                          ? "border-primary"
-                          : "border-muted-foreground"
-                      }`}
-                    >
-                      {isSelected && (
-                        <div className="w-2.5 h-2.5 rounded-full bg-primary" />
-                      )}
-                    </div>
-                    <div className="flex-1">
-                      <span
-                        className={`font-semibold ${
-                          showExtra ? "text-primary" : "text-foreground"
-                        }`}
-                      >
-                        {meat.name}
-                      </span>
-                      {showExtra && (
-                        <span className="ml-2 text-sm font-bold text-primary">
-                          (+R$ {meat.extraPrice?.toFixed(2)})
-                        </span>
-                      )}
-                    </div>
-                  </button>
-                );
-              })}
-            </div>
+            <MeatSelector 
+                meats={dayMenu.meats}
+                selectedMeat={selectedMeat}
+                selectedSize={selectedSize}
+                onSelect={setSelectedMeat}
+            />
           </div>
         </div>
       </div>

@@ -34,7 +34,11 @@ const Index = () => {
   const [showModalExplanation, setShowModalExplanation] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
+  const intelligentOrderEnabled = import.meta.env.VITE_ENABLE_INTELLIGENT_ORDER === "true";
+
   const handlePedidoInteligente = async () => {
+    if (!intelligentOrderEnabled) return;
+    
     if (!isSignedIn) {
       setShowModalNotSignedIn(true);
       return;
@@ -134,7 +138,6 @@ const Index = () => {
         </div>
       )}
 
-      {/* Modal - Explicação para configurar */}
       {showModalExplanation && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
           <div className="bg-card rounded-2xl shadow-xl max-w-md w-full p-6 animate-fade-in">
@@ -240,34 +243,36 @@ const Index = () => {
                 Marmitas, lanches e combos fresquinhos. Faça seu pedido!
               </p>
 
-              {/* Saudação e UserButton - Apenas quando logado */}
-              <SignedIn>
-                <div className="flex items-center gap-3 mb-4 bg-primary-foreground/10 backdrop-blur-sm rounded-xl px-4 py-3">
-                  <UserButton
-                    afterSignOutUrl="/"
-                    appearance={{
-                      elements: {
-                        avatarBox: "w-10 h-10",
-                      },
-                    }}
-                  />
-                  <div className="flex-1">
-                    <p className="text-sm text-primary-foreground/70">Olá,</p>
-                    <p className="font-bold text-primary-foreground">
-                      {user?.firstName || user?.username || "Usuário"}
-                    </p>
+              {intelligentOrderEnabled && (
+                <SignedIn>
+                  <div className="flex items-center gap-3 mb-4 bg-primary-foreground/10 backdrop-blur-sm rounded-xl px-4 py-3">
+                    <UserButton
+                      afterSignOutUrl="/"
+                      appearance={{
+                        elements: {
+                          avatarBox: "w-10 h-10",
+                        },
+                      }}
+                    />
+                    <div className="flex-1">
+                      <p className="text-sm text-primary-foreground/70">Olá,</p>
+                      <p className="font-bold text-primary-foreground">
+                        {user?.firstName || user?.username || "Usuário"}
+                      </p>
+                    </div>
                   </div>
-                </div>
-              </SignedIn>
+                </SignedIn>
+              )}
 
-              {/* Botão de Login - Apenas quando não logado */}
-              <SignedOut>
-                <SignInButton mode="modal">
-                  <button className="inline-flex items-center justify-center rounded-xl border border-primary-foreground/30 px-6 py-3 font-bold text-primary-foreground shadow-soft transition hover:bg-primary-foreground/10 mb-6">
-                    Fazer Login
-                  </button>
-                </SignInButton>
-              </SignedOut>
+              {intelligentOrderEnabled && (
+                <SignedOut>
+                  <SignInButton mode="modal">
+                    <button className="inline-flex items-center justify-center rounded-xl border border-primary-foreground/30 px-6 py-3 font-bold text-primary-foreground shadow-soft transition hover:bg-primary-foreground/10 mb-6">
+                      Fazer Login
+                    </button>
+                  </SignInButton>
+                </SignedOut>
+              )}
 
               <div className="flex gap-4 text-xs md:text-sm text-primary-foreground/80">
                 <div className="flex items-center gap-1">
@@ -289,23 +294,40 @@ const Index = () => {
             </h2>
           </div>
           <div className="grid grid-cols-2 gap-3">
-            {/* Pedido Inteligente */}
             <button
               onClick={handlePedidoInteligente}
-              disabled={isLoading}
-              className="bg-card rounded-2xl p-4 shadow-soft card-hover text-left relative overflow-hidden disabled:opacity-50"
+              disabled={isLoading || !intelligentOrderEnabled}
+              className={`bg-card rounded-2xl p-4 shadow-soft text-left relative overflow-hidden disabled:opacity-50 ${
+                intelligentOrderEnabled ? "card-hover" : "opacity-50 pointer-events-none"
+              }`}
             >
               <div className="absolute top-2 right-2">
-                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary/10 text-primary text-[10px] font-bold">
-                  <Zap className="w-3 h-3" />
-                  NOVO
-                </span>
+                {intelligentOrderEnabled ? (
+                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary/10 text-primary text-[10px] font-bold">
+                    <Zap className="w-3 h-3" />
+                    NOVO
+                  </span>
+                ) : (
+                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-muted text-muted-foreground text-[10px] font-bold">
+                    EM BREVE
+                  </span>
+                )}
               </div>
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center mb-3">
+              <div
+                className={`w-12 h-12 rounded-xl flex items-center justify-center mb-3 ${
+                  intelligentOrderEnabled
+                    ? "bg-gradient-to-br from-primary/20 to-primary/5"
+                    : "bg-muted"
+                }`}
+              >
                 {isLoading ? (
                   <Loader2 className="w-6 h-6 text-primary animate-spin" />
                 ) : (
-                  <Sparkles className="w-6 h-6 text-primary" />
+                  <Sparkles
+                    className={`w-6 h-6 ${
+                      intelligentOrderEnabled ? "text-primary" : "text-muted-foreground"
+                    }`}
+                  />
                 )}
               </div>
               <h3 className="font-display font-bold text-foreground text-sm">
@@ -316,7 +338,6 @@ const Index = () => {
               </p>
             </button>
 
-            {/* Planos Semanais */}
             <div className="bg-card rounded-2xl p-4 shadow-soft opacity-50 relative">
               <div className="absolute top-2 right-2">
                 <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-muted text-muted-foreground text-[10px] font-bold">
@@ -387,7 +408,6 @@ const Index = () => {
           </div>
 
           <div className="grid grid-cols-2 gap-3">
-            {/* Lanches */}
             <div className="bg-card rounded-2xl p-4 shadow-soft opacity-50">
               <div className="w-12 h-12 rounded-xl bg-muted flex items-center justify-center mb-3">
                 <Sandwich className="w-6 h-6 text-muted-foreground" />
@@ -398,7 +418,6 @@ const Index = () => {
               <p className="text-xs text-muted-foreground">Em breve</p>
             </div>
 
-            {/* Combos */}
             <div className="bg-card rounded-2xl p-4 shadow-soft opacity-50">
               <div className="w-12 h-12 rounded-xl bg-muted flex items-center justify-center mb-3">
                 <Package className="w-6 h-6 text-muted-foreground" />

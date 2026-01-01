@@ -1,27 +1,33 @@
 import { useState, useEffect, useRef } from "react";
+import {
+  AlertCircle,
+  Save,
+  Loader2,
+  ChevronLeft,
+  ChevronRight,
+  ExternalLink,
+} from "lucide-react";
 import { Header } from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import {
-  ChevronRight,
-  Check,
-  Save,
-  Loader2,
-  ExternalLink,
-  ChevronLeft,
-  AlertCircle,
-} from "lucide-react";
-import {
-  weeklyMenu,
-  dayDisplayNames,
   marmitaSizes,
+  weeklyMenu,
   restaurantInfo,
+  dayDisplayNames,
   MarmitaSize,
   MeatOption,
+  MenuItem,
 } from "@/data/menuData";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { CustomToaster } from "@/components/CustomToaster";
 import { useUser } from "@/lib/safe-auth";
+import { SizeSelector } from "@/components/order/SizeSelector";
+import { MeatSelector } from "@/components/order/MeatSelector";
+import { ToppingsSelector } from "@/components/order/ToppingsSelector";
+import { calculateDeliveryFee, calculateMeatExtra } from "@/utils/order-calculations";
+import { buildWhatsAppMessage } from "@/utils/whatsapp-builder";
+import { redirectToWhatsApp } from "@/utils/whatsapp-redirect";
 
 type DayKey =
   | "segunda"
@@ -205,101 +211,82 @@ const PedidoInteligente = () => {
     }, 100);
   };
 
-  const buildWhatsAppLink = (day: DayKey, order: DayOrder): string => {
+  const generateWhatsAppLink = (day: DayKey, order: DayOrder): string => {
     if (!order.size || !order.meat || !order.delivery || !order.payment) {
-      return "";
+        return "";
     }
 
-    let message = `🍽️ *NOVO PEDIDO - ${restaurantInfo.name}*\n\n`;
-    message += `🤖 *PEDIDO INTELIGENTE*\n\n`;
-    message += `📅 *CARDÁPIO - ${dayDisplayNames[day]}*\n`;
+    const dayMenuForLink = weeklyMenu[day];
+    const addedItems = dayMenuForLink.items
+        .filter((item) => order.items[item.id])
+        .map((item) => item.name);
 
-    const dayMenuData = weeklyMenu[day];
-    if (dayMenuData && dayMenuData.items) {
-      const accompaniments = dayMenuData.items
-        .map((item) => item.name)
-        .join(", ");
-      message += `${accompaniments}\n\n`;
+    const removedItems = dayMenuForLink.items
+        .filter((item) => !order.items[item.id])
+        .map((item) => item.name);
+        
+    let finalAdded = [...addedItems];
+    let finalRemoved = [...removedItems];
+    let customMessage = "";
+    
+    if (day === "sabado") {
+       const hasFeijaoPreto = order.items["feijao-preto"];
+       const hasFeijaoCarioca = order.items["feijao-carioca"];
+
+       if (hasFeijaoPreto) {
+         finalAdded = finalAdded.filter((i) => i !== "Feijão carioca");
+         finalRemoved = finalRemoved.filter((i) => i !== "Feijão carioca");
+         customMessage = "🫘 Feijão: Feijão preto com pernil de porco e calabresa";
+       } else if (hasFeijaoCarioca) {
+         finalAdded = finalAdded.filter((i) => i !== "Feijão preto com pernil de porco e calabresa");
+         finalRemoved = finalRemoved.filter((i) => i !== "Feijão preto com pernil de porco e calabresa");
+         customMessage = "🫘 Feijão: Feijão carioca";
+       }
     }
 
-    message += `📋 *ITENS DO PEDIDO:*\n\n`;
-    message += `*${order.size.name}* - ${order.meat.name}\n`;
-    message += `   Qtd: 1 | R$ ${order.size.price},00\n`;
+    const extraCharge = calculateMeatExtra(order.size.id, order.meat);
+    const deliveryFee = calculateDeliveryFee(order.delivery, day);
+    const itemPrice = order.size.price + extraCharge; 
+    const total = itemPrice + deliveryFee; 
 
-    const extraCharge =
-      order.size.id === "mini" &&
-      order.meat.extraForMini &&
-      order.meat.extraPrice
-        ? order.meat.extraPrice
-        : 0;
-
-    if (extraCharge > 0) {
-      message += `   ⚠️ Acréscimo: +R$ ${extraCharge},00\n`;
-    }
-
-    const removedItems = dayMenuData.items
-      .filter((item) => !order.items[item.id])
-      .map((item) => item.name);
-
-    if (removedItems.length > 0) {
-      message += `   ✗ Sem: ${removedItems.join(", ")}\n`;
-
-      if (day === "sabado") {
-        const hasFeijaoPreto = order.items["feijao-preto"];
-        const hasFeijaoCarioca = order.items["feijao-carioca"];
-
-        if (hasFeijaoPreto) {
-          message += `   🫘 Feijão: Feijão preto com pernil de porco e calabresa\n`;
-        } else if (hasFeijaoCarioca) {
-          message += `   🫘 Feijão: Feijão carioca\n`;
-        }
-      }
-    }
-
-    message += `\n📍 *RETIRADA:*\n`;
-    if (order.delivery === "balcao") {
-      message += `Balcão\n`;
-    } else {
-      message += `Entrega\n`;
-      if (order.address) {
-        message += `${order.address.street}, ${order.address.number}\n`;
-      }
-      if (day === "sabado") {
-        message += `⚠️ Este pedido possui taxa de entrega de R$ ${restaurantInfo.deliveryFeeSaturday},00 (sábado)\n`;
-      }
-    }
-
-    message += `\n💳 *PAGAMENTO:*\n`;
-    switch (order.payment) {
-      case "cartao":
-        message += `Cartão\n`;
-        break;
-      case "pix":
-        message += `Pix\n`;
-        message += `Chave: ${restaurantInfo.pixKey}\n`;
-        break;
-      case "dinheiro":
-        message += `Dinheiro\n`;
-        if (order.needsChange && order.changeAmount) {
-          message += `💵 Troco para: R$ ${order.changeAmount}\n`;
-        } else {
-          message += `Sem troco\n`;
-        }
-        break;
-    }
-
-    const deliveryFee =
-      order.delivery === "entrega" && day === "sabado"
-        ? restaurantInfo.deliveryFeeSaturday
-        : 0;
-    const total = order.size.price + extraCharge + deliveryFee;
-
-    message += `\n💰 *TOTAL: R$ ${total.toFixed(2).replace(".", ",")}*`;
-
-    return `https://wa.me/${restaurantInfo.phone}?text=${encodeURIComponent(
-      message
-    )}`;
+    return buildWhatsAppMessage({
+        customerName: user?.fullName || user?.firstName || undefined,
+        dayKey: day,
+        deliveryMethod: order.delivery,
+        address: order.address,
+        paymentMethod: order.payment,
+        changeAmount: order.changeAmount,
+        deliveryFee: deliveryFee,
+        total: total,
+        isIntelligentOrder: true,
+        items: [{
+            sizeName: order.size.name,
+            meatName: order.meat.name,
+            price: order.size.price,
+            qty: 1,
+            extraCharge: extraCharge,
+            addedItems: finalAdded,
+            removedItems: finalRemoved,
+            customMessage: customMessage
+        }]
+    });
   };
+
+  useEffect(() => {
+    const link = generateWhatsAppLink(currentDay, currentDayOrder);
+    if (link !== currentDayOrder.whatsappLink) {
+        updateCurrentDay({ whatsappLink: link });
+    }
+  }, [
+      currentDayOrder.size, 
+      currentDayOrder.meat, 
+      currentDayOrder.items, 
+      currentDayOrder.delivery, 
+      currentDayOrder.payment, 
+      currentDayOrder.address, 
+      currentDayOrder.changeAmount,
+      currentDay
+  ]);
 
   const isDayCompleteByNum = (
     dayNum: number,
@@ -351,7 +338,7 @@ const PedidoInteligente = () => {
         const order = orders[dayNum as keyof IntelligentOrders];
 
         if (order && isDayComplete(day)) {
-          const link = buildWhatsAppLink(day, order);
+          const link = generateWhatsAppLink(day, order);
           whatsappOrders[dayNum] = link;
 
           order.whatsappLink = link;
@@ -402,10 +389,17 @@ const PedidoInteligente = () => {
     const dayNum = dayKeyToNumber[day];
     const order = orders[dayNum as keyof IntelligentOrders] as DayOrder | null;
 
-    if (order?.whatsappLink) {
-      window.open(order.whatsappLink, "_blank");
+    if (!order) {
+       toast.error("Pedido não encontrado para este dia.");
+       return;
+    }
+
+    const link = generateWhatsAppLink(day, order);
+
+    if (link) {
+      redirectToWhatsApp(link);
     } else {
-      toast.error("Salve os pedidos primeiro!");
+      toast.error("Preencha todos os campos obrigatórios primeiro!");
     }
   };
 
@@ -501,33 +495,11 @@ const PedidoInteligente = () => {
               </span>
               Tamanho
             </h3>
-            <div className="grid grid-cols-1 gap-3">
-              {marmitaSizes.map((size) => (
-                <button
-                  key={size.id}
-                  onClick={() => updateCurrentDay({ size })}
-                  className={`p-4 rounded-2xl border-2 transition-all text-left ${
-                    currentDayOrder.size?.id === size.id
-                      ? "border-primary bg-primary/5 shadow-md"
-                      : "border-border bg-card hover:border-primary/30"
-                  }`}
-                >
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <span className="font-bold text-foreground">
-                        {size.name}
-                      </span>
-                      <p className="text-sm text-muted-foreground">
-                        {size.description}
-                      </p>
-                    </div>
-                    <span className="text-primary font-bold text-lg">
-                      R$ {size.price},00
-                    </span>
-                  </div>
-                </button>
-              ))}
-            </div>
+            <SizeSelector 
+                sizes={marmitaSizes}
+                selectedSize={currentDayOrder.size}
+                onSelect={(size) => updateCurrentDay({ size })}
+            />
           </div>
 
           <div>
@@ -537,43 +509,11 @@ const PedidoInteligente = () => {
               </span>
               Acompanhamentos
             </h3>
-            <div className="grid grid-cols-2 gap-2">
-              {dayMenu.items.map((item) => {
-                const isChecked = currentDayOrder.items[item.id];
-                return (
-                  <button
-                    key={item.id}
-                    onClick={() => toggleItem(item.id)}
-                    className={`flex items-center gap-2 p-3 rounded-xl border-2 transition-all text-left ${
-                      isChecked
-                        ? "border-primary bg-primary/5"
-                        : "border-border bg-card opacity-60"
-                    }`}
-                  >
-                    <div
-                      className={`w-5 h-5 rounded-md border-2 flex items-center justify-center ${
-                        isChecked
-                          ? "bg-primary border-primary"
-                          : "border-muted-foreground"
-                      }`}
-                    >
-                      {isChecked && (
-                        <Check className="w-3 h-3 text-primary-foreground" />
-                      )}
-                    </div>
-                    <span
-                      className={`text-sm font-medium ${
-                        isChecked
-                          ? "text-foreground"
-                          : "text-muted-foreground line-through"
-                      }`}
-                    >
-                      {item.name}
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
+            <ToppingsSelector 
+                items={dayMenu.items}
+                checkedItems={currentDayOrder.items}
+                onToggle={toggleItem}
+            />
           </div>
 
           <div>
@@ -583,53 +523,12 @@ const PedidoInteligente = () => {
               </span>
               Carne
             </h3>
-            <div className="space-y-2">
-              {dayMenu.meats.map((meat) => {
-                const showExtra =
-                  meat.extraForMini &&
-                  meat.extraPrice &&
-                  currentDayOrder.size?.id === "mini";
-                const isSelected = currentDayOrder.meat?.id === meat.id;
-
-                return (
-                  <button
-                    key={meat.id}
-                    onClick={() => updateCurrentDay({ meat })}
-                    className={`w-full flex items-center gap-3 p-4 rounded-2xl border-2 transition-all text-left ${
-                      isSelected
-                        ? "border-primary bg-primary/5 shadow-md"
-                        : "border-border bg-card hover:border-primary/30"
-                    }`}
-                  >
-                    <div
-                      className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
-                        isSelected
-                          ? "border-primary"
-                          : "border-muted-foreground"
-                      }`}
-                    >
-                      {isSelected && (
-                        <div className="w-2.5 h-2.5 rounded-full bg-primary" />
-                      )}
-                    </div>
-                    <div className="flex-1">
-                      <span
-                        className={`font-semibold ${
-                          showExtra ? "text-primary" : "text-foreground"
-                        }`}
-                      >
-                        {meat.name}
-                      </span>
-                      {showExtra && (
-                        <span className="ml-2 text-sm font-bold text-primary">
-                          (+R$ {meat.extraPrice?.toFixed(2)})
-                        </span>
-                      )}
-                    </div>
-                  </button>
-                );
-              })}
-            </div>
+            <MeatSelector 
+                meats={dayMenu.meats}
+                selectedMeat={currentDayOrder.meat}
+                selectedSize={currentDayOrder.size}
+                onSelect={(meat) => updateCurrentDay({ meat })}
+            />
           </div>
 
           <div>
@@ -693,14 +592,6 @@ const PedidoInteligente = () => {
                   }
                   className="w-full p-3 rounded-xl border-2 border-border bg-card text-foreground focus:border-primary focus:outline-none"
                 />
-                {currentDay === "sabado" && (
-                  <div className="flex items-start gap-2 p-2.5 rounded-lg bg-amber-500/10 border border-amber-500/20">
-                    <AlertCircle className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
-                    <p className="text-xs text-amber-900 dark:text-amber-100">
-                      Taxa de <strong>R$ 2,00</strong> aos sábados
-                    </p>
-                  </div>
-                )}
               </div>
             )}
           </div>
