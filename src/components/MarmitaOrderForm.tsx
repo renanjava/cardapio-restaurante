@@ -212,7 +212,7 @@ export function MarmitaOrderForm({
 
           <div className="mb-6">
             <h3 className="font-display text-lg font-bold mb-3 text-foreground">
-              Escolha os acompanhamentos
+              Escolha os Acompanhamentos
             </h3>
             <ToppingsSelector 
                 items={dayMenu.items}

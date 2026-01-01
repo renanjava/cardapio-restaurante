@@ -209,7 +209,7 @@ const PedidoInteligente = () => {
 
     const removedItems = dayMenuForLink.items
         .filter((item) => !order.items[item.id])
-        .map((item) => item.name);
+        .map((item) => item.name.split(" ")[0]);
         
     let finalAdded = [...addedItems];
     let finalRemoved = [...removedItems];

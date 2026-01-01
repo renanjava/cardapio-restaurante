@@ -11,7 +11,7 @@ test.describe('Marmita Ordering Flow', () => {
 
     await expect(page).toHaveURL(/.*cardapio.*/);
 
-    await expect(page.getByText('Escolha os acompanhamentos')).toBeVisible();
+    await expect(page.getByText('Escolha os Acompanhamentos')).toBeVisible();
 
     const meatOption = page.getByText(/Frango/i).first();
     await meatOption.click();
