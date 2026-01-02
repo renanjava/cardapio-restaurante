@@ -1,6 +1,7 @@
 export const ENV = {
   CLERK_PUBLISHABLE_KEY: import.meta.env.VITE_CLERK_PUBLISHABLE_KEY,
   ENABLE_INTELLIGENT_ORDER: import.meta.env.VITE_ENABLE_INTELLIGENT_ORDER === "true",
+  ENABLE_WEEKLY_PLAN: import.meta.env.VITE_ENABLE_WEEKLY_PLAN === "true",
 } as const;
 
 export type DayKey =
