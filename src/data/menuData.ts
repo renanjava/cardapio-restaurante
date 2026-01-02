@@ -218,29 +218,29 @@ export const weeklyMenu: Record<string, DayMenu> = {
 
 export const drinks = [
   {
-    id: "refri-lata",
-    name: "Refrigerante Lata",
+    id: "caculinha",
+    name: "Coca-Cola Caçulinha 200ml",
+    price: 3.0,
+  },
+  {
+    id: "coca-lata-normal",
+    name: "Coca-Cola Lata 350ml",
     price: 6.0,
   },
   {
-    id: "refri-600ml",
-    name: "Refrigerante 600ml",
+    id: "coca-lata-zero",
+    name: "Coca-Cola Lata Zero 350ml",
+    price: 6.0,
+  },
+  {
+    id: "coca-600ml",
+    name: "Coca-Cola 600ml",
     price: 8.0,
   },
   {
-    id: "refri-1lt",
-    name: "Refrigerante 1L",
+    id: "coca-1lt",
+    name: "Coca-Cola 1L",
     price: 10.0,
-  },
-  {
-    id: "agua-sem-gas",
-    name: "Água Sem Gás",
-    price: 2.5,
-  },
-  {
-    id: "agua-com-gas",
-    name: "Água Com Gás",
-    price: 3.0,
   },
   {
     id: "coca-2lt",
@@ -248,29 +248,24 @@ export const drinks = [
     price: 16.0,
   },
   {
-    id: "fanta-sprite",
-    name: "Fanta/Sprite 2L",
-    price: 13.0,
+    id: "agua-sem-gas",
+    name: "Água Sem Gás 500ml",
+    price: 2.5,
+  },
+  {
+    id: "agua-com-gas",
+    name: "Água Com Gás 500ml",
+    price: 3.0,
   },
   {
     id: "life-pequeno",
-    name: "Suco de Laranja Life Pequeno",
+    name: "Suco de Laranja Life 300ml",
     price: 7.0,
   },
   {
     id: "life-grande",
-    name: "Suco de Laranja Life Grande",
+    name: "Suco de Laranja Life 900ml",
     price: 17.0,
-  },
-  {
-    id: "ouro-verde-2lt",
-    name: "Ouro Verde 2L",
-    price: 12.0,
-  },
-  {
-    id: "caculinha",
-    name: "Caçulinha",
-    price: 3.0,
   },
 ];
 

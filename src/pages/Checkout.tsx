@@ -80,7 +80,7 @@ const Checkout = () => {
   );
   const total = subtotal + deliveryFee + drinksTotal;
 
-  const handleAddDrink = (drink: (typeof drinks)[0]) => {
+  const handleAddDrink = (drink: (typeof drinks)[0], shouldCloseModal = false) => {
     setSelectedDrinks((prev) => {
       const existing = prev.find((d) => d.id === drink.id);
       if (existing) {
@@ -90,6 +90,9 @@ const Checkout = () => {
       }
       return [...prev, { ...drink, quantity: 1 }];
     });
+    if (shouldCloseModal) {
+      setIsDrinksModalOpen(false);
+    }
   };
 
   const handleRemoveDrink = (drinkId: string) => {
@@ -443,74 +446,36 @@ const Checkout = () => {
                 <CupSoda className="absolute -right-4 -bottom-4 w-32 h-32 opacity-10 rotate-12" />
               </div>
 
-              <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto">
-                <DialogHeader className="pb-4 border-b">
+              <DialogContent className="max-w-md max-h-[90vh] p-0 flex flex-col">
+                <DialogHeader className="p-6 pb-4 border-b bg-background shrink-0">
                   <DialogTitle className="flex items-center gap-2">
                     <CupSoda className="text-primary" />
                     Escolha suas Bebidas
                   </DialogTitle>
                 </DialogHeader>
                 
-                <div className="grid gap-3 py-4">
-                  {drinks.map((drink) => {
-                    const orderedDrink = selectedDrinks.find((d) => d.id === drink.id);
-                    const quantity = orderedDrink?.quantity || 0;
-                    
-                    return (
-                      <div
-                        key={drink.id}
-                        className={`flex items-center justify-between p-4 rounded-xl border-2 transition-all ${
-                          quantity > 0
-                            ? "border-primary bg-primary/5"
-                            : "border-border hover:border-primary/20"
-                        }`}
-                      >
-                        <div className="flex-1">
-                          <p className="font-semibold text-sm line-clamp-1">{drink.name}</p>
-                          <p className="text-primary font-bold text-sm">
-                            R$ {drink.price.toFixed(2).replace(".", ",")}
-                          </p>
-                        </div>
-                        
-                        <div className="flex items-center gap-2 ml-4">
-                          {quantity > 0 ? (
-                            <>
-                              <Button
-                                variant="outline"
-                                size="icon"
-                                className="w-8 h-8 rounded-full border-primary text-primary hover:bg-primary/10"
-                                onClick={() => handleRemoveDrink(drink.id)}
-                              >
-                                <Minus className="w-4 h-4" />
-                              </Button>
-                              <span className="font-bold text-base min-w-[20px] text-center">
-                                {quantity}
-                              </span>
-                            </>
-                          ) : null}
-                          <Button
-                            variant={quantity > 0 ? "warm" : "outline"}
-                            size="icon"
-                            className={`w-8 h-8 rounded-full ${
-                              quantity > 0 ? "" : "border-border text-muted-foreground hover:border-primary/50 hover:text-primary"
-                            }`}
-                            onClick={() => handleAddDrink(drink)}
-                          >
-                            <Plus className="w-4 h-4" />
-                          </Button>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-                
-                <div className="mt-2 text-center pt-4 border-t">
-                  <Button 
-                    className="w-full font-bold"
-                    onClick={() => setIsDrinksModalOpen(false)}
-                  >
-                    Confirmar Seleção
-                  </Button>
+                <div className="flex-1 overflow-y-auto p-6 pt-4">
+                  <div className="grid gap-2">
+                    {drinks.map((drink) => {
+                      return (
+                        <button
+                          key={drink.id}
+                          onClick={() => handleAddDrink(drink, true)}
+                          className="flex items-center justify-between p-4 rounded-xl border-2 border-border hover:border-primary hover:bg-primary/5 transition-all text-left group"
+                        >
+                          <div className="flex-1">
+                            <p className="font-semibold text-sm group-hover:text-primary transition-colors">
+                              {drink.name}
+                            </p>
+                            <p className="text-primary font-bold text-sm">
+                              R$ {drink.price.toFixed(2).replace(".", ",")}
+                            </p>
+                          </div>
+                          <Plus className="w-5 h-5 text-muted-foreground group-hover:text-primary group-hover:scale-110 transition-all" />
+                        </button>
+                      );
+                    })}
+                  </div>
                 </div>
               </DialogContent>
             </Dialog>
