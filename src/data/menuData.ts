@@ -254,12 +254,12 @@ export const drinks = [
   },
   {
     id: "life-pequeno",
-    name: "Life Pequeno",
+    name: "Suco de Laranja Life Pequeno",
     price: 7.0,
   },
   {
     id: "life-grande",
-    name: "Life Grande",
+    name: "Suco de Laranja Life Grande",
     price: 17.0,
   },
   {

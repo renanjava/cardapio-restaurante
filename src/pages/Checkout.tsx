@@ -5,14 +5,17 @@ import {
   Smartphone,
   Banknote,
   Send,
+  Plus,
+  Minus,
   Info,
+  CupSoda,
+  X,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useCart } from "@/contexts/CartContext";
 import {
-  weeklyMenu,
   drinks,
 } from "@/data/menuData";
 import { RESTAURANT_INFO } from "@/config";
@@ -26,6 +29,13 @@ import { Header } from "@/components/Header";
 import { useNavigate } from "react-router-dom";
 import { CustomToaster } from "@/components/CustomToaster";
 import { ServiceClosed } from "@/components/ServiceClosed";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 export interface DrinkOrder {
   id: string;
@@ -57,6 +67,7 @@ const Checkout = () => {
   const [changeAmount, setChangeAmount] = useState("");
   const [changeError, setChangeError] = useState(false);
   const [selectedDrinks, setSelectedDrinks] = useState<DrinkOrder[]>([]);
+  const [isDrinksModalOpen, setIsDrinksModalOpen] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const deliveryFee =
@@ -100,7 +111,7 @@ const Checkout = () => {
         address,
         needsChange,
         changeAmount,
-        hasItems: items.length > 0
+        hasItems: items.length > 0 || selectedDrinks.length > 0
     });
   };
 
@@ -128,6 +139,7 @@ const Checkout = () => {
       endereco: deliveryMethod === "entrega" ? address : null,
       taxaEntrega: deliveryFee,
       getItemSubtotal: getItemSubtotal,
+      bebidas: selectedDrinks.map(d => ({ name: d.name, qty: d.quantity, price: d.price }))
     });
 
     const orderItems = items.map((item) => {
@@ -401,6 +413,131 @@ const Checkout = () => {
                     />
                   </div>
                 )}
+              </div>
+            )}
+          </div>
+
+          <div className="pt-2">
+            <Dialog open={isDrinksModalOpen} onOpenChange={setIsDrinksModalOpen}>
+              <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-orange-500 to-amber-500 p-6 text-white shadow-soft">
+                <div className="relative z-10 flex flex-col sm:flex-row items-center justify-between gap-4">
+                  <div className="text-center sm:text-left">
+                    <h3 className="text-xl font-bold mb-1 flex items-center justify-center sm:justify-start gap-2">
+                      <CupSoda className="w-6 h-6" />
+                      Que tal uma bebida?
+                    </h3>
+                    <p className="text-orange-50/90 text-sm">
+                      Temos sucos, refrigerantes e água geladinha!
+                    </p>
+                  </div>
+                  <DialogTrigger asChild>
+                    <Button 
+                      variant="secondary" 
+                      className="bg-white text-orange-600 hover:bg-orange-50 font-bold px-6 shadow-md active:scale-95 transition-all shrink-0"
+                    >
+                      Ver Opções
+                    </Button>
+                  </DialogTrigger>
+                </div>
+                {/* Decorative background icon */}
+                <CupSoda className="absolute -right-4 -bottom-4 w-32 h-32 opacity-10 rotate-12" />
+              </div>
+
+              <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto">
+                <DialogHeader className="pb-4 border-b">
+                  <DialogTitle className="flex items-center gap-2">
+                    <CupSoda className="text-primary" />
+                    Escolha suas Bebidas
+                  </DialogTitle>
+                </DialogHeader>
+                
+                <div className="grid gap-3 py-4">
+                  {drinks.map((drink) => {
+                    const orderedDrink = selectedDrinks.find((d) => d.id === drink.id);
+                    const quantity = orderedDrink?.quantity || 0;
+                    
+                    return (
+                      <div
+                        key={drink.id}
+                        className={`flex items-center justify-between p-4 rounded-xl border-2 transition-all ${
+                          quantity > 0
+                            ? "border-primary bg-primary/5"
+                            : "border-border hover:border-primary/20"
+                        }`}
+                      >
+                        <div className="flex-1">
+                          <p className="font-semibold text-sm line-clamp-1">{drink.name}</p>
+                          <p className="text-primary font-bold text-sm">
+                            R$ {drink.price.toFixed(2).replace(".", ",")}
+                          </p>
+                        </div>
+                        
+                        <div className="flex items-center gap-2 ml-4">
+                          {quantity > 0 ? (
+                            <>
+                              <Button
+                                variant="outline"
+                                size="icon"
+                                className="w-8 h-8 rounded-full border-primary text-primary hover:bg-primary/10"
+                                onClick={() => handleRemoveDrink(drink.id)}
+                              >
+                                <Minus className="w-4 h-4" />
+                              </Button>
+                              <span className="font-bold text-base min-w-[20px] text-center">
+                                {quantity}
+                              </span>
+                            </>
+                          ) : null}
+                          <Button
+                            variant={quantity > 0 ? "warm" : "outline"}
+                            size="icon"
+                            className={`w-8 h-8 rounded-full ${
+                              quantity > 0 ? "" : "border-border text-muted-foreground hover:border-primary/50 hover:text-primary"
+                            }`}
+                            onClick={() => handleAddDrink(drink)}
+                          >
+                            <Plus className="w-4 h-4" />
+                          </Button>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+                
+                <div className="mt-2 text-center pt-4 border-t">
+                  <Button 
+                    className="w-full font-bold"
+                    onClick={() => setIsDrinksModalOpen(false)}
+                  >
+                    Confirmar Seleção
+                  </Button>
+                </div>
+              </DialogContent>
+            </Dialog>
+
+            {selectedDrinks.length > 0 && (
+              <div className="mt-4 p-4 rounded-2xl bg-muted/50 border border-muted animate-fade-in">
+                <p className="text-sm font-semibold mb-3 flex items-center gap-2">
+                  <div className="w-2 h-2 rounded-full bg-primary" />
+                  Bebidas Adicionadas:
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {selectedDrinks.map((drink) => (
+                    <div 
+                      key={drink.id}
+                      className="flex items-center gap-2 bg-white px-3 py-1.5 rounded-full border border-border shadow-sm text-sm"
+                    >
+                      <span className="font-bold text-primary">{drink.quantity}x</span>
+                      <span className="font-medium text-muted-foreground">{drink.name}</span>
+                      <button 
+                        onClick={() => handleRemoveDrink(drink.id)}
+                        className="ml-1 text-muted-foreground hover:text-red-500 transition-colors"
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
               </div>
             )}
           </div>
