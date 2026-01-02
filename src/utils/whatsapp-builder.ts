@@ -25,6 +25,9 @@ interface OrderDetails {
   deliveryFee: number;
   total: number;
   isIntelligentOrder?: boolean;
+  isWeeklyPlan?: boolean;
+  planDayDate?: string;
+  planDeliveryTime?: string;
 }
 
 export const buildWhatsAppMessage = (order: OrderDetails): string => {
@@ -32,6 +35,17 @@ export const buildWhatsAppMessage = (order: OrderDetails): string => {
 
   if (order.isIntelligentOrder) {
     message += `🤖 *PEDIDO INTELIGENTE*\n\n`;
+  }
+  
+  if (order.isWeeklyPlan) {
+    message += `📅 *PLANO SEMANAL*\n`;
+    if (order.planDayDate) {
+      message += `Data: ${order.planDayDate}\n`;
+    }
+    if (order.planDeliveryTime) {
+      message += `⏰ Horário: ${order.planDeliveryTime}\n`;
+    }
+    message += `\n`;
   }
   
   if (order.dayKey) {

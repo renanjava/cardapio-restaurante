@@ -33,6 +33,7 @@ const Index = () => {
   const navigate = useNavigate();
   const { isSignedIn, user } = useUser();
   const [showModalNotSignedIn, setShowModalNotSignedIn] = useState(false);
+  const [modalType, setModalType] = useState<"intelligent" | "weekly">("intelligent");
   const [showModalExplanation, setShowModalExplanation] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [preFetchedWhatsAppLink, setPreFetchedWhatsAppLink] = useState<string | null>(null);
@@ -76,6 +77,7 @@ const Index = () => {
     if (!intelligentOrderEnabled) return;
     
     if (!isSignedIn) {
+      setModalType("intelligent");
       setShowModalNotSignedIn(true);
       return;
     }
@@ -126,7 +128,7 @@ const Index = () => {
                   <Sparkles className="w-5 h-5 text-primary" />
                 </div>
                 <h3 className="font-display font-bold text-foreground text-lg">
-                  Pedido Inteligente
+                  {modalType === "intelligent" ? "Pedido Inteligente" : "Planos Semanais"}
                 </h3>
               </div>
               <button
@@ -140,10 +142,12 @@ const Index = () => {
             <div className="space-y-4">
               <p className="text-sm text-muted-foreground">
                 O{" "}
-                <strong className="text-foreground">Pedido Inteligente</strong>{" "}
-                permite que você configure suas marmitas personalizadas para
-                cada dia da semana. Ao clicar no botão, seu pedido será enviado
-                automaticamente via WhatsApp!
+                <strong className="text-foreground">
+                  {modalType === "intelligent" ? "Pedido Inteligente" : "Plano Semanal"}
+                </strong>{" "}
+                {modalType === "intelligent" 
+                  ? "permite que você configure suas marmitas personalizadas para cada dia da semana. Ao clicar no botão, seu pedido será enviado automaticamente via WhatsApp!"
+                  : "permite que você agende as marmitas de toda a sua semana de uma só vez, com data e horário marcados, e ainda ganhe um desconto especial!"}
               </p>
 
               <div className="bg-muted/50 rounded-xl p-4 space-y-2">
@@ -151,9 +155,19 @@ const Index = () => {
                   <strong className="text-foreground">Benefícios:</strong>
                 </p>
                 <ul className="text-xs text-muted-foreground space-y-1 ml-4 list-disc">
-                  <li>Pedido com apenas 1 clique</li>
-                  <li>Configure uma vez, use sempre</li>
-                  <li>Economize tempo todos os dias</li>
+                  {modalType === "intelligent" ? (
+                    <>
+                      <li>Pedido com apenas 1 clique</li>
+                      <li>Configure uma vez, use sempre</li>
+                      <li>Economize tempo todos os dias</li>
+                    </>
+                  ) : (
+                    <>
+                      <li>Planejamento semanal completo</li>
+                      <li>R$ 5,00 de desconto fixo</li>
+                      <li>Entrega agendada no seu horário</li>
+                    </>
+                  )}
                 </ul>
               </div>
 
@@ -418,14 +432,38 @@ const Index = () => {
               </p>
             </button>
 
-            <div className="bg-card rounded-2xl p-4 shadow-soft opacity-50 relative">
+            <button
+              onClick={() => {
+                if (!user) {
+                  setModalType("weekly");
+                  setShowModalNotSignedIn(true);
+                } else {
+                  navigate("/planos-semanais");
+                }
+              }}
+              disabled={!isOpen}
+              className={`bg-card rounded-2xl p-4 shadow-soft text-left relative overflow-hidden disabled:opacity-50 ${
+                isOpen ? "card-hover" : "opacity-50 pointer-events-none"
+              }`}
+            >
               <div className="absolute top-2 right-2">
-                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-muted text-muted-foreground text-[10px] font-bold">
-                  EM BREVE
+                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-green-500/10 text-green-600 text-[10px] font-bold">
+                  <Zap className="w-3 h-3" />
+                  NOVO
                 </span>
               </div>
-              <div className="w-12 h-12 rounded-xl bg-muted flex items-center justify-center mb-3">
-                <CalendarCheck className="w-6 h-6 text-muted-foreground" />
+              <div
+                className={`w-12 h-12 rounded-xl flex items-center justify-center mb-3 ${
+                  isOpen
+                    ? "bg-gradient-to-br from-green-500/20 to-green-500/5"
+                    : "bg-muted"
+                }`}
+              >
+                <CalendarCheck
+                  className={`w-6 h-6 ${
+                    isOpen ? "text-green-600" : "text-muted-foreground"
+                  }`}
+                />
               </div>
               <h3 className="font-display font-bold text-foreground text-sm">
                 Planos Semanais
@@ -433,7 +471,7 @@ const Index = () => {
               <p className="text-xs text-muted-foreground">
                 Economize com pacotes
               </p>
-            </div>
+            </button>
           </div>
         </section>
 

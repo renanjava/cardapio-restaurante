@@ -12,6 +12,7 @@ import { ClerkProvider } from "@/lib/safe-auth";
 import { ptBR } from "@clerk/localizations";
 import { injectSpeedInsights } from "@vercel/speed-insights";
 import PedidoInteligente from "./pages/PedidoInteligente";
+import PlanosSemanais from "./pages/PlanosSemanais";
 import Checkout from "./pages/Checkout";
 
 const queryClient = new QueryClient();
@@ -34,6 +35,10 @@ const App = () => (
                 <Route
                   path="/pedido-inteligente"
                   element={<PedidoInteligente />}
+                />
+                <Route
+                  path="/planos-semanais"
+                  element={<PlanosSemanais />}
                 />
                 <Route path="*" element={<NotFound />} />
               </Routes>

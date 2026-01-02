@@ -442,7 +442,6 @@ const Checkout = () => {
                     </Button>
                   </DialogTrigger>
                 </div>
-                {/* Decorative background icon */}
                 <CupSoda className="absolute -right-4 -bottom-4 w-32 h-32 opacity-10 rotate-12" />
               </div>
 
