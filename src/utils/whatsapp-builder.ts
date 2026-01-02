@@ -25,6 +25,9 @@ interface OrderDetails {
   deliveryFee: number;
   total: number;
   isIntelligentOrder?: boolean;
+  isWeeklyPlan?: boolean;
+  planDayDate?: string;
+  planDeliveryTime?: string;
 }
 
 export const buildWhatsAppMessage = (order: OrderDetails): string => {
@@ -32,6 +35,17 @@ export const buildWhatsAppMessage = (order: OrderDetails): string => {
 
   if (order.isIntelligentOrder) {
     message += `🤖 *PEDIDO INTELIGENTE*\n\n`;
+  }
+  
+  if (order.isWeeklyPlan) {
+    message += `📅 *PLANO SEMANAL*\n`;
+    if (order.planDayDate) {
+      message += `Data: ${order.planDayDate}\n`;
+    }
+    if (order.planDeliveryTime) {
+      message += `⏰ Horário: ${order.planDeliveryTime}\n`;
+    }
+    message += `\n`;
   }
   
   if (order.dayKey) {
@@ -88,22 +102,26 @@ export const buildWhatsAppMessage = (order: OrderDetails): string => {
   }
 
   message += `\n💳 *PAGAMENTO:*\n`;
-  switch (order.paymentMethod) {
-    case "cartao":
-      message += `Cartão\n`;
-      break;
-    case "pix":
-      message += `Pix\n`;
-      message += `Chave: ${RESTAURANT_INFO.pixKey}\n`;
-      break;
-    case "dinheiro":
-      message += `Dinheiro\n`;
-      if (order.changeAmount) {
-        message += `💵 Troco para: R$ ${order.changeAmount}\n`;
-      } else {
-        message += `Sem troco\n`;
-      }
-      break;
+  if (order.isWeeklyPlan) {
+    message += `Pagamento ao final do plano (7 dias)\n`;
+  } else {
+    switch (order.paymentMethod) {
+      case "cartao":
+        message += `Cartão\n`;
+        break;
+      case "pix":
+        message += `Pix\n`;
+        message += `Chave: ${RESTAURANT_INFO.pixKey}\n`;
+        break;
+      case "dinheiro":
+        message += `Dinheiro\n`;
+        if (order.changeAmount) {
+          message += `💵 Troco para: R$ ${order.changeAmount}\n`;
+        } else {
+          message += `Sem troco\n`;
+        }
+        break;
+    }
   }
 
   message += `\n💰 *TOTAL: R$ ${order.total.toFixed(2).replace(".", ",")}*`;
