@@ -136,11 +136,42 @@
     background: linear-gradient(135deg, hsl(var(--brown-dark)) 0%, hsl(var(--primary) / 0.9) 100%);
   }
 
-  .text-gradient {
-    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--terracotta)) 100%);
+  .shimmer {
+    background: linear-gradient(
+      90deg,
+      hsl(var(--foreground)) 0%,
+      hsl(var(--foreground)) 35%,
+      #fff 50%,
+      hsl(var(--foreground)) 65%,
+      hsl(var(--foreground)) 100%
+    );
+    background-size: 200% 100%;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    animation: shimmer 2.5s infinite linear;
+  }
+
+  .shimmer-primary {
+    background: linear-gradient(
+      90deg,
+      hsl(var(--primary)) 0%,
+      hsl(var(--primary)) 35%,
+      #fff 50%,
+      hsl(var(--primary)) 65%,
+      hsl(var(--primary)) 100%
+    );
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmer 2.5s infinite linear;
+  }
+
+  @keyframes shimmer {
+    to {
+      background-position: -200% center;
+    }
   }
 }
 

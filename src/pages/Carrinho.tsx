@@ -8,6 +8,7 @@ import { useCart, CartItem } from "@/contexts/CartContext";
 import { CustomToaster } from "@/components/CustomToaster";
 import { useDay } from "@/contexts/DayContext";
 import { ServiceClosed } from "@/components/ServiceClosed";
+import { BottomNav } from "@/components/BottomNav";
 
 const Carrinho = () => {
   const { items, getTotal, clearCart } = useCart();
@@ -92,10 +93,10 @@ const Carrinho = () => {
                 variant="warm"
                 size="lg"
                 onClick={() => navigate("/checkout")}
-                className="flex-1 max-w-xs"
+                className="flex-1 max-w-xs shadow-soft active:scale-95 transition-all duration-200"
               >
                 Continuar
-                <ArrowRight className="w-5 h-5" />
+                <ArrowRight className="w-5 h-5 ml-2" />
               </Button>
             </div>
           </div>
@@ -103,6 +104,7 @@ const Carrinho = () => {
       )}
       <Footer />
       <CustomToaster />
+      {items.length === 0 && <BottomNav />}
     </div>
   );
 };

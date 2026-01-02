@@ -14,7 +14,7 @@ import {
   MeatOption,
 } from "@/data/menuData";
 import toast from "react-hot-toast";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams, useLocation } from "react-router-dom";
 import { WeeklyMenuModal } from "./WeeklyMenuModal";
 import { useDay } from "@/contexts/DayContext";
 import { CustomToaster } from "./CustomToaster";
@@ -34,7 +34,8 @@ export function MarmitaOrderForm({
 }: MarmitaOrderFormProps) {
   const { addItem, updateItem } = useCart();
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
+  const location = useLocation();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const { dayKey, isSunday, isSaturday } = useDay();
   const dayMenu = weeklyMenu[dayKey];
@@ -49,6 +50,17 @@ export function MarmitaOrderForm({
   const [selectedSize, setSelectedSize] = useState<MarmitaSize | null>(
     initialSize || null
   );
+
+  const handleSizeSelect = (size: MarmitaSize) => {
+    setSelectedSize(size);
+    navigate({
+      pathname: location.pathname,
+      search: `?size=${size.id}`
+    }, {
+      state: location.state,
+      replace: true
+    });
+  };
   const [selectedMeat, setSelectedMeat] = useState<MeatOption | null>(
     editingItem
       ? dayMenu.meats.find((m) => m.name === editingItem.carne) || null
@@ -206,7 +218,7 @@ export function MarmitaOrderForm({
             <SizeSelector 
                 sizes={marmitaSizes} 
                 selectedSize={selectedSize} 
-                onSelect={setSelectedSize} 
+                onSelect={handleSizeSelect} 
             />
           </div>
 
@@ -248,9 +260,9 @@ export function MarmitaOrderForm({
               variant="warm"
               size="lg"
               onClick={handleAddToCart}
-              className="flex-1 max-w-xs"
+              className="flex-1 max-w-xs shadow-soft active:scale-95 transition-all duration-200"
             >
-              <ShoppingCart className="w-5 h-5" />
+              <ShoppingCart className="w-5 h-5 mr-2" />
               {editingItem ? "Atualizar" : "Adicionar"}
             </Button>
           </div>

@@ -115,7 +115,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-background pb-20 md:pb-0">
-      <Header />
+      <Header hideLogo={true} />
 
       {showModalNotSignedIn && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
@@ -224,7 +224,7 @@ const Index = () => {
                   setShowModalExplanation(false);
                   navigate("/pedido-inteligente");
                 }}
-                className="w-full inline-flex items-center justify-center rounded-xl bg-primary px-4 py-3 font-bold text-primary-foreground shadow-soft transition hover:opacity-90"
+                className="w-full inline-flex items-center justify-center rounded-xl bg-primary px-4 py-4 font-bold text-lg text-primary-foreground shadow-lg transition-all duration-200 active:scale-95 hover:opacity-90"
               >
                 Continuar para Configuração
               </button>
