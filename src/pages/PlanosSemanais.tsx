@@ -352,12 +352,15 @@ const PlanosSemanais = () => {
         body: JSON.stringify(planData),
       });
 
-      if (!res.ok) {
-        throw new Error("Erro ao salvar plano");
+      const data = await res.json();
+      
+      if (data.checkoutUrl) {
+        toast.success("Pagamento gerado! Redirecionando...");
+        window.location.replace(data.checkoutUrl);
+      } else {
+        toast.success("Plano Semanal salvo com sucesso!");
+        navigate("/", { state: { weeklyPlanConfigured: true } });
       }
-
-      toast.success("Plano Semanal salvo com sucesso!");
-      navigate("/", { state: { weeklyPlanConfigured: true } });
     } catch (err) {
       console.error(err);
       toast.error("Erro ao salvar Plano Semanal");
@@ -561,7 +564,6 @@ const PlanosSemanais = () => {
             />
           )}
 
-          {/* Removido perguntas sobre troco e forma de pagamento a pedido do usuário */}
         </div>
       </main>
 

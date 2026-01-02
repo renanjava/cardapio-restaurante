@@ -16,6 +16,7 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { BottomNav } from "@/components/BottomNav";
 import { marmitaSizes } from "@/data/menuData";
+import { Button } from "@/components/ui/button";
 import { RESTAURANT_INFO, DAY_DISPLAY_NAMES, ENV } from "@/config";
 import { useDay } from "@/contexts/DayContext";
 import {
@@ -42,6 +43,7 @@ const Index = () => {
   const weeklyPlanEnabled = ENV.ENABLE_WEEKLY_PLAN && isOpen;
 
   const [showModalSuccess, setShowModalSuccess] = useState(false);
+  const [paymentStatus, setPaymentStatus] = useState<"none" | "processing" | "success" | "failed">("none");
   const location = useLocation();
 
   useEffect(() => {
@@ -49,7 +51,61 @@ const Index = () => {
       setShowModalSuccess(true);
       window.history.replaceState({}, document.title);
     }
+
+    const params = new URLSearchParams(location.search);
+    if (params.get("payment") === "processing") {
+      setPaymentStatus("processing");
+    }
   }, [location]);
+
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    const params = new URLSearchParams(location.search);
+    const orderNsu = params.get("order_nsu");
+    const transactionNsu = params.get("transaction_nsu");
+    const slug = params.get("slug");
+
+    if (paymentStatus === "processing" && (isSignedIn || orderNsu)) {
+      const checkPayment = async () => {
+        try {
+          const queryParams = new URLSearchParams();
+          if (orderNsu) queryParams.set("orderNsu", orderNsu);
+          if (transactionNsu) queryParams.set("transactionNsu", transactionNsu);
+          if (slug) queryParams.set("slug", slug);
+          if (!orderNsu && user?.id) queryParams.set("userId", user.id);
+
+          const response = await fetch(`/api/weekly-plan?${queryParams.toString()}`);
+          const data = await response.json();
+
+          if (data.plan && data.plan.status === "active") {
+            setPaymentStatus("success");
+            setShowModalSuccess(true);
+            window.history.replaceState({}, document.title, window.location.pathname);
+            clearInterval(interval);
+          } else if (data.plan && data.plan.status === "failed") {
+            setPaymentStatus("failed");
+            clearInterval(interval);
+          }
+        } catch (error) {
+          console.error("Erro ao verificar pagamento:", error);
+        }
+      };
+
+      interval = setInterval(checkPayment, 3000);
+      
+      const timeout = setTimeout(() => {
+        if (paymentStatus === "processing") {
+          setPaymentStatus("failed");
+          clearInterval(interval);
+        }
+      }, 180000);
+
+      return () => {
+        clearInterval(interval);
+        clearTimeout(timeout);
+      };
+    }
+  }, [paymentStatus, isSignedIn, user?.id, location.search]);
 
   useEffect(() => {
     const fetchIntelligentOrder = async () => {
@@ -644,6 +700,77 @@ const Index = () => {
         </section>
       </main>
 
+      {paymentStatus === "processing" && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/60 backdrop-blur-md">
+          <div className="bg-card rounded-2xl shadow-xl max-w-sm w-full p-8 text-center animate-in zoom-in duration-300">
+            <div className="relative w-20 h-20 mx-auto mb-6">
+              <div className="absolute inset-0 rounded-full border-4 border-primary/20 animate-pulse" />
+              <div className="absolute inset-0 rounded-full border-t-4 border-primary animate-spin" />
+              <div className="absolute inset-0 flex items-center justify-center">
+                <Clock className="w-8 h-8 text-primary" />
+              </div>
+            </div>
+            <h3 className="text-xl font-bold text-foreground mb-2">Processando Pedido</h3>
+            <p className="text-muted-foreground text-sm mb-6">
+              Estamos aguardando a confirmação do seu pagamento pela InfinitePay. Isso deve levar apenas alguns instantes...
+            </p>
+            <div className="flex justify-center gap-1">
+              <div className="w-2 h-2 rounded-full bg-primary animate-bounce [animation-delay:-0.3s]" />
+              <div className="w-2 h-2 rounded-full bg-primary animate-bounce [animation-delay:-0.15s]" />
+              <div className="w-2 h-2 rounded-full bg-primary animate-bounce" />
+            </div>
+          </div>
+        </div>
+      )}
+
+      {paymentStatus === "failed" && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/60 backdrop-blur-md">
+          <div className="bg-card rounded-2xl shadow-xl max-w-sm w-full p-8 text-center animate-in zoom-in duration-300">
+            <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
+              <X className="w-8 h-8 text-red-600" />
+            </div>
+            <h3 className="text-xl font-bold text-foreground mb-2">Ops! Algo deu errado</h3>
+            <p className="text-muted-foreground text-sm mb-6">
+              Não conseguimos confirmar seu pagamento. Por favor, verifique se houve algum problema ou tente novamente.
+            </p>
+            <Button 
+              onClick={() => {
+                setPaymentStatus("none");
+                window.history.replaceState({}, document.title, window.location.pathname);
+              }}
+              className="w-full"
+            >
+              Entendido
+            </Button>
+          </div>
+        </div>
+      )}
+
+      {showModalSuccess && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/60 backdrop-blur-md">
+          <div className="bg-card rounded-2xl shadow-xl max-w-sm w-full p-8 text-center animate-in zoom-in duration-300">
+            <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+              <Zap className="w-8 h-8 text-green-600" />
+            </div>
+            <h3 className="text-xl font-bold text-foreground mb-2">Pedido Confirmado!</h3>
+            <p className="text-muted-foreground text-sm mb-6">
+              {paymentStatus === "success" 
+                ? "Seu plano semanal foi ativado com sucesso! Você receberá as confirmações diárias via WhatsApp."
+                : "Suas preferências foram salvas! Agora você pode fazer seus pedidos com muito mais rapidez."}
+            </p>
+            <Button 
+              onClick={() => {
+                setShowModalSuccess(false);
+                setPaymentStatus("none");
+                window.history.replaceState({}, document.title, window.location.pathname);
+              }}
+              className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-4 rounded-xl"
+            >
+              Excelente!
+            </Button>
+          </div>
+        </div>
+      )}
       <Footer />
       <BottomNav />
     </div>
