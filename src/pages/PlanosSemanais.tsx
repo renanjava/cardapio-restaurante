@@ -15,7 +15,7 @@ import {
   MarmitaSize,
   MeatOption,
 } from "@/data/menuData";
-import { DayKey } from "@/config";
+import { DayKey, ENV } from "@/config";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { CustomToaster } from "@/components/CustomToaster";
@@ -103,6 +103,13 @@ const PlanosSemanais = () => {
       updateCurrentDay({ items: initialItems });
     }
   }, [currentDayIndex]);
+
+  if (!ENV.ENABLE_WEEKLY_PLAN) {
+    useEffect(() => {
+      navigate("/");
+    }, []);
+    return null;
+  }
 
   if (!isOpen) {
     return (

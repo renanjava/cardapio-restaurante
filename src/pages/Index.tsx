@@ -39,6 +39,7 @@ const Index = () => {
   const [preFetchedWhatsAppLink, setPreFetchedWhatsAppLink] = useState<string | null>(null);
 
   const intelligentOrderEnabled = ENV.ENABLE_INTELLIGENT_ORDER && isOpen;
+  const weeklyPlanEnabled = ENV.ENABLE_WEEKLY_PLAN && isOpen;
 
   const [showModalSuccess, setShowModalSuccess] = useState(false);
   const location = useLocation();
@@ -442,7 +443,7 @@ const Index = () => {
             </div>
 
             <div className="relative pt-3">
-              {isOpen && (
+              {weeklyPlanEnabled && (
                 <div className="absolute top-0 left-0 z-20">
                   <span className="bg-green-600 text-white text-[9px] font-black uppercase tracking-wider px-3 py-1 rounded-full shadow-lg border border-white/20">
                     Mais Econômico
@@ -458,27 +459,33 @@ const Index = () => {
                     navigate("/planos-semanais");
                   }
                 }}
-                disabled={!isOpen}
+                disabled={!weeklyPlanEnabled}
                 className={`w-full bg-card rounded-2xl p-4 shadow-soft text-left relative overflow-hidden disabled:opacity-50 border-2 transition-all ${
-                  isOpen ? "card-hover border-green-500/50" : "opacity-50 pointer-events-none border-transparent"
+                  weeklyPlanEnabled ? "card-hover border-green-500/50" : "opacity-50 pointer-events-none border-transparent"
                 }`}
               >
                 <div className="absolute top-2 right-2">
-                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-green-500/10 text-green-600 text-[10px] font-bold">
-                    <Zap className="w-3 h-3" />
-                    NOVO
-                  </span>
+                  {weeklyPlanEnabled ? (
+                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-green-500/10 text-green-600 text-[10px] font-bold">
+                      <Zap className="w-3 h-3" />
+                      NOVO
+                    </span>
+                  ) : (
+                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-muted text-muted-foreground text-[10px] font-bold">
+                      EM BREVE
+                    </span>
+                  )}
                 </div>
                 <div
                   className={`w-12 h-12 rounded-xl flex items-center justify-center mb-3 ${
-                    isOpen
+                    weeklyPlanEnabled
                       ? "bg-gradient-to-br from-green-500/20 to-green-500/5"
                       : "bg-muted"
                   }`}
                 >
                   <CalendarCheck
                     className={`w-6 h-6 ${
-                      isOpen ? "text-green-600" : "text-muted-foreground"
+                      weeklyPlanEnabled ? "text-green-600" : "text-muted-foreground"
                     }`}
                   />
                 </div>
