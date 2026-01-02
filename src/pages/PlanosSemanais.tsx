@@ -457,8 +457,9 @@ const PlanosSemanais = () => {
           </div>
 
           <SizeSelector
+            sizes={marmitaSizes}
             selectedSize={currentDay.size}
-            onSelectSize={(size) => updateCurrentDay({ size })}
+            onSelect={(size) => updateCurrentDay({ size })}
           />
 
           {currentDay.size && (
