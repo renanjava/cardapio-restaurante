@@ -2,6 +2,8 @@ import { CalendarDays, MapPin, Clock, CreditCard, Package } from "lucide-react";
 import { formatDateForDisplay, getDayName } from "@/utils/weekly-plan-dates";
 import { marmitaSizes } from "@/data/menuData";
 
+import { Address } from "@/utils/order-validation";
+
 interface PlanDay {
   date: Date;
   size: string;
@@ -9,6 +11,9 @@ interface PlanDay {
   deliveryMethod: string;
   deliveryTime: string;
   dayTotal: number;
+  deliveryFee: number;
+  extraCharge: number;
+  address?: Address;
 }
 
 interface PlanSummaryProps {
@@ -56,9 +61,20 @@ export function PlanSummary({
                     </p>
                   </div>
                 </div>
-                <p className="font-bold text-primary">
-                  R$ {day.dayTotal.toFixed(2).replace(".", ",")}
-                </p>
+                <div className="text-right">
+                  <p className="font-bold text-primary">
+                    R$ {day.dayTotal.toFixed(2).replace(".", ",")}
+                  </p>
+                  <div className="text-[10px] text-muted-foreground flex flex-col items-end">
+                    <span>R$ {sizeInfo?.price || 0},00 (base)</span>
+                    {day.extraCharge > 0 && (
+                      <span className="text-orange-500">+ R$ {day.extraCharge.toFixed(2).replace(".", ",")} (carne extra)</span>
+                    )}
+                    {day.deliveryFee > 0 && (
+                      <span className="text-blue-500">+ R$ {day.deliveryFee.toFixed(2).replace(".", ",")} (entrega)</span>
+                    )}
+                  </div>
+                </div>
               </div>
 
               <div className="grid grid-cols-2 gap-2 text-sm">
@@ -72,10 +88,12 @@ export function PlanSummary({
                   <Clock className="w-3.5 h-3.5 text-muted-foreground" />
                   <span className="text-muted-foreground">{day.deliveryTime}</span>
                 </div>
-                <div className="flex items-center gap-1.5">
+                <div className="flex items-center gap-1.5 col-span-2">
                   <MapPin className="w-3.5 h-3.5 text-muted-foreground" />
                   <span className="text-muted-foreground">
-                    {day.deliveryMethod === "entrega" ? "Entrega" : "Balcão"}
+                    {day.deliveryMethod === "entrega" 
+                      ? `Entrega: ${day.address?.street}, ${day.address?.number}` 
+                      : "Retirada no Balcão"}
                   </span>
                 </div>
               </div>

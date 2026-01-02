@@ -102,22 +102,26 @@ export const buildWhatsAppMessage = (order: OrderDetails): string => {
   }
 
   message += `\n💳 *PAGAMENTO:*\n`;
-  switch (order.paymentMethod) {
-    case "cartao":
-      message += `Cartão\n`;
-      break;
-    case "pix":
-      message += `Pix\n`;
-      message += `Chave: ${RESTAURANT_INFO.pixKey}\n`;
-      break;
-    case "dinheiro":
-      message += `Dinheiro\n`;
-      if (order.changeAmount) {
-        message += `💵 Troco para: R$ ${order.changeAmount}\n`;
-      } else {
-        message += `Sem troco\n`;
-      }
-      break;
+  if (order.isWeeklyPlan) {
+    message += `Pagamento ao final do plano (7 dias)\n`;
+  } else {
+    switch (order.paymentMethod) {
+      case "cartao":
+        message += `Cartão\n`;
+        break;
+      case "pix":
+        message += `Pix\n`;
+        message += `Chave: ${RESTAURANT_INFO.pixKey}\n`;
+        break;
+      case "dinheiro":
+        message += `Dinheiro\n`;
+        if (order.changeAmount) {
+          message += `💵 Troco para: R$ ${order.changeAmount}\n`;
+        } else {
+          message += `Sem troco\n`;
+        }
+        break;
+    }
   }
 
   message += `\n💰 *TOTAL: R$ ${order.total.toFixed(2).replace(".", ",")}*`;

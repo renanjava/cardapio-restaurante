@@ -48,7 +48,6 @@ interface WeeklyPlanDay {
   items: Record<string, boolean>;
   delivery: DeliveryMethod;
   deliveryTime: string;
-  payment: PaymentMethod;
   address?: Address;
   needsChange?: boolean;
   changeAmount?: string;
@@ -72,7 +71,6 @@ const PlanosSemanais = () => {
       items: {},
       delivery: null,
       deliveryTime: "",
-      payment: null,
       dayTotal: 0,
     }));
   });
@@ -170,9 +168,7 @@ const PlanosSemanais = () => {
       day.delivery &&
       day.deliveryTime &&
       isValidDeliveryTime(day.deliveryTime) &&
-      day.payment &&
-      (day.delivery === "balcao" || (day.address?.street && day.address?.number)) &&
-      (day.payment !== "dinheiro" || day.needsChange === false || (day.needsChange && day.changeAmount))
+      (day.delivery === "balcao" || (day.address?.street && day.address?.number))
     );
   };
 
@@ -212,7 +208,6 @@ const PlanosSemanais = () => {
             meat: isMeatAvailable ? currentDay.meat : null,
             delivery: currentDay.delivery,
             deliveryTime: currentDay.deliveryTime,
-            payment: currentDay.payment,
             address: currentDay.address,
             needsChange: currentDay.needsChange,
             changeAmount: currentDay.changeAmount,
@@ -294,7 +289,7 @@ const PlanosSemanais = () => {
           dayKey: dayKey,
           deliveryMethod: day.delivery!,
           address: day.address,
-          paymentMethod: day.payment!,
+          paymentMethod: null as any,
           changeAmount: day.changeAmount,
           deliveryFee: deliveryFee,
           total: total,
@@ -335,7 +330,7 @@ const PlanosSemanais = () => {
           items: day.items,
           deliveryMethod: day.delivery!,
           deliveryTime: day.deliveryTime,
-          paymentMethod: day.payment!,
+          paymentMethod: "faturado",
           address: day.address,
           needsChange: day.needsChange,
           changeAmount: day.changeAmount,
@@ -380,6 +375,9 @@ const PlanosSemanais = () => {
                 deliveryMethod: day.delivery!,
                 deliveryTime: day.deliveryTime,
                 dayTotal: calculateDayTotal(day),
+                deliveryFee: calculateDeliveryFee(day.delivery),
+                extraCharge: calculateMeatExtra(day.size!.id, day.meat!),
+                address: day.address,
               }))}
               totalAmount={days.reduce((sum, day) => sum + calculateDayTotal(day), 0)}
               discountAmount={5.0}
@@ -556,101 +554,7 @@ const PlanosSemanais = () => {
             />
           )}
 
-          {currentDay.delivery && currentDay.deliveryTime && isValidDeliveryTime(currentDay.deliveryTime) && (
-            <div className="space-y-3">
-              <Label className="text-base font-semibold">Forma de Pagamento</Label>
-              <div className="space-y-3">
-                <button
-                  onClick={() => updateCurrentDay({ payment: "cartao" })}
-                  className={`w-full flex items-center gap-3 p-4 rounded-xl border-2 transition-all ${
-                    currentDay.payment === "cartao"
-                      ? "border-primary bg-primary/10"
-                      : "border-border hover:border-primary/30"
-                  }`}
-                >
-                  <span className="font-medium text-base">Cartão</span>
-                </button>
-
-                <button
-                  onClick={() => {
-                    updateCurrentDay({ payment: "pix" });
-                    scrollToBottom();
-                  }}
-                  className={`w-full flex items-center gap-3 p-4 rounded-xl border-2 transition-all ${
-                    currentDay.payment === "pix"
-                      ? "border-primary bg-primary/10"
-                      : "border-border hover:border-primary/30"
-                  }`}
-                >
-                  <span className="font-medium text-base">Pix</span>
-                </button>
-
-                <button
-                  onClick={() => {
-                    updateCurrentDay({ payment: "dinheiro" });
-                    scrollToBottom();
-                  }}
-                  className={`w-full flex items-center gap-3 p-4 rounded-xl border-2 transition-all ${
-                    currentDay.payment === "dinheiro"
-                      ? "border-primary bg-primary/10"
-                      : "border-border hover:border-primary/30"
-                  }`}
-                >
-                  <span className="font-medium text-base">Dinheiro</span>
-                </button>
-              </div>
-
-              {currentDay.payment === "dinheiro" && (
-                <div className="mt-4 space-y-3 animate-fade-in">
-                  <p className="font-medium text-sm">Precisa de troco?</p>
-                  <div className="grid grid-cols-2 gap-3">
-                    <button
-                      onClick={() => {
-                        updateCurrentDay({ needsChange: true });
-                        scrollToBottom();
-                      }}
-                      className={`p-3 rounded-xl border-2 transition-all text-sm font-medium ${
-                        currentDay.needsChange === true
-                          ? "border-primary bg-primary/10 text-primary"
-                          : "border-border"
-                      }`}
-                    >
-                      Sim
-                    </button>
-                    <button
-                      onClick={() => updateCurrentDay({ needsChange: false })}
-                      className={`p-3 rounded-xl border-2 transition-all text-sm font-medium ${
-                        currentDay.needsChange === false
-                          ? "border-primary bg-primary/10 text-primary"
-                          : "border-border"
-                      }`}
-                    >
-                      Não
-                    </button>
-                  </div>
-                  {currentDay.needsChange && (
-                    <div className="animate-fade-in">
-                      <Label htmlFor="change" className="text-sm">
-                        Troco para quanto?
-                      </Label>
-                      <Input
-                        id="change"
-                        type="text"
-                        inputMode="numeric"
-                        placeholder="R$"
-                        value={currentDay.changeAmount || ""}
-                        onChange={(e) => {
-                          const value = e.target.value.replace(/\D/g, "");
-                          updateCurrentDay({ changeAmount: value });
-                        }}
-                        className="mt-1.5 h-11 text-base"
-                      />
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
-          )}
+          {/* Removido perguntas sobre troco e forma de pagamento a pedido do usuário */}
         </div>
       </main>
 
