@@ -27,7 +27,7 @@ export const marmitaSizes: MarmitaSize[] = [
   {
     id: "mini",
     name: "Marmita Mini",
-    price: 16,
+    price: 17,
     description: "Refeição individual",
   },
   {
@@ -39,7 +39,7 @@ export const marmitaSizes: MarmitaSize[] = [
   {
     id: "grande",
     name: "Marmita Grande",
-    price: 22,
+    price: 23,
     description: "Refeição para 2-3 pessoas",
   },
 ];
