@@ -18,7 +18,7 @@ export const RESTAURANT_INFO = {
   phone: "5544988129535",
   pixKey: "03085367977",
   address: "Elpídio Monteiro, 21 - Itambé-PR",
-  deliveryFee: 2.0,
+  deliveryFee: 3.0,
   openingHours: {
     openingTime: "07:00",
     closingTime: "14:00",
