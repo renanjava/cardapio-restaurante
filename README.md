@@ -28,7 +28,7 @@ O sistema é **responsivo**, moderno e pensado para facilitar o fluxo do cliente
   - Escolha da carne
 - **Regras especiais**:
   - Sábados: só é possível escolher **um tipo de feijão** (preto ou carioca). Feijão carioca vem marcado por padrão.
-  - Marmita Mini + Bisteca de boi: acréscimo de **R$ 2,00** (indicado no label do checkbox).
+  - Marmita Mini / Média + Bisteca de boi: acréscimo de **R$ 2,00** (indicado no label do checkbox).
   - Domingos: cardápio e carnes indisponíveis (cards cinza e bloqueados).
 - Botão para **adicionar ao carrinho**.
 - Modal para visualizar o **cardápio semanal**.
@@ -76,7 +76,7 @@ O sistema é **responsivo**, moderno e pensado para facilitar o fluxo do cliente
 - **Sábado**:
   - Taxa de entrega de R$ 2,00 para marmitas, exibida no modal e somada ao valor total
   - Feijão: só um tipo permitido, carioca marcado por padrão
-- **Marmita Mini + Bisteca de boi**: acréscimo de R$ 2,00
+- **Marmita Mini e Média + Bisteca de boi**: acréscimo de R$ 2,00
 - **Pagamento em Dinheiro**: pergunta sobre troco e exige valor se necessário
 - **Pix**: exibe chave Pix e instrução para envio do comprovante
 

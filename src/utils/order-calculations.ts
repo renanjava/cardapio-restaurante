@@ -6,11 +6,11 @@ export const calculateMeatExtra = (
   sizeId: string | undefined,
   meat: MeatOption | null
 ): number => {
-  if (
-    sizeId === "mini" &&
-    meat?.extraForMini &&
-    meat?.extraPrice
-  ) {
+  if (!meat?.extraPrice) return 0;
+  if (sizeId === "mini" && meat.extraForMini) {
+    return meat.extraPrice;
+  }
+  if (sizeId === "media" && meat.extraForMedia) {
     return meat.extraPrice;
   }
   return 0;

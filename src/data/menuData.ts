@@ -9,6 +9,7 @@ export interface MeatOption {
   name: string;
   extraPrice?: number;
   extraForMini?: boolean;
+  extraForMedia?: boolean;
 }
 
 export interface DayMenu {
@@ -73,6 +74,7 @@ export const weeklyMenu: Record<string, DayMenu> = {
         name: "Bisteca de boi",
         extraPrice: 2,
         extraForMini: true,
+        extraForMedia: true,
       },
       { id: "bistequinha-porco", name: "Bistequinha de Porco" },
     ],
@@ -100,6 +102,7 @@ export const weeklyMenu: Record<string, DayMenu> = {
         name: "Bisteca de boi",
         extraPrice: 2,
         extraForMini: true,
+        extraForMedia: true,
       },
       { id: "bistequinha-porco", name: "Bistequinha de porco" },
     ],
@@ -127,6 +130,7 @@ export const weeklyMenu: Record<string, DayMenu> = {
         name: "Bisteca de boi",
         extraPrice: 2,
         extraForMini: true,
+        extraForMedia: true,
       },
     ],
   },
@@ -154,6 +158,7 @@ export const weeklyMenu: Record<string, DayMenu> = {
         name: "Bisteca de boi",
         extraPrice: 2,
         extraForMini: true,
+        extraForMedia: true,
       },
       { id: "bistequinha-porco", name: "Bistequinha de porco" },
     ],
@@ -178,6 +183,7 @@ export const weeklyMenu: Record<string, DayMenu> = {
         name: "Bisteca de boi",
         extraPrice: 2,
         extraForMini: true,
+        extraForMedia: true,
       },
       { id: "bistequinha-porco", name: "Bistequinha de porco" },
     ],
@@ -210,6 +216,7 @@ export const weeklyMenu: Record<string, DayMenu> = {
         name: "Bisteca de boi",
         extraPrice: 2,
         extraForMini: true,
+        extraForMedia: true,
       },
       { id: "bistequinha-porco", name: "Bistequinha de porco" },
     ],
@@ -246,6 +253,11 @@ export const drinks = [
     id: "coca-2lt",
     name: "Coca-Cola 2L",
     price: 16.0,
+  },
+  {
+    id: "tubaina-2lt",
+    name: "Tubaína 2L",
+    price: 13.0,
   },
   {
     id: "agua-sem-gas",
