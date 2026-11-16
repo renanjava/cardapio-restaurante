@@ -53,7 +53,7 @@ test.describe('Marmita Ordering Flow', () => {
     await page.getByRole('button', { name: /Continuar/i }).click();
     await expect(page).toHaveURL(/.*checkout.*/);
 
-    await expect(page.locator('span.text-2xl.font-bold.text-primary')).toHaveText('R$ 20,00');
+    await expect(page.locator('span.text-2xl.font-bold.text-primary')).toHaveText('R$ 21,00');
 
     await page.getByRole('button', { name: /Entrega/i }).click();
     
@@ -61,11 +61,11 @@ test.describe('Marmita Ordering Flow', () => {
     await expect(page.getByLabel(/Número/i)).toBeVisible();
 
     await expect(page.locator('p.text-sm.text-amber-900')).toContainText('Taxa de entrega:');
-    await expect(page.locator('p.text-sm.text-amber-900 strong')).toHaveText('R$ 2,00');
+    await expect(page.locator('p.text-sm.text-amber-900 strong')).toHaveText('R$ 3,00');
 
-    await expect(page.locator('span.text-amber-600').filter({ hasText: 'R$ 2,00' })).toBeVisible();
+    await expect(page.locator('span.text-amber-600').filter({ hasText: 'R$ 3,00' })).toBeVisible();
 
-    await expect(page.locator('span.text-primary.text-2xl')).toHaveText('R$ 22,00');
+    await expect(page.locator('span.text-primary.text-2xl')).toHaveText('R$ 24,00');
   });
 
   test('should add extra charge for mini marmita with bisteca', async ({ page }) => {
@@ -75,12 +75,12 @@ test.describe('Marmita Ordering Flow', () => {
     
     await page.getByText(/Bisteca de boi/i).click();
 
-    await expect(page.getByText('R$ 18,00')).toBeVisible();
+    await expect(page.getByText('R$ 20,00')).toBeVisible();
 
     await page.getByRole('button', { name: /Adicionar/i }).click();
     await page.getByRole('button', { name: /Continuar/i }).click();
 
-    await expect(page.locator('span.text-2xl.font-bold.text-primary')).toHaveText('R$ 18,00');
+    await expect(page.locator('span.text-2xl.font-bold.text-primary')).toHaveText('R$ 20,00');
   });
 
   test('should show change options for cash payment', async ({ page }) => {
